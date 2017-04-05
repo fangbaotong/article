@@ -1,0 +1,37 @@
+<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><title>MYSQL导入大于2M文件</title>
+<style>
+body{
+	width:960px;
+	margin:0 auto;
+}
+#title{
+	text-align:center;
+}
+</style>
+</head><body><div id='title'><h2>MYSQL导入大于2M文件</h2></div><div class="pcs-article-content_ptkaiapt4bxy_baiduscarticle" id="detailArticleContent_ptkaiapt4bxy_baiduscarticle">
+	<p>
+		方法一：&nbsp;1.在phpMyAdmin目录下新建一个目录，如：hxc，
+	</p>
+	<p>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ 2.再编辑phpMyAdmin目录下 
+&nbsp;librariesconfig.default.php(有的版本是config.inc.php)，
+查&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;找$cfg['UploadDir']，$cfg['UploadDir']&nbsp;&nbsp; = ‘hxc‘;
+	</p>
+	<p>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.将要导入到数据库的文件上传到刚才新建的hxc文件夹中，
+	</p>
+	<p>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.“网站服务器上载目录”选项，点击下拉箭头，列表里会有刚才上传的文件名称列表。
+	</p>
+	<p>
+		&nbsp;方法二：
+ &nbsp;php.ini修改
+ &nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.post_max_size = 200M
+ &nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.upload_max_filesize = 200M
+ &nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.memory_limit = 200M
+	</p>
+</div></body></html>

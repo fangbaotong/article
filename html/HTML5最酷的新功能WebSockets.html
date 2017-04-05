@@ -1,0 +1,571 @@
+<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><title>HTML5最酷的新功能WebSockets</title>
+<style>
+body{
+	width:960px;
+	margin:0 auto;
+}
+#title{
+	text-align:center;
+}
+</style>
+</head><body><div id='title'><h2>HTML5最酷的新功能WebSockets</h2></div><p>
+	其中一个最酷的新功能是HTML5的WebSockets，这让我们跟服务器不使用Ajax请求。在本教程中，我们将回顾运行PHP WebSocket服务器进程，然后建立一个客户端发送和接收消息的WebSocket协议，它。
+</p>
+<p>
+	WebSockets是什么？
+</p>
+<p>
+	WebSockets技术双向通信（TCP）的一个插座，一个类型的推送技术。目前，它仍然是由W3C标准化的；<span style="color:#ff0000;">然而，Chrome和Safari的最新版本支持WebSockets。</span>
+</p>
+<p>
+	WebSockets取代什么？
+</p>
+<p>
+	WebSockets
+可以取代长轮询。这是一个有趣的概念；客户端向服务器发送请求–现在，而不是服务器，它可能没有数据的响应，它基本上一直保持连接到新鲜，最新的数据要发
+送的客户端下接收，发送另一个请求。这有它的好处：降低延迟就是其中之一，作为连接已打开不需要一个新的连接被建立。然而，长轮询是不是一个真正的花式技
+术篇：为请求超时也是可能的，因此一个新的连接需要的一切。
+</p>
+<p>
+	很多Ajax应用程序利用上述–通常可以归因于穷人的资源利用。
+</p>
+<p>
+	是不是如果服务器可以有一天早上醒来，发送数据到谁愿意听没有一些预先建立的连接的客户是巨大的？欢迎来推动技术的世界！
+</p>
+<p>
+	步骤1：到WebSocket服务器
+</p>
+<p>
+	本教程将更专注于客户建设而不是服务器的实现。
+</p>
+<p>
+	我
+使用Windows 7 
+XAMPP上运行PHP的服务器在本地。phpwebsockets抢到一份是PHP的WebSocket服务器。（注：我有这个版本，有些问题我做了一
+些修改，并将它包括在源文件）有各种各样的WebSocket实现；如果不工作，你可以尝试另一个还是继续与教程。
+</p>
+<ul>
+	<li>
+		<p>
+			<a target="_blank" href="http://jwebsocket.org/">jWebSocket</a> (Java)
+		</p>
+	</li>
+	<li>
+		<p>
+			<a target="_blank" href="http://github.com/gimite/web-socket-ruby">web-socket-ruby</a> (ruby)
+		</p>
+	</li>
+	<li>
+		<p>
+			<a target="_blank" href="http://github.com/LearnBoost/Socket.IO-node">Socket IO-node</a> (node.js)
+		</p>
+	</li>
+</ul>
+<p>
+	启动Apache服务器
+</p>
+<p>
+	<br />
+</p>
+<p>
+	<br />
+</p>
+<p>
+	步骤2：改变URL和端口
+</p>
+<p>
+	<br />
+</p>
+<p>
+	根据您的设置更改服务器，例如setup.class.php：
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">public function __construct($host='localhost',$port=8000,$max=100)</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">{</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;createSocket($host,$port);</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">}</span>
+</p>
+<p>
+	浏览和改变在适当的地方。
+</p>
+<p>
+	步骤3：开始建立客户
+</p>
+<p>
+	让我们得到一个基本的模板；这是我的client.php文件：
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&lt;!DOCTYPE html&gt;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&lt;html&gt;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&lt;head&gt;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&lt;script src="</span><a target="_blank" href="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"><span style="background-color:#d8d8d8;">http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js</span></a><span style="background-color:#d8d8d8;">"&gt;&lt;/script&gt;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&nbsp;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&lt;title&gt;WebSockets Client&lt;/title&gt;</span>
+</p>
+<p>
+	&nbsp;
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&lt;/head&gt;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&lt;body&gt;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&lt;div id="wrapper"&gt;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&nbsp;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&nbsp;&nbsp;&nbsp;&nbsp;&lt;div id="container"&gt;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&nbsp;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;h1&gt;WebSockets Client&lt;/h1&gt;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&nbsp;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div id="chatLog"&gt;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&nbsp;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;&lt;!-- #chatLog --&gt;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p id="examples"&gt;e.g. try 'hi', 'name', 'age', 'today'&lt;/p&gt;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&nbsp;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id="text" type="text" /&gt;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;button id="disconnect"&gt;Disconnect&lt;/button&gt;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&nbsp;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;&lt;!-- #container --&gt;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&nbsp;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&lt;/div&gt;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&lt;/body&gt;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&lt;/html&gt;</span>
+</p>
+<p>
+	所以在这段代码中我们创建一个简单的模板：我们有一个框的聊天记录，一个输入框和一个按钮，断开。<br />
+步骤4：添加一些CSS
+</p>
+<p>
+	<br />
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">body {</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&nbsp;&nbsp;&nbsp;&nbsp;font-family:Arial, Helvetica, sans-serif;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">}</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">#container{</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&nbsp;&nbsp;&nbsp;&nbsp;border:5px solid grey;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&nbsp;&nbsp;&nbsp;&nbsp;width:800px;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&nbsp;&nbsp;&nbsp;&nbsp;margin:0 auto;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&nbsp;&nbsp;&nbsp;&nbsp;padding:10px;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">}</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">#chatLog{</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&nbsp;&nbsp;&nbsp;&nbsp;padding:5px;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&nbsp;&nbsp;&nbsp;&nbsp;border:1px solid black;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">}</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">#chatLog p {</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&nbsp;&nbsp;&nbsp;&nbsp;margin:0;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">}</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">.event {</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&nbsp;&nbsp;&nbsp;&nbsp;color:#999;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">}</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">.warning{</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&nbsp;&nbsp;&nbsp;&nbsp;font-weight:bold;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">&nbsp;&nbsp;&nbsp;&nbsp;color:#CCC;</span>
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">}</span>
+</p>
+<p>
+	步骤5：WebSocket事件
+</p>
+<p>
+	首先，让我们试着了解WebSocket事件的想法。
+</p>
+<p>
+	<br />
+</p>
+<p>
+	<br />
+</p>
+<p>
+	<strong>事件</strong><br />
+我们将使用三事件：
+</p>
+<p>
+	<strong><strong>onopen</strong>:</strong>当一个套接字打开了
+</p>
+<p>
+	<strong>onMessage</strong>：当收到邮件
+</p>
+<p>
+	<strong>OnClose：</strong>当一个套接字已关闭
+</p>
+<p>
+	但如何才能实现呢？
+</p>
+<p>
+	首先创建一个WebSocket对象
+</p>
+<p>
+	<br />
+</p>
+<pre class="brush: noskimlinks noskimwords"><span style="background-color:#d8d8d8;">var socket = new WebSocket("ws://localhost:8000/socket/server/startDaemon.php")</span></pre>
+<p>
+	检查的时间很简单：
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">socket.onopen = function(){
+	alert("Socket has been opened!");
+}</span>
+</p>
+<p>
+	但当我们收到一个消息？
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">socket.onmessage = function(msg){
+	alert(msg);	//Awesome!
+}</span>
+</p>
+<p>
+	然而，让我们避免使用警告框，实际上把我们学到的东西到客户端页面。
+</p>
+<p>
+	步骤6：JavaScript
+</p>
+<p>
+	好吧，我们开始吧。首先我们把我们的代码在jQuery的文件准备好，然后我们检查用户是否已启用浏览器WebSockets。如果他们不这样做，我们添加一个链接在HTML浏览器。
+</p>
+<pre class="brush: noskimlinks noskimwords"><span style="background-color:#d8d8d8;">$(document).ready(function() {
+	if(!("WebSocket" in window)){
+		$('#chatLog, input, button, #examples').fadeOut("fast");
+		$('&lt;p&gt;Oh no, you need a browser that supports WebSockets. How about &lt;a href="http://www.google.com/chrome"&gt;Google Chrome&lt;/a&gt;?&lt;/p&gt;').appendTo('#container');
+	}else{
+
+	//The user has WebSockets
+
+	connect();
+
+	function connect(){
+ &nbsp; &nbsp;	//the connect function code is below
+
+	}
+});</span></pre>
+<p>
+	正如你可以看到，如果用户WebSockets然后我们称之为connect()功能。这是该功能的核心：我们先打开，关闭和接收事件。
+</p>
+<p>
+	我们将使用我们的服务器的URL
+</p>
+<p>
+	<br />
+</p>
+<pre class="brush: noskimlinks noskimwords"><span style="background-color:#d8d8d8;">v</span><span style="background-color:#d8d8d8;">ar socket;
+var host = "ws://localhost:8000/socket/server/startDaemon.php";</span></pre>
+<p>
+	等待，在URL的HTTP在哪里？哦，这是一个WebSocket的URL，因此使用不同的协议。这是一个我们的网址碎片击穿：
+</p>
+<p>
+	<br />
+</p>
+<p>
+	让
+我们继续我们的connect()功能。我们将把我们的代码在一个try/catch块；如果出现错误的话，我们可以让用户知道。我们创建了一个新的
+WebSocket，通过短信留言功能，稍后我会做出解释。我们创造我们的开放，onMessage和OnClose函数。请注意，我们还展示了用户插座
+的状态；这是不必要的，但包括我这里可以帮助调试。
+</p>
+<ul>
+	<li>
+		<p>
+			<span style="background-color:#d8d8d8;">CONNECTING = 0</span>
+		</p>
+	</li>
+	<li>
+		<p>
+			<span style="background-color:#d8d8d8;">OPEN = 1</span>
+		</p>
+	</li>
+	<li>
+		<p>
+			<span style="background-color:#d8d8d8;">CLOSED = 2</span>
+		</p>
+	</li>
+</ul>
+<p>
+	<br />
+</p>
+<p>
+	<br />
+</p>
+<pre class="brush: noskimlinks noskimwords"><span style="background-color:#d8d8d8;">function connect(){
+ &nbsp; &nbsp;try{
+
+	var socket;
+	var host = "ws://localhost:8000/socket/server/startDaemon.php";
+ &nbsp; &nbsp;var socket = new WebSocket(host);
+
+ &nbsp; &nbsp; &nbsp; &nbsp;message('&lt;p class="event"&gt;Socket Status: '+socket.readyState);
+
+ &nbsp; &nbsp; &nbsp; &nbsp;socket.onopen = function(){
+ &nbsp; &nbsp; &nbsp; 		 message('&lt;p class="event"&gt;Socket Status: '+socket.readyState+' (open)');
+ &nbsp; &nbsp; &nbsp; &nbsp;}
+
+ &nbsp; &nbsp; &nbsp; &nbsp;socket.onmessage = function(msg){
+ &nbsp; &nbsp; &nbsp; 		 message('&lt;p class="message"&gt;Received: '+msg.data);
+ &nbsp; &nbsp; &nbsp; &nbsp;}
+
+ &nbsp; &nbsp; &nbsp; &nbsp;socket.onclose = function(){
+ &nbsp; &nbsp; &nbsp; 		 message('&lt;p class="event"&gt;Socket Status: '+socket.readyState+' (Closed)');
+ &nbsp; &nbsp; &nbsp; &nbsp;}			
+
+ &nbsp; &nbsp;} catch(exception){
+ &nbsp; 		 message('&lt;p&gt;Error'+exception);
+ &nbsp; &nbsp;}
+}</span></pre>
+<p>
+	message()的功能是相当简单的，它需要一些文字，我们想给用户并将其添加到chatlog。我们创建的socket事件功能，为什么只有一个段落标签段落标签信息功能的适当的类。
+</p>
+<p>
+	<br />
+</p>
+<p>
+	<br />
+</p>
+<p>
+	<br />
+</p>
+<p>
+	<br />
+</p>
+<p>
+	步骤7：发送数据
+</p>
+<p>
+	<br />
+</p>
+<p>
+	<br />
+</p>
+<pre class="brush: noskimlinks noskimwords"><span style="background-color:#d8d8d8;">$('#text').keypress(function(event) {
+ &nbsp; &nbsp;if (event.keyCode == '13') {
+ &nbsp; 		send();
+ &nbsp; &nbsp;}
+});</span></pre>
+<p>
+	这是send()函数
+</p>
+<p>
+	<span style="background-color:#d8d8d8;">function send(){<br />
+<br />
+&nbsp;&nbsp;&nbsp; var text = $('#text').val();<br />
+&nbsp;&nbsp;&nbsp; if(text==""){<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; message('&lt;p class="warning"&gt;Please enter a message');<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return ;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; try{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; socket.send(text);<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; message('&lt;p class="event"&gt;Sent: '+text)<br />
+&nbsp;&nbsp;&nbsp; } catch(exception){<br />
+&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;message('&lt;p class="warning"&gt; Error:' + exception);<br />
+&nbsp;&nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp;&nbsp; $('#text').val("");<br />
+<br />
+}</span>
+</p>
+<p>
+	记住你上面看到的可能是一个矮矮胖胖的一些代码，但在现实中，我们真正需要的代码：
+</p>
+<p>
+	socket.send(); //Thanks JavaScript
+</p>
+<p>
+	额外的代码做了一些事情：检测如果用户没有输入任何东西但还是打回来，清除输入框，并调用消息函数。
+</p>
+<p>
+	步骤8：关闭套接字
+</p>
+<p>
+	<span>关闭套接字是相当简单的：把我们的断开按钮的Click处理程序，我们做了！</span>
+</p>
+<p>
+	<span>$('#disconnect').click(function(){<br />
+&nbsp;&nbsp; &nbsp;socket.close();<br />
+});</span>
+</p>
+<p>
+	<span>完成的JavaScript</span>
+</p>
+<p>
+	<span>$(document).ready(function() {<br />
+<br />
+&nbsp; if(!("WebSocket" in window)){<br />
+&nbsp; $('#chatLog, input, button, #examples').fadeOut("fast");<br />
+&nbsp;
+ $('&lt;p&gt;Oh no, you need a browser that supports WebSockets. How 
+about &lt;a href="http://www.google.com/chrome"&gt;Google 
+Chrome&lt;/a&gt;?&lt;/p&gt;').appendTo('#container');<br />
+&nbsp; }else{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //The user has WebSockets<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; connect();<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; function connect(){<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; var socket;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; var host = "ws://localhost:8000/socket/server/startDaemon.php";<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; var socket = new WebSocket(host);<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; message('&lt;p class="event"&gt;Socket Status: '+socket.readyState);<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; socket.onopen = function(){<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; message('&lt;p class="event"&gt;Socket Status: '+socket.readyState+' (open)');<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; socket.onmessage = function(msg){<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; message('&lt;p class="message"&gt;Received: '+msg.data);<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; socket.onclose = function(){<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;message('&lt;p class="event"&gt;Socket Status: '+socket.readyState+' (Closed)');<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } catch(exception){<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; message('&lt;p&gt;Error'+exception);<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; function send(){<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; var text = $('#text').val();<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if(text==""){<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; message('&lt;p class="warning"&gt;Please enter a message');<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return ;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; socket.send(text);<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; message('&lt;p class="event"&gt;Sent: '+text)<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } catch(exception){<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; message('&lt;p class="warning"&gt;');<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $('#text').val("");<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; function message(msg){<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $('#chatLog').append(msg+'&lt;/p&gt;');<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $('#text').keypress(function(event) {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (event.keyCode == '13') {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; send();<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; });&nbsp;&nbsp; &nbsp;<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $('#disconnect').click(function(){<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; socket.close();<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; });<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }//End connect<br />
+<br />
+&nbsp; }//End else<br />
+<br />
+});</span>
+</p>
+<p>
+	<span>步骤9：运行WebSocket服务器</span>
+</p>
+<p>
+	<span>我们需要命令行访问。幸运的是，有一个方便的shell选项XAMPP。单击“壳”在XAMPP控制面板，和式中：R</span>
+</p>
+<p>
+	<span>php -q path\to\server.php</span>
+</p>
+<p>
+	<span>完成</span>
+</p>
+<span>当页面加载时，一个WebSocket连接尝试建立（尝试编辑代码，用户已连接/断开选择）。然后，用户可以输入的信息和从服务器接收消息。</span></body></html>

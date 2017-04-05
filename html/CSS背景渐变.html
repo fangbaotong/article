@@ -1,0 +1,212 @@
+<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><title>CSS背景渐变</title>
+<style>
+body{
+	width:960px;
+	margin:0 auto;
+}
+#title{
+	text-align:center;
+}
+</style>
+</head><body><div id='title'><h2>CSS背景渐变</h2></div><p>
+	<span>在CSS中background:&nbsp;-moz-linear-gradient&nbsp;让网站背景渐变的属性，目前火狐3.6以上版本和google浏览器支持这个属性。</span>
+</p>
+<p>
+	background:&nbsp;-moz-linear-gradient(top,&nbsp;&nbsp;#bccfe3&nbsp;0%,&nbsp;#d2dded&nbsp;100%);&nbsp;&nbsp;适合&nbsp;FF3.6+&nbsp;
+</p>
+<p>
+	background:&nbsp;-webkit- 
+gradient(linear,&nbsp;left&nbsp;top,&nbsp;left&nbsp;bottom,&nbsp;color-stop(0%,#bccfe3),&nbsp;color- 
+stop(100%,#d2dded));&nbsp;适合&nbsp;Chrome,Safari4+&nbsp;
+</p>
+<p>
+	background:&nbsp;-webkit-linear-gradient(top,&nbsp;&nbsp;#bccfe3&nbsp;0%,#d2dded&nbsp;100%);&nbsp;&nbsp;适合Chrome10+,Safari5.1+
+</p>
+<p>
+	background:&nbsp;-o-linear-gradient(top,&nbsp;&nbsp;#bccfe3&nbsp;0%,#d2dded&nbsp;100%);&nbsp;&nbsp;适合Opera&nbsp;11.10+
+</p>
+<p>
+	background:&nbsp;-ms-linear-gradient(top,&nbsp;&nbsp;#bccfe3&nbsp;0%,#d2dded&nbsp;100%);&nbsp;适合IE10+&nbsp;
+</p>
+<p>
+	background:&nbsp;linear-gradient(top,&nbsp;&nbsp;#bccfe3&nbsp;0%,#d2dded&nbsp;100%);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;适合W3C
+</p>
+<p>
+	背景使用CSS渐变显示可以不使用图像就实现两个或两个以上的指定颜色的平滑过渡。这反过来又减少了下载时间和带宽的使用，放大时也比较好看，可以让您创造出一个更灵活的布局。
+</p>
+<p>
+	Firefox支持两种类型的CSS渐变：线性的(-moz-linear-gradient)和放射状的(-moz-radial-gradient)。
+</p>
+<p>
+	三、线性渐变(Linear&nbsp;Gradients)
+</p>
+<p>
+	要创建一个线性渐变，您需要设置一个起点和一个渐变的方向（或角度），并定义起止颜色。
+</p>
+<p>
+	-moz-linear-gradient(&nbsp;[&lt;point&gt;&nbsp;||&nbsp;&lt;angle&gt;,]?&nbsp;&lt;stop&gt;,&nbsp;&lt;stop&gt;&nbsp;[,&nbsp;&lt;stop&gt;]*&nbsp;)
+</p>
+<p>
+	<strong>起始点(Starting&nbsp;Point)：</strong>起 
+点的工作方式类似于background&nbsp;position。您可以设置水平和垂直位置为百分比，或以像素为单位，或在水平方向上可以使用 
+left/center/right，在垂直方向上可以使用top/center/bottom。位置起始于左上角。如果你不指定水平或垂直位置，它将默
+ 认为center。
+</p>
+<p>
+	例如，这里是一个线性渐变，开始于center（水平发现）和top（垂直发现），并从蓝色到白色。
+</p>
+<p>
+	<img src="/article/bianjiqi/php/attached/image/20150714/20150714072523_75816.png" height="116" width="116" />
+</p>
+<p>
+	代码如下：
+</p>
+<p>
+	.linear_gradient_square&nbsp;{&nbsp;width:&nbsp;100px;&nbsp;height:&nbsp;100px;&nbsp;border:&nbsp;1px&nbsp;solid&nbsp;#333;&nbsp;background:&nbsp;-moz-linear-gradient(top,&nbsp;blue,&nbsp;white);}
+</p>
+<p>
+	或者是起始于left（水平方向）和center（垂直方向）
+</p>
+<p>
+	<img src="/article/bianjiqi/php/attached/image/20150714/20150714072538_93600.png" height="111" width="111" />
+</p>
+<p>
+	主要部分代码如下：
+</p>
+<p>
+	background:&nbsp;-moz-linear-gradient(left,&nbsp;blue,&nbsp;white);
+</p>
+<p>
+	或者是起始于left（水平方向）和top（垂直方向）
+</p>
+<p>
+	<img src="/article/bianjiqi/php/attached/image/20150714/20150714072555_80419.png" height="110" width="109" />
+</p>
+<p>
+	主要部分代码如下：
+</p>
+<p>
+	background:&nbsp;-moz-linear-gradient(left&nbsp;top,&nbsp;blue,&nbsp;white);
+</p>
+<p>
+	<strong>角度(Angle)：</strong>正如您在上面看到的，如果您不指定一个角度，它会根据起始位置自动定义。如果你想更多的控制渐变的方向，您不妨设置角度试试。
+</p>
+<p>
+	例如，下面的两个渐变具有相同的起点left&nbsp;center，但是右手边的有一个20度的角度。
+</p>
+<p>
+	<img src="/article/bianjiqi/php/attached/image/20150714/20150714072610_48551.png" height="119" width="231" />
+</p>
+<p>
+	后面一个含有角度的渐变核心代码如下：
+</p>
+<p>
+	background:&nbsp;-moz-linear-gradient(left&nbsp;20deg,&nbsp;black,&nbsp;white);
+</p>
+<p>
+	当指定的角度，请记住，它是一个由水平线与渐变线产生的的角度，逆时针方向。因此，使用0deg将产生一个左到右横向梯度，而90度将创建一个从底部到顶部的垂直渐变。
+</p>
+<p>
+	<img src="/article/bianjiqi/php/attached/image/20150714/20150714072625_32843.png" height="124" width="487" />
+</p>
+<p>
+	核心代码如下：
+</p>
+<p>
+	background:&nbsp;-moz-linear-gradient(&lt;angle&gt;,&nbsp;red,&nbsp;white);
+</p>
+<p>
+	<strong>起止颜色(Color&nbsp;Stops)：</strong>除了起始位置和角度，你应该指定起止颜色。起止颜色是沿着渐变线，将会在指定位置（以百分比或长度设定）含有指定颜色的点。色彩的起止数是无限的。如果您使用一个百分比位置，0％代表起点和100％是终点，但区域外的值可以被用来达到预期的效果。
+</p>
+<p>
+	下面是一个简单的例子，三个起止颜色。因为第一个和最后的颜色并未指定颜色点，他们将显示为默认的0％和100％。
+</p>
+<p>
+	<img src="/article/bianjiqi/php/attached/image/20150714/20150714072636_29297.png" height="112" width="108" />background:&nbsp;-moz-linear-gradient(top,&nbsp;blue,&nbsp;white&nbsp;80%,&nbsp;orange);
+</p>
+<p>
+	如果没有指定位置，颜色会均匀分布。
+</p>
+<p>
+	<img src="/article/bianjiqi/php/attached/image/20150714/20150714072651_29519.png" height="116" width="113" />
+</p>
+<p>
+	核心代码如下：
+</p>
+<p>
+	background:&nbsp;-moz-linear-gradient(left,&nbsp;red,&nbsp;orange,&nbsp;yellow,&nbsp;green,&nbsp;blue);
+</p>
+<p>
+	<strong>透明度(Transparency)：</strong>还支持透明渐变。这是相当有用的，例如，当堆叠多个背景时。这里是两个背景的结合：一张图片，一个白色到透明的线性渐变。
+</p>
+<p>
+	<img src="/article/bianjiqi/php/attached/image/20150714/20150714072702_86113.png" height="118" width="640" /><img src="http://h.hiphotos.baidu.com/album/pic/item/730e0cf3d7ca7bcbd5cc91cdbe096b63f724a899.jpg" height="118" width="640" />
+</p>
+<p>
+	核心代码如下：
+</p>
+<p>
+	.multibackground_transparent&nbsp;{&nbsp;background:&nbsp;-moz- linear- 
+gradient(right,&nbsp;rgba(255,255,255,0),&nbsp;rgba(255,255,255,1)),&nbsp;url(http://demos.hacks.mozilla.org
+ /openweb/resources/images/patterns/flowers-pattern.jpg);}四、径向渐变 
+(Radial&nbsp;Gradients)
+</p>
+<p>
+	为径向渐变的语法非常类似于线性渐变。
+</p>
+<p>
+	-moz-radial-gradient([&lt;bg-position&gt;&nbsp;||&nbsp;&lt;angle&gt;,]?&nbsp;[&lt;shape&gt;&nbsp;||&nbsp;&lt;size&gt;,]?&nbsp;&lt;color-stop&gt;,&nbsp;&lt;color-stop&gt;[,&nbsp;&lt;color-stop&gt;]*);
+</p>
+<p>
+	除 
+了您已经在线性渐变中看到的起始位置，方向，和颜色，径向梯度允许你指定渐变的形状（圆形或椭圆形）和大小（最近端，最近角，最远端，最远角，包含或覆 
+盖&nbsp;(closest-side,&nbsp;closest-corner,&nbsp;farthest-side,&nbsp;farthest- 
+corner,&nbsp;contain&nbsp;or&nbsp;cover)）。
+</p>
+<p>
+	<strong>颜色起止(Color&nbsp;stops)：</strong>就像用线性渐变，你应该沿着渐变线定义渐变的起止颜色。下面的圆具有相同的起止颜色，但在左边的为默认的颜色间隔均匀的渐变，而右边的每种颜色都有特定的位置。
+</p>
+<p>
+	<img src="/article/bianjiqi/php/attached/image/20150714/20150714072751_97709.png" height="115" width="243" />&nbsp;background:&nbsp;-moz-radial-gradient(red,&nbsp;yellow,&nbsp;#1E90FF);&nbsp;background:&nbsp;-moz-radial-gradient(red&nbsp;5%,&nbsp;yellow&nbsp;25%,&nbsp;#1E90FF&nbsp;50%);
+</p>
+<p>
+	<strong>形状(Shape)：</strong>在这里你可以看到两个可能的形状间的差异，一个圆（左侧）和椭圆（右侧），两者都起始于bottom&nbsp;left：
+</p>
+<p>
+	<img src="/article/bianjiqi/php/attached/image/20150714/20150714072803_44538.png" height="116" width="544" />&nbsp;.radial_gradient_circle&nbsp;{&nbsp;background:&nbsp;-moz-radial-gradient(bottom&nbsp;left,&nbsp;circle,&nbsp;red,&nbsp;yellow,&nbsp;#1E90FF);}&nbsp;.radial_gradient_ellipse&nbsp;{&nbsp;background:&nbsp;-moz-radial-gradient(bottom&nbsp;left,&nbsp;ellipse,&nbsp;red,&nbsp;yellow,&nbsp;#1E90FF);}
+</p>
+<p>
+	<strong>大小(Size)：</strong>size的不同选项(closest-side,&nbsp;closest-corner,&nbsp;farthest-side,&nbsp;farthest-corner,&nbsp;contain&nbsp;or&nbsp;cover)指向被用来定义圆或椭圆大小的点。
+</p>
+<p>
+	示例：椭圆的近边VS远角<br />
+下面的两个椭圆有不同的大小。左边的一个是由从起始点(center)到近边的距离设定的，而右边的一个是由从起始点到远角的的距离决定的。
+</p>
+<p>
+	<img src="/article/bianjiqi/php/attached/image/20150714/20150714072822_18734.png" width="500" />&nbsp;background:&nbsp;-moz-radial-gradient(ellipse&nbsp;closest-side,&nbsp;red,&nbsp;yellow&nbsp;10%,&nbsp;#1E90FF&nbsp;50%,&nbsp;white);&nbsp;background:&nbsp;-moz-radial-gradient(ellipse&nbsp;farthest-corner,&nbsp;red,&nbsp;yellow&nbsp;10%,&nbsp;#1E90FF&nbsp;50%,&nbsp;white);<img src="http://b.hiphotos.baidu.com/album/pic/item/37d3d539b6003af3c3258a82352ac65c1138b6b1.jpg" height="172" width="508" />
+</p>
+<p>
+	示例：圆的近边VS远边<br />
+左边的圆的渐变大小由起始点(center)到近边的距离决定，而右边的圆则有起始点到远边的距离决定。
+</p>
+<p>
+	<img src="/article/bianjiqi/php/attached/image/20150714/20150714072931_55162.png" height="114" width="541" />&nbsp;background:&nbsp;-moz-radial-gradient(circle&nbsp;closest-side,&nbsp;red,&nbsp;yellow&nbsp;10%,&nbsp;#1E90FF&nbsp;50%,&nbsp;white);&nbsp;background:&nbsp;-moz-radial-gradient(circle&nbsp;farthest-side,&nbsp;red,&nbsp;yellow&nbsp;10%,&nbsp;#1E90FF&nbsp;50%,&nbsp;white);
+</p>
+<p>
+	示例：包含圆<br />
+在这里你可以看到左侧的默认圈，同一渐变版本，但是被包含的右边的圆。
+</p>
+<p>
+	<img src="/article/bianjiqi/php/attached/image/20150714/20150714072944_12351.png" height="116" width="241" />&nbsp;background:&nbsp;-moz-
+radial-gradient(red,&nbsp;yellow,&nbsp;#1E90FF);&nbsp;background:&nbsp;-moz-radial-
+gradient(contain,&nbsp;red,&nbsp;yellow,&nbsp;#1E90FF);五、重复渐变(Repeating&nbsp;Gradients)
+</p>
+<p>
+	如果您想重复一个渐变，您可以使用-moz-repeating-linear-gradient和-moz-repeating-radial-gradient。
+</p>
+<p>
+	在下面的例子，每个实例都指定了四个起止颜色，并无限重复。
+</p>
+<p>
+	<img src="/article/bianjiqi/php/attached/image/20150714/20150714072954_86423.png" height="117" width="257" />&nbsp;.repeating_radial_gradient_example&nbsp;{&nbsp;background:&nbsp;-moz-repeating-radial-gradient(black,&nbsp;black&nbsp;5px,&nbsp;white&nbsp;5px,&nbsp;white&nbsp;10px);}&nbsp;.repeating_linear_gradient_example&nbsp;{&nbsp;background:&nbsp;-moz-repeating-linear-gradient(top&nbsp;left&nbsp;-45deg,&nbsp;red,&nbsp;red&nbsp;5px,&nbsp;white&nbsp;5px,&nbsp;white&nbsp;10px);}
+</p></body></html>

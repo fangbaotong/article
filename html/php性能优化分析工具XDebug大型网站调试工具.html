@@ -1,0 +1,132 @@
+<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><title>php性能优化分析工具XDebug 大型网站调试工具</title>
+<style>
+body{
+	width:960px;
+	margin:0 auto;
+}
+#title{
+	text-align:center;
+}
+</style>
+</head><body><div id='title'><h2>php性能优化分析工具XDebug 大型网站调试工具</h2></div><p>
+	<span style="color:#333333;font-family:tahoma, arial, 宋体;font-size:14px;line-height:21px;background-color:#F6FBFF;">大型网站调试工具之一（php性能优化分析工具XDebug） ,开发php的朋友可以参考下。有助于解决php代码的多种问题。</span>
+</p>
+<p>
+	<span style="color:#333333;font-family:tahoma, arial, 宋体;font-size:14px;line-height:21px;background-color:#F6FBFF;"><span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;">一、安装配置&nbsp;</span><br />
+<span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;"> 1、下载PHP的XDebug扩展，网址：</span><a href="http://xdebug.org/" target="_blank">http://xdebug.org/</a><span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;">&nbsp;</span><br />
+<br />
+<span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;"> 2、在Linux下编译安装XDebug&nbsp;</span><br />
+<br />
+<span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;">引用&nbsp;</span><br />
+<span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;">tar -xzf xdebug-2.0.0RC3.gz&nbsp;</span><br />
+<span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;">cd xdebug-2.0.0RC3&nbsp;</span><br />
+<span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;">/usr/local/php/bin/phpize&nbsp;</span><br />
+<span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;">./configure --enable-xdebug&nbsp;</span><br />
+<span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;">cp modules/xdebug.so /usr/local/php/lib/php/extensions/no-debug-non-zts-20020429/&nbsp;</span><br />
+<br />
+<span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;"> 注：/usr/local/php/lib/php/extensions/no-debug-non-zts-20020429/不同的PHP版本路径不同，也不一定要放在该路径，可以在zend_extension_ts中自行指定xdebug.so所在位置。&nbsp;</span><br />
+<br />
+<span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;">引用&nbsp;</span><br />
+<span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;">vi /usr/local/php/lib/php.ini&nbsp;</span><br />
+<br />
+<span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;"> 修改php.ini，去除PHP加速模块，增加以下配置信息支持XDebug扩展&nbsp;</span><br />
+	<div class="codetitle" style="margin:3px auto 0px;padding:0px 3px;font-size:14px;font-family:tahoma, arial, 宋体;background:#F2F6FB;">
+		<span style="line-height:21.6000003814697px;font-size:12px;"><a class="copybut" id="copybut23902"><u>复制代码</u></a></span>代码如下:
+	</div>
+	<div class="codebody" id="code23902" style="margin:0px auto 3px;padding:0px 3px 0px 5px;font-size:14px;border:1px solid #0099CC;font-family:tahoma, arial, 宋体;background:#DDEDFB;">
+		<br />
+[Xdebug]&nbsp;<br />
+zend_extension_ts="/usr/local/php/lib/php/extensions/no-debug-non-zts-20020429/xdebug.so"&nbsp;<br />
+xdebug.profiler_enable=on&nbsp;<br />
+xdebug.trace_output_dir="/tmp/xdebug"&nbsp;<br />
+xdebug.profiler_output_dir="/tmp/xdebug"&nbsp;<br />
+xdebug.profiler_output_name="script"&nbsp;<br />
+	</div>
+<br />
+<span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;">引用&nbsp;</span><br />
+<span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;">mkdir -p /tmp/xdebug&nbsp;</span><br />
+<span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;">chmod 755 /tmp/xdebug&nbsp;</span><br />
+<span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;">chown www:www /tmp/xdebug&nbsp;</span><br />
+<span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;">/usr/local/apache/bin/apachectl -k restart&nbsp;</span><br />
+<br />
+<br />
+<span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;"> 3、客户端（Windows）：WinCacheGrind&nbsp;</span><br />
+<span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;"> 下载地址：</span><a href="http://sourceforge.net/projects/wincachegrind/" target="_blank">http://sourceforge.net/projects/wincachegrind/</a><span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;">&nbsp;</span><br />
+<br />
+<span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;"> 二、分析过程&nbsp;</span><br />
+<span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;"> 1、访问你的网站，将首页上各种链接点击几遍，XDebug在/tmp/xdebug目录生成以下文件：&nbsp;</span><br />
+<span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;"> usr_local_apache_htdocs_app_checknum_chknum_php_cachegrind.out&nbsp;</span><br />
+<span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;"> usr_local_apache_htdocs_app_login_showHeaderLogin_php_cachegrind.out&nbsp;</span><br />
+<span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;"> usr_local_apache_htdocs_app_play_play_php_cachegrind.out&nbsp;</span><br />
+<span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;"> usr_local_apache_htdocs_app_user_member_php_cachegrind.out&nbsp;</span><br />
+<span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;"> usr_local_apache_htdocs_tag_tags_php_cachegrind.out&nbsp;</span><br />
+<span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;"> usr_local_apache_htdocs_top_top_php_cachegrind.out&nbsp;</span><br />
+<br />
+<span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;"> 2、将以上文件拷贝到Windows上，用客户端软件WinCacheGrind打开每个文件，发现以下PHP程序执行所耗费的时间最长：&nbsp;</span><br />
+<span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;"> /usr/local/apache/htdocs/tag/tags.php　　　　　　耗时840ms&nbsp;</span><br />
+<br />
+<span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;"> 三、分析结果：&nbsp;</span><br />
+<span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;"> 1、/usr/local/apache/htdocs/tag/tags.php&nbsp;</span><br />
+	<p style="font-size:14px;font-family:tahoma, arial, 宋体;color:#444444;background-color:#FFFFFF;">
+		<img src="/article/bianjiqi/php/attached/image/20160307/20160307014100_12716.gif" alt="" />
+	</p>
+	<div class="imageplus-append" id="f21ac82b21eeb7322631b6aa94e17f451vfbiny" style="margin:0px;padding:0px;border:none;font-size:14px;">
+		<div class="imageplus-append-append-lu-img-txt-box" id="w-sgwzy1" style="margin:0px;padding:0px;border:0px;font-family:'Microsoft YaHei';">
+			<div id="w-sgwzy1-widget-isolated-host" style="margin:0px;padding:0px;border:none;">
+			</div>
+		</div>
+	</div>
+<br />
+<br />
+(1)耗时最长的filter_tags函数出现在/usr/local/apache/htdocs/tag/tags.php的第158行：<br />
+$tags .= filter_tags($videos[$i]['tags'])." ";<br />
+(2)filter_tags函数引自/usr/local/apache/htdocs/include /misc.php，getForbiddenTags函数被filter_tags函数调用了21次，filter_tags函数耗费的时间中绝大多数 因getForbiddenTags函数所致。getForbiddenTags函数的内容如下：<br />
+	<div class="codetitle" style="margin:3px auto 0px;padding:0px 3px;font-size:14px;font-family:tahoma, arial, 宋体;background:#F2F6FB;">
+		<span style="line-height:21.6000003814697px;font-size:12px;"><a class="copybut" id="copybut15616"><u>复制代码</u></a></span>代码如下:
+	</div>
+	<div class="codebody" id="code15616" style="margin:0px auto 3px;padding:0px 3px 0px 5px;font-size:14px;border:1px solid #0099CC;font-family:tahoma, arial, 宋体;background:#DDEDFB;">
+		<br />
+function getForbiddenTags()&nbsp;<br />
+{&nbsp;<br />
+$tagsPath=TEMPLATE_FILE_PATH."tags/forbidden_tags.txt";&nbsp;<br />
+if(file_exists($tagsPath))&nbsp;<br />
+{&nbsp;<br />
+$fp = fopen($tagsPath, "r");&nbsp;<br />
+$arrconf = array ();&nbsp;<br />
+if ($fp)&nbsp;<br />
+{&nbsp;<br />
+while (!feof($fp))&nbsp;<br />
+{&nbsp;<br />
+$line = fgets($fp, 1024);&nbsp;<br />
+$line = trim($line);&nbsp;<br />
+$rows = explode("#", $line);&nbsp;<br />
+$coumns = explode("=", trim($rows[0]));&nbsp;<br />
+if(""!=trim($coumns[0]))&nbsp;<br />
+{&nbsp;<br />
+$arrconf[trim($coumns[0])] = trim($coumns[1]);&nbsp;<br />
+}&nbsp;<br />
+}&nbsp;<br />
+}&nbsp;<br />
+return $arrconf;&nbsp;<br />
+}&nbsp;<br />
+}&nbsp;<br />
+	</div>
+<br />
+<span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;">(4)对getForbiddenTags函数进行分析，其中的PHP函数trim被调用了16827次。</span><br />
+<span style="font-family:tahoma, arial, 宋体;font-size:14px;line-height:25.2000007629395px;background-color:#FFFFFF;"> </span><br />
+<img src="/article/bianjiqi/php/attached/image/20160307/20160307014235_40459.gif" alt="" /><br />
+	<div class="imageplus-append" id="f21ac82b21eeb7322631b6aa94e17f4521026s9" style="margin:0px;padding:0px;border:none;font-size:14px;font-family:tahoma, arial, 宋体;background:#FFFFFF;">
+		<div class="imageplus-append-append-lu-img-txt-box" id="w-qpbtko" style="margin:0px;padding:0px;border:0px;font-family:'Microsoft YaHei';background:transparent;">
+			<div id="w-qpbtko-widget-isolated-host" style="margin:0px;padding:0px;border:none;background:transparent;">
+			</div>
+		</div>
+	</div>
+<br />
+	<p style="font-size:14px;font-family:tahoma, arial, 宋体;background-color:#FFFFFF;">
+		(5)可能造成瓶颈的原因：<br />
+要过滤的156个关键字逐行存放在/usr/local/apache/template/tags/forbidden_tags.txt文件中，文本数据库的效率不高。<br />
+逐行读取函数fgets、以及去除字符串两边的空白或者指定的字符的函数trim在高负载下的效率低，可以测试fopen、fread、fscanf之类的文件读取函数，对比一下。
+	</p>
+<br />
+</span>
+</p></body></html>

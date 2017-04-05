@@ -1,0 +1,505 @@
+<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><title>PHP读取doc,docx,xls,pdf,txt内容</title>
+<style>
+body{
+	width:960px;
+	margin:0 auto;
+}
+#title{
+	text-align:center;
+}
+</style>
+</head><body><div id='title'><h2>PHP读取doc,docx,xls,pdf,txt内容</h2></div><p>
+	http://pcwanli.blog.163.com/blog/static/4531561120138205447216/
+</p>
+<p>
+	来源:<a target="_blank" href="http://hi.baidu.com/sadxy/item/360afa560164669409be178f">http://hi.baidu.com/sadxy/item/360afa560164669409be178f</a>
+</p>
+<p>
+	&nbsp; 我的一个客户有这样的需求:上传文件,可以是doc,docx,xls,pdf,txt格式,现需要用php读取这些文件的内容,然后计算文件里面字数.
+</p>
+<p>
+	<strong>1.PHP读取DOC格式的文件</strong>
+</p>
+<p>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PHP没有自带读取word文件的类,或者是库,这里我们使用<a target="_blank" href="http://www.winfield.demon.nl/">antiword</a>(<a target="_blank" href="http://www.winfield.demon.nl/">http://www.winfield.demon.nl/</a>)这个包来读取doc文件.
+</p>
+<p>
+	&nbsp;&nbsp;&nbsp;&nbsp; 首先介绍一下如何在windows下使用:
+</p>
+<p>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.打开<a target="_blank" href="http://www.winfield.demon.nl/">http://www.winfield.demon.nl/</a>(antiword下载页面),找到对应的windows版本(<a target="_blank" href="http://www.winfield.demon.nl/#Windows">http://www.winfield.demon.nl/#Windows</a>),下载<a target="_blank" href="http://www.informatik.uni-frankfurt.de/%7Emarkus/antiword/antiword-0_37-windows.zip">antiword windows版本</a>(<a target="_blank" href="http://www.informatik.uni-frankfurt.de/%7Emarkus/antiword/antiword-0_37-windows.zip">antiword-0_37-windows.zip</a>);
+</p>
+<p>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2.将下载下来的文件解压到C盘根目录下;
+</p>
+<p>
+	这里还有一点需要注意的:<a target="_blank" href="http://www.informatik.uni-frankfurt.de/%7Emarkus/antiword/00README.WIN">http://www.informatik.uni-frankfurt.de/~markus/antiword/00README.WIN</a>这个连接里有windows下安装的说明文件.
+</p>
+<p>
+	&nbsp; 需要设置环境变量,我的电脑(右键)-&gt;高级-&gt;环境变量-&gt;在上面的用户变量里新建一个
+</p>
+<p>
+	&nbsp; 变量名:HOME
+</p>
+<p>
+	&nbsp; 变量值:c:\home这个目录应该是存在的,如果不存在就在C盘下创建一个home文件夹.
+</p>
+<p>
+	然后在系统变量,修改Path,在Path变量的值最前面加上%HOME%\antiword.
+</p>
+<p>
+	&nbsp;
+</p>
+<p>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.开始-&gt;运行-&gt;CMD 进入到antiword目录;
+</p>
+<p>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 输入 antiword -h 看看效果.
+</p>
+<p>
+	&nbsp;
+</p>
+<p>
+	&nbsp;&nbsp; 4.然后我们使用antiword –t 命令读取一下doc文件内容;首先复制一个doc文件到c:\antiword目录,然后执行
+</p>
+<p>
+	&nbsp;&nbsp; &gt;antiword –t 文件名.doc
+</p>
+<p>
+	&nbsp;&nbsp; 就可以看到屏幕上输出word文件的内容了.
+</p>
+<p>
+	可能你会问了,这和PHP读取word有什么关系呢?呵呵,别急,我们来看看如何在PHP里使用这个命令.
+</p>
+<p>
+	&nbsp; &lt;?php
+</p>
+<p>
+	&nbsp; $file = “D:\xampp\htdocs\word_count\uploads\doc-english.doc”;
+</p>
+<p>
+	&nbsp;&nbsp; $content = shell_exec(“c:\antiword\antiword –f $file”);
+</p>
+<p>
+	?&gt;
+</p>
+<p>
+	这样就把word里面的内容读取content里面了.
+</p>
+<p>
+	至于如何在Linux下读取doc文件内容,就是下载linux版本的压缩包,里面有readme.txt文件,按照那种方式安装就可以了.
+</p>
+<p>
+	$content = shell_exec ( "/usr/local/bin/antiword -f $file" );
+</p>
+<p>
+	<strong>2.PHP读取PDF文件内容</strong>
+</p>
+<p>
+	&nbsp;&nbsp;&nbsp; php也没有专门用来读取pdf内容的类库.这样我们采用第三方包(<a href="http://www.foolabs.com/xpdf/about.html" target="_blank">xpdf</a>).还是先做windows下的操作,下载,将其解压到C盘根目录下.
+</p>
+<p>
+	&nbsp;&nbsp; 开始-&gt;运行-&gt;cmd-&gt;cd /d c:\xpdf&nbsp;<br />
+&lt;?php
+</p>
+<p>
+	&nbsp;&nbsp; $file = “D:\xampp\htdocs\word_count\uploads\pdf-english.pdf”;
+</p>
+<p>
+	&nbsp;&nbsp;&nbsp; $content = shell_exec ( "c:\\xpdf\\pdftotext $file -" );
+</p>
+<p>
+	&nbsp;&nbsp; ?&gt;
+</p>
+<p>
+	这样就可以把pdf文件的内容读取到php变量里了.
+</p>
+<p>
+	Linux下的安装方法也很简单这里就不在一一列出
+</p>
+<p>
+	&lt;?php
+</p>
+<p>
+	$content = shell_exec ( "/usr/bin/pdftotext $file -" );
+</p>
+<p>
+	?&gt;
+</p>
+<p>
+	<strong>3.PHP读取ZIP文件内容</strong>
+</p>
+<p>
+	首先使用PHP zip解压zip文件,然后读取解压包里的文件,如果是word就采用antiword读取,如果是pdf就使用xpdf读取.
+</p>
+<p>
+	&lt;?php
+</p>
+<p>
+	/**&nbsp;<br />
+* Read ZIP valid file&nbsp;<br />
+*&nbsp;<br />
+* @param string $file file path&nbsp;<br />
+* @return string total valid content&nbsp;<br />
+*/&nbsp;<br />
+function ReadZIPFile($file = '') {&nbsp;<br />
+&nbsp;&nbsp;&nbsp; $content = "";&nbsp;<br />
+&nbsp;&nbsp;&nbsp; $inValidFileName = array ();&nbsp;<br />
+&nbsp;&nbsp;&nbsp; $zip = new ZipArchive ( );&nbsp;<br />
+&nbsp;&nbsp;&nbsp; if ($zip-&gt;open ( $file ) === TR ) {&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for($i = 0; $i &lt; $zip-&gt;numFiles; $i ++) {&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $entry = $zip-&gt;getNameIndex ( $i );&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (preg_match ( '#\.(txt)|\.(doc)|\.(docx)|\.(pdf)$#i', $entry )) {&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ $zip-&gt;extractTo ( pathinfo ( $file, PATHINFO_DIRNAME ) . "/" . 
+pathinfo ( $file, PATHINFO_FILENAME ), array (&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $entry&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ) );&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ $content .= CheckSystemOS ( pathinfo ( $file, PATHINFO_DIRNAME ) . "/" .
+ pathinfo ( $file, PATHINFO_FILENAME ) . "/" . $entry );&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } else {&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $inValidFileName [$i] = $entry;&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $zip-&gt;close ();&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rrmdir ( pathinfo ( $file, PATHINFO_DIRNAME ) . "/" . pathinfo ( $file, PATHINFO_FILENAME ) );&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*if (file_exists ( $file )) {&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; unlink ( $file );&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }*/&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return $content;&nbsp;<br />
+&nbsp;&nbsp;&nbsp; } else {&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return "";&nbsp;<br />
+&nbsp;&nbsp;&nbsp; }&nbsp;<br />
+}
+</p>
+<p>
+	?&gt;
+</p>
+<p>
+	<strong>4.PHP读取DOCX文件内容</strong>
+</p>
+<p>
+	&nbsp; docx文件其实是由很多XML文件组成,其中内容就存在于word/document.xml里面.
+</p>
+<p>
+	&nbsp;&nbsp; 我们找到一个docx文件,使用zip文件打开(或者把docx后缀名改为zip,然后解压)
+</p>
+<p>
+	&nbsp;
+</p>
+<p>
+	在word目录下有document.xml
+</p>
+<p>
+	docx文件的内容就存在于document.xml里面,我们读取这个文件就可以了.
+</p>
+<p>
+	&lt;?php
+</p>
+<p>
+	/**&nbsp;<br />
+* Read Docx File&nbsp;<br />
+*&nbsp;<br />
+* @param string $file filepath&nbsp;<br />
+* @return string file content&nbsp;<br />
+*/&nbsp;<br />
+function parseWord($file) {&nbsp;<br />
+&nbsp;&nbsp;&nbsp; $content = "";&nbsp;<br />
+&nbsp;&nbsp;&nbsp; $zip = new ZipArchive ( );&nbsp;<br />
+&nbsp;&nbsp;&nbsp; if ($zip-&gt;open ( $file ) === tr ) {&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for($i = 0; $i &lt; $zip-&gt;numFiles; $i ++) {&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $entry = $zip-&gt;getNameIndex ( $i );&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (pathinfo ( $entry, PATHINFO_BASENAME ) == "document.xml") {&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ $zip-&gt;extractTo ( pathinfo ( $file, PATHINFO_DIRNAME ) . "/" . 
+pathinfo ( $file, PATHINFO_FILENAME ), array (&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $entry&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ) );&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $filepath = pathinfo ( $file, PATHINFO_DIRNAME ) . "/" . pathinfo ( $file, PATHINFO_FILENAME ) . "/" . $entry;&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $content = strip_tags ( file_get_contents ( $filepath ) );&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $zip-&gt;close ();&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rrmdir ( pathinfo ( $file, PATHINFO_DIRNAME ) . "/" . pathinfo ( $file, PATHINFO_FILENAME ) );&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return $content;&nbsp;<br />
+&nbsp;&nbsp;&nbsp; } else {&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return "";&nbsp;<br />
+&nbsp;&nbsp;&nbsp; }&nbsp;<br />
+}
+</p>
+<p>
+	?&gt;
+</p>
+<p>
+	如果想要通过PHP创建docx文件,或者是把docx文件转为xhtml,pdf可以使用phpdocx,(<a target="_blank" href="http://www.phpdocx.com/">http://www.phpdocx.com/</a>)
+</p>
+<p>
+	&nbsp;
+</p>
+<p>
+	<strong>5.PHP读TXT</strong>
+</p>
+<p>
+	直接使用PHP file_get_content函数就可以了.
+</p>
+<p>
+	&lt;?php
+</p>
+<p>
+	$file = “D:\xampp\htdocs\word_count\uploads\eng.txt”;
+</p>
+<p>
+	$content = file_get_content($file);
+</p>
+<p>
+	?&gt;
+</p>
+<p>
+	<strong>6.PHP读EXCEL</strong>
+</p>
+<p>
+	<a target="_blank" href="http://phpexcel.codeplex.com/">http://phpexcel.codeplex.com/</a>
+</p>
+<p>
+	&nbsp;
+</p>
+<p>
+	现在只是读取文件内容了,怎么计算单词的个数呢?
+</p>
+<p>
+	PHP有一个自带的函数,str_word_count,这个函数可以计算出单词的个数,但是如果要计算antiword读取出来的doc文件的单词个数就会很大的误差.
+</p>
+<p>
+	这里我们使用以下这个函数专门用来读取单词个数&nbsp;<br />
+&lt;?php
+</p>
+<p>
+	/**&nbsp;<br />
+* statistic word count&nbsp;<br />
+*&nbsp;<br />
+* @param string $content word content of the file&nbsp;<br />
+* @return int word count of the content&nbsp;<br />
+*/&nbsp;<br />
+function StatisticWordsCount($text = '') {&nbsp;<br />
+&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp; $text = trim ( preg_replace ( '/\d+/', ' ', $text ) ); // remove extra spaces&nbsp;<br />
+&nbsp;&nbsp;&nbsp; $text = str_replace ( str_split ( '|' ), '', $text ); // remove these chars (you can specify more)&nbsp;<br />
+&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp; $text = str_replace ( str_split ( '-' ), '', $text ); // remove these chars (you can specify more)&nbsp;<br />
+&nbsp;&nbsp;&nbsp; $text = trim ( preg_replace ( '/\s+/', ' ', $text ) ); // remove extra spaces&nbsp;<br />
+&nbsp;&nbsp;&nbsp; $text = preg_replace ( '/-{2,}/', '', $text ); // remove 2 or more dashes in a row&nbsp;<br />
+&nbsp;&nbsp;&nbsp; $len = strlen ( $text );&nbsp;<br />
+&nbsp;&nbsp;&nbsp; if (0 === $len) {&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return 0;&nbsp;<br />
+&nbsp;&nbsp;&nbsp; }&nbsp;<br />
+&nbsp;&nbsp;&nbsp; $words = 1;&nbsp;<br />
+&nbsp;&nbsp;&nbsp; while ( $len -- ) {&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (' ' === $text [$len]) {&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ++ $words;&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp;<br />
+&nbsp;&nbsp;&nbsp; }&nbsp;<br />
+&nbsp;&nbsp;&nbsp; return $words;&nbsp;<br />
+}
+</p>
+<p>
+	?&gt;
+</p>
+<p>
+	详细的代码如下:
+</p>
+<p>
+	&lt;?php&nbsp;<br />
+/**&nbsp;<br />
+* check system operation win or linux&nbsp;<br />
+*&nbsp;<br />
+* @param string $file contain file path and file name&nbsp;<br />
+* @return file content&nbsp;<br />
+*/&nbsp;<br />
+function CheckSystemOS($file = '') {&nbsp;<br />
+&nbsp;&nbsp;&nbsp; $content = "";&nbsp;<br />
+&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp; $type = s str ( $file, strrpos ( $file, '.' ) + 1 );&nbsp;<br />
+&nbsp;&nbsp;&nbsp; $type = pathinfo ( $file, PATHINFO_EXTENSION );&nbsp;<br />
+&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp; global $UNIX_ANTIWORD_PATH, $UNIX_XPDF_PATH;&nbsp;<br />
+&nbsp;&nbsp;&nbsp; if (strtoupper ( s str ( PHP_OS, 0, 3 ) ) === 'WIN') { //this is a server using windows&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; switch (strtolower ( $type )) {&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; case 'doc' :&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $content = shell_exec ( "c:\\antiword\\antiword -f $file" );&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; case 'docx' :&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $content = parseWord ( $file );&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; case 'pdf' :&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $content = shell_exec ( "c:\\xpdf\\pdftotext $file -" );&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; case 'zip' :&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $content = ReadZIPFile ( $file );&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; case 'txt' :&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $content = file_get_contents ( $file );&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp;<br />
+&nbsp;&nbsp;&nbsp; } else { //this is a server not using windows&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; switch (strtolower ( $type )) {&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; case 'doc' :&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $content = shell_exec ( "/usr/local/bin/antiword -f $file" );&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; case 'docx' :&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $content = parseWord ( $file );&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; case 'pdf' :&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $content = shell_exec ( "/usr/bin/pdftotext $file -" );&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; case 'zip' :&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $content = ReadZIPFile ( $file );&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; case 'txt' :&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $content = file_get_contents ( $file );&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp;<br />
+&nbsp;&nbsp;&nbsp; }&nbsp;<br />
+&nbsp;&nbsp;&nbsp; /*if (file_exists ( $file )) {&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @unlink ( $file );&nbsp;<br />
+&nbsp;&nbsp;&nbsp; }*/&nbsp;<br />
+&nbsp;&nbsp;&nbsp; return $content;&nbsp;<br />
+}
+</p>
+<p>
+	/**&nbsp;<br />
+* statistic word count&nbsp;<br />
+*&nbsp;<br />
+* @param string $content word content of the file&nbsp;<br />
+* @return int word count of the content&nbsp;<br />
+*/&nbsp;<br />
+function StatisticWordsCount($text = '') {&nbsp;<br />
+&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp; $text = trim ( preg_replace ( '/\d+/', ' ', $text ) ); // remove extra spaces&nbsp;<br />
+&nbsp;&nbsp;&nbsp; $text = str_replace ( str_split ( '|' ), '', $text ); // remove these chars (you can specify more)&nbsp;<br />
+&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp; $text = str_replace ( str_split ( '-' ), '', $text ); // remove these chars (you can specify more)&nbsp;<br />
+&nbsp;&nbsp;&nbsp; $text = trim ( preg_replace ( '/\s+/', ' ', $text ) ); // remove extra spaces&nbsp;<br />
+&nbsp;&nbsp;&nbsp; $text = preg_replace ( '/-{2,}/', '', $text ); // remove 2 or more dashes in a row&nbsp;<br />
+&nbsp;&nbsp;&nbsp; $len = strlen ( $text );&nbsp;<br />
+&nbsp;&nbsp;&nbsp; if (0 === $len) {&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return 0;&nbsp;<br />
+&nbsp;&nbsp;&nbsp; }&nbsp;<br />
+&nbsp;&nbsp;&nbsp; $words = 1;&nbsp;<br />
+&nbsp;&nbsp;&nbsp; while ( $len -- ) {&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (' ' === $text [$len]) {&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ++ $words;&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp;<br />
+&nbsp;&nbsp;&nbsp; }&nbsp;<br />
+&nbsp;&nbsp;&nbsp; return $words;&nbsp;<br />
+}
+</p>
+<p>
+	/**&nbsp;<br />
+* Read Docx File&nbsp;<br />
+*&nbsp;<br />
+* @param string $file filepath&nbsp;<br />
+* @return string file content&nbsp;<br />
+*/&nbsp;<br />
+function parseWord($file) {&nbsp;<br />
+&nbsp;&nbsp;&nbsp; $content = "";&nbsp;<br />
+&nbsp;&nbsp;&nbsp; $zip = new ZipArchive ( );&nbsp;<br />
+&nbsp;&nbsp;&nbsp; if ($zip-&gt;open ( $file ) === tr ) {&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for($i = 0; $i &lt; $zip-&gt;numFiles; $i ++) {&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $entry = $zip-&gt;getNameIndex ( $i );&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (pathinfo ( $entry, PATHINFO_BASENAME ) == "document.xml") {&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ $zip-&gt;extractTo ( pathinfo ( $file, PATHINFO_DIRNAME ) . "/" . 
+pathinfo ( $file, PATHINFO_FILENAME ), array (&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $entry&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ) );&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $filepath = pathinfo ( $file, PATHINFO_DIRNAME ) . "/" . pathinfo ( $file, PATHINFO_FILENAME ) . "/" . $entry;&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $content = strip_tags ( file_get_contents ( $filepath ) );&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $zip-&gt;close ();&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rrmdir ( pathinfo ( $file, PATHINFO_DIRNAME ) . "/" . pathinfo ( $file, PATHINFO_FILENAME ) );&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return $content;&nbsp;<br />
+&nbsp;&nbsp;&nbsp; } else {&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return "";&nbsp;<br />
+&nbsp;&nbsp;&nbsp; }&nbsp;<br />
+}
+</p>
+<p>
+	/**&nbsp;<br />
+* Read ZIP valid file&nbsp;<br />
+*&nbsp;<br />
+* @param string $file file path&nbsp;<br />
+* @return string total valid content&nbsp;<br />
+*/&nbsp;<br />
+function ReadZIPFile($file = '') {&nbsp;<br />
+&nbsp;&nbsp;&nbsp; $content = "";&nbsp;<br />
+&nbsp;&nbsp;&nbsp; $inValidFileName = array ();&nbsp;<br />
+&nbsp;&nbsp;&nbsp; $zip = new ZipArchive ( );&nbsp;<br />
+&nbsp;&nbsp;&nbsp; if ($zip-&gt;open ( $file ) === TR ) {&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for($i = 0; $i &lt; $zip-&gt;numFiles; $i ++) {&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $entry = $zip-&gt;getNameIndex ( $i );&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (preg_match ( '#\.(txt)|\.(doc)|\.(docx)|\.(pdf)$#i', $entry )) {&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ $zip-&gt;extractTo ( pathinfo ( $file, PATHINFO_DIRNAME ) . "/" . 
+pathinfo ( $file, PATHINFO_FILENAME ), array (&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $entry&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ) );&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ $content .= CheckSystemOS ( pathinfo ( $file, PATHINFO_DIRNAME ) . "/" .
+ pathinfo ( $file, PATHINFO_FILENAME ) . "/" . $entry );&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } else {&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $inValidFileName [$i] = $entry;&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $zip-&gt;close ();&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rrmdir ( pathinfo ( $file, PATHINFO_DIRNAME ) . "/" . pathinfo ( $file, PATHINFO_FILENAME ) );&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*if (file_exists ( $file )) {&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; unlink ( $file );&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }*/&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return $content;&nbsp;<br />
+&nbsp;&nbsp;&nbsp; } else {&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return "";&nbsp;<br />
+&nbsp;&nbsp;&nbsp; }&nbsp;<br />
+}
+</p>
+<p>
+	/**&nbsp;<br />
+* remove directory&nbsp;<br />
+*&nbsp;<br />
+* @param string $dir path dir&nbsp;<br />
+*/&nbsp;<br />
+function rrmdir($dir) {&nbsp;<br />
+&nbsp;&nbsp;&nbsp; if (is_dir ( $dir )) {&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $objects = scandir ( $dir );&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; foreach ( $objects as $object ) {&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if ($object != "." &amp;&amp; $object != "..") {&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (filetype ( $dir . "/" . $object ) == "dir") {&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rrmdir ( $dir . "/" . $object );&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } else {&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; unlink ( $dir . "/" . $object );&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; reset ( $objects );&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rmdir ( $dir );&nbsp;<br />
+&nbsp;&nbsp;&nbsp; }&nbsp;<br />
+}
+</p>
+<p>
+	&nbsp;
+</p>
+<p>
+	&nbsp;
+</p>
+<p>
+	//调用方法
+</p>
+<p>
+	$file = “D:\xampp\htdocs\word_count\uploads\pdf-german.zip”;
+</p>
+<p>
+	$word_number = StatisticWordsCount ( CheckSystemOS ( $file) );
+</p>
+<p>
+	?&gt;
+</p>
+<p>
+	ta="{'wbuid':1727466295}" &nbsp; style="z-index: 999999; padding-bottom: 2px; float: left; zoom: 1;" &nbsp; &gt;
+</p></body></html>

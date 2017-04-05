@@ -1,0 +1,23 @@
+<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><title>织梦DEDE文章自定义属性增加、修改、删除</title>
+<style>
+body{
+	width:960px;
+	margin:0 auto;
+}
+#title{
+	text-align:center;
+}
+</style>
+</head><body><div id='title'><h2>织梦DEDE文章自定义属性增加、修改、删除</h2></div><strong>增加：<br />
+</strong>insert into
+`dede_arcatt`(sortid,att,attname) values(9,'x','首页头');<br />
+alter table `dede_archives` modify `flag` set
+('c','h','p','f','s','j','a','b','x') default NULL;<br />
+含义：增长“首页头[x]”属个性<br />
+<strong>修正：</strong><br />
+UPDATE `dede_arcatt` SET `attname` = '123' WHERE CONVERT(
+`dede_arcatt`.`att` USING utf8 ) = 's' LIMIT 1 ;<br />
+含义：把“滚动[s]”改为“123”<br />
+<strong>删除：</strong>DELETE FROM ` dede_arcatt`WHERE
+CONVERT(dede_arcatt`,`att`USING utf8)+`x`LIMIT 1<br />
+含义：把“首页头[x]”属个性删除</body></html>

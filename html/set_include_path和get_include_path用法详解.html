@@ -1,0 +1,142 @@
+<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><title>set_include_path和get_include_path用法详解</title>
+<style>
+body{
+	width:960px;
+	margin:0 auto;
+}
+#title{
+	text-align:center;
+}
+</style>
+</head><body><div id='title'><h2>set_include_path和get_include_path用法详解</h2></div><p>
+	<span style="color:#9c5a3c;">今天在公司研习源码时，看到了set_include_path(dirname(__FILE__));这样一行代码，甚为不解。于是我就百度了一下，顺便看了一下php.net的手册，可是还是不太明白它到底有什么作用。</span><br />
+<span style="color:#9c5a3c;">&nbsp;&nbsp;
+偶然见看到一段另外一段代码，然后突发灵感，测试了一下，果然不出所料！</span><br />
+&nbsp;
+</p>
+<p>
+	&nbsp; <span style="color:#6f3198;">现在我总结一下吧：</span><br />
+<span style="color:#6f3198;">&nbsp;&nbsp;
+首先set_include_path这个函数呢，是在脚本里动态地对PHP.ini中include_path进行修改的。</span><br />
+<span style="color:#6f3198;">而这个include_path呢，它可以针对下面的include和require的路径范围进行限定，或者说是预定义一下。</span><br />
+&nbsp; <span style="color:#9c5a3c;">就好像：</span><br />
+<span style="color:#9c5a3c;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+如果我们没有设置这个值，可能我们需要写一些完全的路径：</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#990030;">&lt;?php</span><br />
+<span style="color:#990030;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+include("123/test1.php");</span><br />
+<span style="color:#990030;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+include("123/test2.php");</span><br />
+<span style="color:#990030;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+include("123/test3.php");</span><br />
+<span style="color:#990030;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+require("123/test4.php");</span><br />
+<span style="color:#990030;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+require("123/test5.php");</span><br />
+<span style="color:#990030;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+?&gt;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6f3198;">来引入很多外部文件，但是如果我们设置了set_include_path("123/"),我们就可以用下面这段代码代替。</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#990030;">&lt;?php</span><br />
+<span style="color:#990030;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+set_include_path("123/");</span><br />
+<span style="color:#990030;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+include("test1.php");</span><br />
+<span style="color:#990030;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+include("test2.php");</span><br />
+<span style="color:#990030;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+include("test3.php");</span><br />
+<span style="color:#990030;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+require("test4.php");</span><br />
+<span style="color:#990030;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+require("test5.php");</span><br />
+<span style="color:#990030;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+?&gt;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9c5a3c;">因为呢，当执行include或者require操作时，就会去include_path指定的路径去查找要引入的文件，虽然我现在不知道这样会不会在性能上有所优化，但是可以肯定的是，可以节省一部分代码。呵呵~</span><br />
+<span style="color:#9c5a3c;">&nbsp;&nbsp;&nbsp;&nbsp;
+那么刚开始的时候，我以为它加不加都是一样的没什么不同，是因为我只包含了一个本文件夹下的文件。</span><br />
+<span style="color:#9c5a3c;">&nbsp;&nbsp;&nbsp;
+后来，终于发现了其中的玄机！可恨的是，网上居然没有一篇像我这样的文章....都是同一篇文章转来转去的。</span><br />
+<span style="color:#9c5a3c;">&nbsp;&nbsp;&nbsp;
+那么这个函数它不仅可以定义一个文件夹，我们可以定义很多文件夹。如下所示，我要写一个初始化函数：</span><br />
+&nbsp;&nbsp;<span style="color:#990030;">&nbsp;&nbsp;&nbsp;&nbsp;
+function initialize()</span><br />
+<span style="color:#990030;">{</span><br />
+<span style="color:#990030;">&nbsp;&nbsp;&nbsp;
+set_include_path(get_include_path().PATH_SEPARATOR .
+"core/");</span><br />
+<span style="color:#990030;">&nbsp;&nbsp;&nbsp;
+set_include_path(get_include_path().PATH_SEPARATOR .
+"app/");</span><br />
+<span style="color:#990030;">&nbsp;&nbsp;&nbsp;
+set_include_path(get_include_path().PATH_SEPARATOR .
+"admin/");</span><br />
+<span style="color:#990030;">&nbsp;&nbsp;&nbsp;
+set_include_path(get_include_path().PATH_SEPARATOR .
+"lib/");</span><br />
+<span style="color:#990030;">&nbsp;&nbsp;&nbsp;
+set_include_path(get_include_path().PATH_SEPARATOR .
+"include/");</span><br />
+<span style="color:#990030;">&nbsp;&nbsp;&nbsp;
+set_include_path(get_include_path().PATH_SEPARATOR."data/");</span><br />
+<span style="color:#990030;">&nbsp;&nbsp;&nbsp;
+set_include_path(get_include_path().PATH_SEPARATOR."cache/");</span><br />
+<span style="color:#990030;">}</span><br />
+<span style="color:#546d8e;">&nbsp;&nbsp;&nbsp;
+这样它的路径就成了：</span><br />
+<span style="color:#546d8e;">&nbsp;&nbsp;&nbsp;
+.;C:\php5\pear;core/;app/;admin/;lib/;include/;data/;cache/</span><br />
+<span style="color:#546d8e;">&nbsp;&nbsp;&nbsp;
+哎，我们发现前面还有个.;C:\php5\pear;这到底是怎么回事呢，其实我们如果什么也不写直接先输出一下include_path的默认值，就会发现它就是.;C:\php5\pear;它可以允许随便去一个引入文件。</span><br />
+<span style="color:#546d8e;">&nbsp;&nbsp;&nbsp;
+如果再加载了许多文件夹的话，我们直接写文件名就可以了！</span><br />
+<span style="color:#546d8e;">&nbsp;&nbsp;
+但是正如我最开始那个问题一样，为什么我们公司的代码和人家的就不一样呢，原来，如果我就写一个</span><br />
+<span style="color:#546d8e;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+set_include_path(dirname(__FILE__));</span><br />
+<span style="color:#546d8e;">&nbsp;&nbsp;
+然后去引入其他文件夹的文件，就会报错，说在我指定的这个文件夹内找不到。</span><br />
+<span style="color:#546d8e;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+首先，我们先用另外一种方法输出一下：</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#990030;">&lt;?php</span><br />
+<span style="color:#990030;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+set_include_path(dirname(__FILE__));</span><br />
+<span style="color:#990030;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+$include_value = ini_get('include_path');</span><br />
+<span style="color:#990030;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+echo $include_value;</span><br />
+<span style="color:#990030;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+?&gt;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#546d8e;">结果是：D:\AppServ\www</span><br />
+<span style="color:#546d8e;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+我如果去www下找test4.php这个文件，则没有报错</span><br />
+<span style="color:#546d8e;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+include("test4.php");</span><br />
+<span style="color:#546d8e;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+但是我如果去找</span><br />
+<span style="color:#546d8e;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+include("test1.php");</span><br />
+<span style="color:#546d8e;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+就会报错：</span><br />
+<span style="color:#546d8e;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><strong>Warning</strong><span style="color:#546d8e;">: include() [</span><a target="_blank" href="http://localhost/function.include">function.include</a><span style="color:#546d8e;">]:
+Failed opening 'test1.php' for inclusion
+(include_path='D:\AppServ\www') in</span> <strong>D:\AppServ\www\test.php</strong><span style="color:#546d8e;">on line</span> <strong>6<br />
+&nbsp;&nbsp;&nbsp;&nbsp;
+而且我们还发现</strong><span style="color:#546d8e;">.;C:\php5\pear;已经被替换掉了。所以我们在使用的时候，如果不是仅在一个文件夹下引入文件，我们就需要在前面加上get_include_path().PATH_SEPARATOR
+.</span><br />
+<span style="color:#546d8e;">&nbsp;&nbsp;&nbsp;&nbsp;
+解释一下：</span><br />
+<span style="color:#546d8e;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+get_include_path()是获取当前include_path的默认值</span><br />
+<span style="color:#546d8e;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+PATH_SEPARATOR
+是个常量，是include的路径分界符合，在window上是;在unix和Linux上是:</span><br />
+<span style="color:#546d8e;">&nbsp;&nbsp;&nbsp;&nbsp;
+最后，我还要说一下，其实我们也可以通过另外一种方法：即最原始的：</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#546d8e;">ini_set</span><span style="color:#546d8e;">(</span><span style="color:#546d8e;">'include_path'</span><span style="color:#546d8e;">,&nbsp;</span><span style="color:#546d8e;">'目录名'</span><span style="color:#546d8e;">);&nbsp;</span><br />
+&nbsp;&nbsp;&nbsp; <span style="color:#ff7e00;">另外，需要注意的两点就是：</span><br />
+<span style="color:#ff7e00;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+如果在指定的</span><span style="color:#ff7e00;">目录下找不到所要求包含的文件，而在当前页面目录下正好存在这个名称的文件时，则默认引入当前目录下的该文件。</span><br />
+<span style="color:#ff7e00;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+当指定了多个目录为 include_path ，而所要求包含的文件在这几个目录都有相同名称的文件存在时，php选择使用设定
+include_path 时排位居前的目录下的文件。</span>
+</p></body></html>

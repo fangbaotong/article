@@ -1,0 +1,793 @@
+<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><title>linux vi编辑器</title>
+<style>
+body{
+	width:960px;
+	margin:0 auto;
+}
+#title{
+	text-align:center;
+}
+</style>
+</head><body><div id='title'><h2>linux vi编辑器</h2></div><table cellpadding="0" cellspacing="0" style="font-family:Simsun;">
+	<tbody>
+		<tr>
+			<td width="567" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:11pt;"><b>一般模式下移动光标</b></span>
+				</div>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<table cellpadding="0" cellspacing="0" style="font-family:Simsun;">
+	<tbody>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">h</span><span style="font-size:10.5pt;color:#FF0000;">或向左方向键</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">光标向左移动一个字符</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">j</span><span style="font-size:10.5pt;color:#FF0000;">或者向下方向键</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">光标向下移动一个字符</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">K</span><span style="font-size:10.5pt;color:#FF0000;">或者向上方向键</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">光标向上移动一个字符</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">l</span><span style="font-size:10.5pt;color:#FF0000;">或者向右方向键</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">光标向右移动一个字符</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">Ctrl + f&nbsp;</span><span style="font-size:10.5pt;color:#FF0000;">或者</span><span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">pageUP</span><span style="font-size:10.5pt;color:#FF0000;">键</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">屏幕向前移动一页</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">Ctrl + b&nbsp;</span><span style="font-size:10.5pt;color:#FF0000;">或者</span><span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">pageDOWN</span><span style="font-size:10.5pt;color:#FF0000;">键</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">屏幕向后移动一页</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;">Ctrl + d</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">屏幕向前移动半页</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;">Ctrl + u</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">屏幕向后移动半页</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;">+</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">光标移动到非空格符的下一列</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;">-</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">光标移动到非空格符的上一列</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;">n</span><span style="font-size:10.5pt;">空格（</span><span style="font-family:Calibri;font-size:10.5pt;">n</span><span style="font-size:10.5pt;">是数字）</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">按下数字</span><span style="font-family:Calibri;font-size:10.5pt;">n</span><span style="font-size:10.5pt;">然后按空格，则光标向右移动</span><span style="font-family:Calibri;font-size:10.5pt;">n</span><span style="font-size:10.5pt;">个字符，如果该行字符数小于</span><span style="font-family:Calibri;font-size:10.5pt;">n</span><span style="font-size:10.5pt;">，则光标继续从下行开始向右移动，一直到</span><span style="font-family:Calibri;font-size:10.5pt;">n</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">0</span><span style="font-size:10.5pt;color:#FF0000;">（数字</span><span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">0</span><span style="font-size:10.5pt;color:#FF0000;">）或者</span><span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">Shift+6</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">移动到本行行首</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">Shift+4</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">即</span><span style="font-family:Calibri;font-size:10.5pt;">’$’</span><span style="font-size:10.5pt;">移动到本行行尾</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;">H</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">光标移动到当前屏幕的最顶行</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;">M</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">光标移动到当前屏幕的中央那一行</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;">L</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">光标移动到当前屏幕的最底行</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">G</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">光标移动到文本的最末行</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">nG</span><span style="font-size:10.5pt;color:#FF0000;">（</span><span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">n</span><span style="font-size:10.5pt;color:#FF0000;">是数字）</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">移动到该文本的第</span><span style="font-family:Calibri;font-size:10.5pt;">n</span><span style="font-size:10.5pt;">行</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">gg</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">移动带该文本的首行</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;">n</span><span style="font-size:10.5pt;">回车（</span><span style="font-family:Calibri;font-size:10.5pt;">n</span><span style="font-size:10.5pt;">是数字）</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">光标向下移动</span><span style="font-family:Calibri;font-size:10.5pt;">n</span><span style="font-size:10.5pt;">行</span>
+				</div>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<table cellpadding="0" cellspacing="0" style="font-family:Simsun;">
+	<tbody>
+		<tr>
+			<td width="567" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:11pt;"><b>一般模式下查找与替换</b></span>
+				</div>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<table cellpadding="0" cellspacing="0" style="font-family:Simsun;">
+	<tbody>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">/word</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">向光标之后寻找一个字符串名为</span><span style="font-family:Calibri;font-size:10.5pt;">word</span><span style="font-size:10.5pt;">的字符串，当找到第一个</span><span style="font-family:Calibri;font-size:10.5pt;">word</span><span style="font-size:10.5pt;">后，按</span><span style="font-family:Calibri;font-size:10.5pt;">”n”</span><span style="font-size:10.5pt;">继续搜后一个</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">?word</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">想光标之前寻找一个字符串名为</span><span style="font-family:Calibri;font-size:10.5pt;">word</span><span style="font-size:10.5pt;">的字符串，当找到第一个</span><span style="font-family:Calibri;font-size:10.5pt;">word</span><span style="font-size:10.5pt;">后，按</span><span style="font-family:Calibri;font-size:10.5pt;">”n”</span><span style="font-size:10.5pt;">继续搜前一个</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">:n1,n2s/word1/word2/g</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">在</span><span style="font-family:Calibri;font-size:10.5pt;">n1</span><span style="font-size:10.5pt;">和</span><span style="font-family:Calibri;font-size:10.5pt;">n2</span><span style="font-size:10.5pt;">行间查找</span><span style="font-family:Calibri;font-size:10.5pt;">word1</span><span style="font-size:10.5pt;">这个字符串并替换为</span><span style="font-family:Calibri;font-size:10.5pt;">word2</span><span style="font-size:10.5pt;">，你也可以把</span><span style="font-family:Calibri;font-size:10.5pt;">”/”</span><span style="font-size:10.5pt;">换成</span><span style="font-family:Calibri;font-size:10.5pt;">”#”</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">:1,$s/word1/word2/g</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">从第一行到最末行，查找</span><span style="font-family:Calibri;font-size:10.5pt;">word1</span><span style="font-size:10.5pt;">并替换成</span><span style="font-family:Calibri;font-size:10.5pt;">word2</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;">:1,$s/word1/word2/gc</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">加上</span><span style="font-family:Calibri;font-size:10.5pt;">c</span><span style="font-size:10.5pt;">的作用是，在替换前需要用户确认</span>
+				</div>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<table cellpadding="0" cellspacing="0" style="font-family:Simsun;">
+	<tbody>
+		<tr>
+			<td width="567" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:11pt;"><b>一般模式下删除</b></span><span style="font-family:Calibri;font-size:11pt;"><b>、</b></span><span style="font-size:11pt;"><b>复制粘贴</b></span>
+				</div>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<table cellpadding="0" cellspacing="0" style="font-family:Simsun;">
+	<tbody>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">x,X</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;">x</span><span style="font-size:10.5pt;">为向后删除一个字符，</span><span style="font-family:Calibri;font-size:10.5pt;">X</span><span style="font-size:10.5pt;">为向前删除一个字符</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;">nx</span><span style="font-size:10.5pt;">（</span><span style="font-family:Calibri;font-size:10.5pt;">n</span><span style="font-size:10.5pt;">为数字）</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">向后删除</span><span style="font-family:Calibri;font-size:10.5pt;">n</span><span style="font-size:10.5pt;">个字符</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">dd</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">删除光标所在的那一行</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">ndd</span><span style="font-size:10.5pt;color:#FF0000;">（</span><span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">n</span><span style="font-size:10.5pt;color:#FF0000;">为数字）</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">删除光标所在的向下</span><span style="font-family:Calibri;font-size:10.5pt;">n</span><span style="font-size:10.5pt;">行</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;">d1G</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">删除光标所在行到第一行的所有数据</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;">dG</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">删除光标所在行到末行的所有数据</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">yy</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">复制光标所在的那行</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">nyy</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">复制从光标所在行起向下</span><span style="font-family:Calibri;font-size:10.5pt;">n</span><span style="font-size:10.5pt;">行</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">p,P</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;">p</span><span style="font-size:10.5pt;">复制的数据从光标下一行粘贴，</span><span style="font-family:Calibri;font-size:10.5pt;">P</span><span style="font-size:10.5pt;">则从光标上一行粘贴</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;">y1G</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">复制光标所在行到第一行的所有数据</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;">yG</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">复制光标所在行到末行的所有数据</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;">J</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">讲光标所在行与下一行的数据结合成同一行</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;">u</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">还原过去的操作</span>
+				</div>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<table cellpadding="0" cellspacing="0" style="font-family:Simsun;">
+	<tbody>
+		<tr>
+			<td width="567" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:11pt;"><b>进入编辑模式</b></span>
+				</div>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<table cellpadding="0" cellspacing="0" style="font-family:Simsun;">
+	<tbody>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">i</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">在当前字符前插入字符</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">I</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">在当前行行首插入字符</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">a</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">在当前字符后插入字符</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">A</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">在当前行行末插入字符</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">o</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">在当前行下插入新的一行</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">O</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">在当前行上插入新的一行</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;">r</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">替换光标所在的字符，只替换一次</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;">R</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">一直替换光标所在的字符，一直到按下</span><span style="font-family:Calibri;font-size:10.5pt;">ESC</span>
+				</div>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<table cellpadding="0" cellspacing="0" style="font-family:Simsun;">
+	<tbody>
+		<tr>
+			<td width="567" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:11pt;"><b>命令模式</b></span>
+				</div>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<table cellpadding="0" cellspacing="0" style="font-family:Simsun;">
+	<tbody>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">:w</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">将编辑过的文本保存</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">:w!</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">若文本属性为只读时，强制保存</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">:q</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">退出</span><span style="font-family:Calibri;font-size:10.5pt;">vim</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">:q!</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">不管编辑或未编辑都不保存退出</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">:wq</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">保存，退出</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;">:e!</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">将文档还原成最原始状态</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;">ZZ</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">若文档没有改动，则不储存离开，若文档改动过，则储存后离开，等同于</span><span style="font-family:Calibri;font-size:10.5pt;">:wq</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;">:w [filename]</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">编辑后的文档另存为</span><span style="font-family:Calibri;font-size:10.5pt;">filename</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;">:r [filename]</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">在当前光标所在行的下面读入</span><span style="font-family:Calibri;font-size:10.5pt;">filename</span><span style="font-size:10.5pt;">文档的内容</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">:set nu</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">在每行的行首显示行号</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;color:#FF0000;">:set nonu</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">取消行号</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;">n1,n2 w [filename]</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">将</span><span style="font-family:Calibri;font-size:10.5pt;">n1</span><span style="font-size:10.5pt;">到</span><span style="font-family:Calibri;font-size:10.5pt;">n2</span><span style="font-size:10.5pt;">的内容另存为</span><span style="font-family:Calibri;font-size:10.5pt;">filename</span><span style="font-size:10.5pt;">这个文档</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td width="176" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-family:Calibri;font-size:10.5pt;">:! command</span>
+				</div>
+			</td>
+			<td width="389" style="border:1px solid black;">
+				<div style="margin:0pt;">
+					<span style="font-size:10.5pt;">暂时离开</span><span style="font-family:Calibri;font-size:10.5pt;">vim</span><span style="font-size:10.5pt;">运行某个</span><span style="font-family:Calibri;font-size:10.5pt;">linux</span><span style="font-size:10.5pt;">命令，例如</span><span style="font-family:Calibri;font-size:10.5pt;">&nbsp;:! ls /home&nbsp;</span><span style="font-size:10.5pt;">暂时列出</span><span style="font-family:Calibri;font-size:10.5pt;">/home</span><span style="font-size:10.5pt;">目录下的文件，然后会提示按回车回到</span><span style="font-family:Calibri;font-size:10.5pt;">vim</span>
+				</div>
+			</td>
+		</tr>
+	</tbody>
+</table></body></html>

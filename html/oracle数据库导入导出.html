@@ -1,0 +1,30 @@
+<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><title>oracle数据库导入导出</title>
+<style>
+body{
+	width:960px;
+	margin:0 auto;
+}
+#title{
+	text-align:center;
+}
+</style>
+</head><body><div id='title'><h2>oracle数据库导入导出</h2></div>数据导出：<br />
+&nbsp; 1 将数据库TEST完全导出,用户名system 密码manager 导出到D:\daochu.dmp中<br />
+&nbsp;&nbsp;&nbsp; exp <a href="mailto:system/FBTsh2013@orcl">system/FBTsh2013@orcl</a> file=d:\daochu.dmp full=y<br />
+&nbsp; 2 将数据库中system用户与sys用户的表导出<br />
+&nbsp;&nbsp;&nbsp; exp <a href="mailto:system/manager@TEST">system/manager@TEST</a> file=d:\daochu.dmp owner=(system,sys)<br />
+&nbsp; 3 将数据库中的表table1 、table2导出<br />
+&nbsp;&nbsp;&nbsp; exp <a href="mailto:system/manager@TEST">system/manager@TEST</a> file=d:\daochu.dmp tables=(table1,table2) <br />
+&nbsp;4 将数据库中的表table1中的字段filed1以"00"打头的数据导出<br />
+&nbsp;&nbsp;&nbsp; exp <a href="mailto:system/manager@TEST">system/manager@TEST</a> file=d:\daochu.dmp tables=(table1) query=\" where filed1 like&nbsp; '00%'\"<br />
+&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp;&nbsp; 上面是常用的导出，对于压缩我不太在意，用winzip把dmp文件可以很好的压缩。<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 不过在上面命令后面 加上 compress=y&nbsp; 就可以了<br />
+&nbsp;<br />
+数据的导入<br />
+&nbsp; 1 将D:\daochu.dmp 中的数据导入 TEST数据库中。<br />
+&nbsp;&nbsp;&nbsp; imp <a href="mailto:system/FBTsh2013@orcl">system/FBTsh2013@orcl</a>&nbsp; file=d:\daochu.dmp full=y<br />
+&nbsp;&nbsp;&nbsp; 上面可能有点问题，因为有的表已经存在，然后它就报错，对该表就不进行导入。<br />
+&nbsp;&nbsp;&nbsp; 在后面加上 ignore=y 就可以了。<br />
+&nbsp; 2 将d:\daochu.dmp中的表table1 导入<br />
+&nbsp; imp <a href="mailto:system/manager@TEST">system/manager@TEST</a>&nbsp; file=d:\daochu.dmp&nbsp; tables=(table1)</body></html>

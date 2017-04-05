@@ -1,0 +1,81 @@
+<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><title>phpMyAdmin登陆超时1440秒未活动请重新登录</title>
+<style>
+body{
+	width:960px;
+	margin:0 auto;
+}
+#title{
+	text-align:center;
+}
+</style>
+</head><body><div id='title'><h2>phpMyAdmin登陆超时1440秒未活动请重新登录</h2></div><p>
+	问题现象：<br />
+现象一：phpmyadmin在使用过程中经常出现“登陆超时（1440秒未活动），请重新登录”；
+</p>
+<p>
+	现象二：phpmyadmin 里会出现:
+</p>
+<p>
+	您的 PHP 配置参数 session.gc_maxlifetime (外链，英文) 短于您在 phpMyAdmin 中设置的 Cookies 有效期，因此您的登录会话有效期将会比您在 phpMyAdmin 中设置的时间要更短。
+</p>
+<p>
+	的错误提示。
+</p>
+<p>
+	解决方法：
+</p>
+<p>
+	修改php.ini，找到
+</p>
+<p>
+	&nbsp;
+		&nbsp;代码如下
+		复制代码
+	 &nbsp;
+	 &nbsp;
+</p>
+<p>
+	session.gc_maxlifetime = 1440
+</p>
+<p>
+	&nbsp;
+</p>
+<p>
+	将数值改大就行了，然后使之生效
+</p>
+<p>
+	试验了一下，结果不好使。
+</p>
+<p>
+	最终解决方案：
+</p>
+<p>
+	找到 phpMyAdmin / libraries / config.default.php 文件，打开，修改
+</p>
+<p>
+	&nbsp;
+		&nbsp;代码如下
+		复制代码
+	 &nbsp;
+	 &nbsp;
+</p>
+<p>
+	$cfg['LoginCookieValidity'] = 1440;
+</p>
+<p>
+	&nbsp;
+</p>
+<p>
+	<img />将1440修改成更大的值即可。
+</p>
+<p>
+	问题二解决方法
+</p>
+<p>
+	如果修改：
+</p>
+<p>
+	$cfg['LoginCookieValidity']的值小于或等于php.ini里的session.gc_maxlifetime的值，您
+的 PHP 配置参数 session.gc_maxlifetime (外链，英文) 短于您在 phpMyAdmin 中设置的 Cookies 
+有效期，因此您的登录会话有效期将会比您在 phpMyAdmin 中设置的时间要更短。也解决了
+</p></body></html>

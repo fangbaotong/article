@@ -1,0 +1,116 @@
+<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><title>JQuery放大镜效果</title>
+<style>
+body{
+	width:960px;
+	margin:0 auto;
+}
+#title{
+	text-align:center;
+}
+</style>
+</head><body><div id='title'><h2>JQuery放大镜效果</h2></div><h1 class="postTitle">
+	<a id="cb_post_title_url" class="postTitle2" href="http://www.cnblogs.com/Kiss920Zz/archive/2011/12/20/2294209.html">JQuery放大镜效果</a> 
+</h1>
+<p>
+	在网上找了些实现放大镜效果的方法，感觉这个方法符合我的要求就摘过来了，非原创
+</p>
+<p>
+	在一些电子商务或商品展示网上，为了更好的显示商品，一般都会添加放大镜的效果。
+</p>
+<p>
+	如图：（当把鼠标放到小图片上，右边会自动的出现放大图）
+</p>
+<p>
+	好了，我们直接来实现。（前提：已<a href="http://code.google.com/p/jqueryjs/downloads/detail?name=jquery-1.2.6.pack.js">下载jquery.js</a>）
+</p>
+<p>
+	1、下载<a href="http://www.mind-projects.it/blog/wp-content/jqzoom_v2.2.rar">jqzoom插件</a>，取出里面的<span style="font-family:Verdana;">jquery.jqzoom.js</span>和<span style="font-family:Verdana;">jqzoom.css</span>
+</p>
+<p>
+	2、建立Web网站，按照下面的结构组织好文件<br />
+<img src="/article/bianjiqi/php/attached/image/20150714/20150714072030_44631.jpg" alt="" height="190" border="0" width="197" /><br />
+注：room_big.jpg和room_small.jpg是事先准备好的两张图片，一大一小
+</p>
+<p>
+	3、在页面中添加脚本和样式的引用
+</p>
+<div class="cnblogs_code">
+	<div class="cnblogs_code_toolbar">
+		<span class="cnblogs_code_copy"><a><img src="http://common.cnblogs.com/images/copycode.gif" alt="复制代码" /></a></span>
+	</div>
+<span style="color:#0000ff;">&lt;</span><span style="color:#800000;">head&nbsp;</span><span style="color:#ff0000;">runat</span><span style="color:#0000ff;">="server"</span><span style="color:#0000ff;">&gt;</span><span style="color:#000000;"><br />
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">&lt;</span><span style="color:#800000;">title</span><span style="color:#0000ff;">&gt;</span><span style="color:#000000;">放大镜效果</span><span style="color:#0000ff;">&lt;/</span><span style="color:#800000;">title</span><span style="color:#0000ff;">&gt;</span><span style="color:#000000;"><br />
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">&lt;</span><span style="color:#800000;">link&nbsp;</span><span style="color:#ff0000;">href</span><span style="color:#0000ff;">="css/jqzoom.css"</span><span style="color:#ff0000;">&nbsp;rel</span><span style="color:#0000ff;">="stylesheet"</span><span style="color:#ff0000;">&nbsp;type</span><span style="color:#0000ff;">="text/css"</span><span style="color:#ff0000;">&nbsp;media</span><span style="color:#0000ff;">="screen"</span><span style="color:#ff0000;">&nbsp;</span><span style="color:#0000ff;">/&gt;</span><span style="color:#000000;"><br />
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">&lt;</span><span style="color:#800000;">script&nbsp;</span><span style="color:#ff0000;">type</span><span style="color:#0000ff;">="text/javascript"</span><span style="color:#ff0000;">&nbsp;src</span><span style="color:#0000ff;">="js/jquery.js"</span><span style="color:#0000ff;">&gt;&lt;/</span><span style="color:#800000;">script</span><span style="color:#0000ff;">&gt;</span><span style="color:#000000;"><br />
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">&lt;</span><span style="color:#800000;">script&nbsp;</span><span style="color:#ff0000;">type</span><span style="color:#0000ff;">="text/javascript"</span><span style="color:#ff0000;">&nbsp;src</span><span style="color:#0000ff;">="js/jquery.jqzoom.js"</span><span style="color:#0000ff;">&gt;&lt;/</span><span style="color:#800000;">script</span><span style="color:#0000ff;">&gt;</span><span style="color:#000000;"><br />
+</span><span style="color:#0000ff;">&lt;/</span><span style="color:#800000;">head</span><span style="color:#0000ff;">&gt;</span> 
+	<div class="cnblogs_code_toolbar">
+		<span class="cnblogs_code_copy"><a>复制代码</a></span>
+	</div>
+	<div class="cnblogs_code_toolbar">
+		<span class="cnblogs_code_copy"><a><img src="http://common.cnblogs.com/images/copycode.gif" alt="复制代码" /></a></span>
+	</div>
+</div>
+<p>
+	&nbsp;
+</p>
+<p>
+	4、添加图片显示代码
+</p>
+<div class="cnblogs_code">
+	<div class="cnblogs_code_toolbar">
+		<span class="cnblogs_code_copy"><a><img src="http://common.cnblogs.com/images/copycode.gif" alt="复制代码" /></a></span>
+	</div>
+<span style="color:#0000ff;">&lt;</span><span style="color:#800000;">div</span><span style="color:#0000ff;">&gt;</span><span style="color:#000000;"><br />
+&nbsp;&nbsp;&nbsp; 家装图欣赏(请把鼠标放到图片上)<br />
+&nbsp;&nbsp;&nbsp; </span><span style="color:#0000ff;">&lt;</span><span style="color:#800000;">div&nbsp;</span><span style="color:#ff0000;">class</span><span style="color:#0000ff;">="jqzoom"</span><span style="color:#0000ff;">&gt;</span><span style="color:#000000;"><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color:#0000ff;">&lt;</span><span style="color:#800000;">img&nbsp;</span><span style="color:#ff0000;">src</span><span style="color:#0000ff;">="images/room_small.jpg"</span><span style="color:#ff0000;">&nbsp;alt</span><span style="color:#0000ff;">="房间演示"</span><span style="color:#ff0000;">&nbsp;jqimg</span><span style="color:#0000ff;">="images/room_big.jpg"</span><span style="color:#ff0000;">&nbsp;</span><span style="color:#0000ff;">/&gt;</span><span style="color:#000000;"><br />
+&nbsp;&nbsp;&nbsp; </span><span style="color:#0000ff;">&lt;/</span><span style="color:#800000;">div</span><span style="color:#0000ff;">&gt;</span><span style="color:#000000;"><br />
+</span><span style="color:#0000ff;">&lt;/</span><span style="color:#800000;">div</span><span style="color:#0000ff;">&gt;</span> 
+	<div class="cnblogs_code_toolbar">
+		<span class="cnblogs_code_copy"><a>复制代码</a></span>
+	</div>
+	<div class="cnblogs_code_toolbar">
+		<span class="cnblogs_code_copy"><a><img src="http://common.cnblogs.com/images/copycode.gif" alt="复制代码" /></a></span>
+	</div>
+</div>
+<p>
+	<span style="color:red;">注：div指明类样式"jqzoom"，img标记中的jqimg属性是指放大图为哪张图片</span>
+</p>
+<p>
+	5、添加脚本，设置放大镜效果
+</p>
+<div class="cnblogs_code">
+	<div class="cnblogs_code_toolbar">
+		<span class="cnblogs_code_copy"><a><img src="http://common.cnblogs.com/images/copycode.gif" alt="复制代码" /></a></span>
+	</div>
+<span style="color:#0000ff;">&lt;</span><span style="color:#800000;">script&nbsp;</span><span style="color:#ff0000;">type</span><span style="color:#0000ff;">="text/javascript"</span><span style="color:#0000ff;">&gt;</span><span style="color:#000000;background-color:#f5f5f5;"><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$(document).ready(</span><span style="color:#0000ff;background-color:#f5f5f5;">function</span><span style="color:#000000;background-color:#f5f5f5;">(){<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$(</span><span style="color:#000000;background-color:#f5f5f5;">"</span><span style="color:#000000;background-color:#f5f5f5;">.jqzoom</span><span style="color:#000000;background-color:#f5f5f5;">"</span><span style="color:#000000;background-color:#f5f5f5;">).jqueryzoom({<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xzoom:</span><span style="color:#000000;background-color:#f5f5f5;">300</span><span style="color:#000000;background-color:#f5f5f5;">,&nbsp;&nbsp;</span><span style="color:#008000;background-color:#f5f5f5;">//</span><span style="color:#008000;background-color:#f5f5f5;">&nbsp;放大图的宽</span><span style="color:#008000;background-color:#f5f5f5;"><br />
+</span><span style="color:#000000;background-color:#f5f5f5;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;yzoom:</span><span style="color:#000000;background-color:#f5f5f5;">300</span><span style="color:#000000;background-color:#f5f5f5;">,&nbsp;&nbsp;</span><span style="color:#008000;background-color:#f5f5f5;">//</span><span style="color:#008000;background-color:#f5f5f5;">&nbsp;放大图的高</span><span style="color:#008000;background-color:#f5f5f5;"><br />
+</span><span style="color:#000000;background-color:#f5f5f5;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;offset:</span><span style="color:#000000;background-color:#f5f5f5;">30</span><span style="color:#000000;background-color:#f5f5f5;">,&nbsp;&nbsp;&nbsp;</span><span style="color:#008000;background-color:#f5f5f5;">//</span><span style="color:#008000;background-color:#f5f5f5;">&nbsp;放大图距离原图的位置</span><span style="color:#008000;background-color:#f5f5f5;"><br />
+</span><span style="color:#000000;background-color:#f5f5f5;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;position:</span><span style="color:#000000;background-color:#f5f5f5;">'</span><span style="color:#000000;background-color:#f5f5f5;">right</span><span style="color:#000000;background-color:#f5f5f5;">'</span><span style="color:#000000;background-color:#f5f5f5;">&nbsp;&nbsp;</span><span style="color:#008000;background-color:#f5f5f5;">//</span><span style="color:#008000;background-color:#f5f5f5;">&nbsp;放大图在原图的右边(默认为right)</span><span style="color:#008000;background-color:#f5f5f5;"><br />
+</span><span style="color:#000000;background-color:#f5f5f5;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});<br />
+</span><span style="color:#0000ff;">&lt;/</span><span style="color:#800000;">script</span><span style="color:#0000ff;">&gt;</span> 
+	<div class="cnblogs_code_toolbar">
+		<span class="cnblogs_code_copy"><a>复制代码</a></span><span class="cnblogs_code_runjs"><a>运行代码</a></span>
+	</div>
+	<div class="cnblogs_code_toolbar">
+		<span class="cnblogs_code_copy"><a><img src="http://common.cnblogs.com/images/copycode.gif" alt="复制代码" /></a></span>
+	</div>
+</div>
+<p>
+	<span style="color:red;">注：$(".jqzoom")是获得本页面中所有类样式为jqzoom的元素，jqueryzoom方法是进行放大效果设置&nbsp;<br />
+在上面我们给出了一些选项的设置，也可以进行默认方式的调用，如：$(".jqzoom").jqueryzoom();</span>
+</p>
+<p>
+	OK，测试运行，怎么样，效果出来了吧！
+</p>
+<p>
+	<img src="/article/bianjiqi/php/attached/image/20150714/20150714072045_81606.jpg" alt="" height="310" border="0" width="541" />
+</p>
+<p>
+	&nbsp;
+</p></body></html>

@@ -1,0 +1,86 @@
+<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><title>文档转换样品在PHP中闪光</title>
+<style>
+body{
+	width:960px;
+	margin:0 auto;
+}
+#title{
+	text-align:center;
+}
+</style>
+</head><body><div id='title'><h2>文档转换样品在PHP中闪光</h2></div><p>
+	样本函数：
+</p>
+<p>
+	本示例包含一个网页，接受上传的文件，将其转换为Flash和显示转换后的Flash文件浏览器。该示例使用好啊print2flash自动化
+</p>
+<p>
+	安装说明：
+</p>
+<p>
+	1：print2flash服务配置：
+</p>
+<p>
+	&nbsp;&nbsp; 1 单击“所有程序/ print2flash / print2flash印刷应用（Print2Flash Printing Application）在Windows开始菜单启动print2flash印花中的应用
+</p>
+<p>
+	&nbsp;&nbsp; 2 点击选项/ print2flash服务配置（Print2Flash Service Configuration）<span></span>
+</p>
+<p>
+	&nbsp;&nbsp;
+ 3 
+单击“更改服务帐户和输入名称和密码的用户帐户下你想文件转换发生。这可能是你使用登录到Windows用户帐户。用户名应该用domain\user格
+式例如“webdomain p2fuser指定\”。如果你的电脑是不是一个域，在域部分指定您的计算机名称
+</p>
+<p>
+	&nbsp;&nbsp; 4 查看“授予访问权限的人启动”复选框并单击“确定”
+</p>
+<p>
+	2：配置Internet信息服务（IIS）：
+</p>
+<p>
+	&nbsp;&nbsp; 1 创建虚拟目录或网站在IIS
+</p>
+<p>
+	&nbsp;&nbsp; 2 样本副本文件夹的内容到目录映射到虚拟目录或根目录您先前创建的网站
+</p>
+<p>
+	&nbsp;&nbsp; 3 格兰特读到uploadedfiles convertedfiles文件夹的写权限，用户下运行IIS（通常iusr_xxx）和用户的凭据您指定在步骤1
+</p>
+<p>
+	使用说明：
+</p>
+<p>
+	&nbsp;&nbsp;&nbsp;&nbsp;1 通过导航到index.php页面在浏览器中打开示例页面
+</p>
+<p>
+	&nbsp;&nbsp;&nbsp; 2 点击浏览并选择一个文件转换为Flash
+</p>
+<p>
+	&nbsp;&nbsp;&nbsp;&nbsp;3 如果需要，设置任何选项负责控制出现在转换文件
+</p>
+<p>
+	&nbsp;&nbsp;&nbsp;&nbsp;4 单击“转换”。转换应该发生和转换后的文件应该在转换完成后在浏览器中显示
+</p>
+<p>
+	&nbsp;&nbsp;&nbsp;&nbsp;5 将另一个文件，重复步骤2-4
+</p>
+<p>
+	<br />
+</p>
+<p>
+	故障排除
+</p>
+<p>
+	&nbsp;&nbsp;&nbsp; 如果你得到一个错误代码80070005（拒绝访问）或类似的信息运行此示例时，您可能需要执行额外的安全配置：
+</p>
+<p>
+	&nbsp;&nbsp;&nbsp;&nbsp;1 单击运行在Windows开始菜单，键入DCOMCNFG回车
+</p>
+<p>
+	&nbsp;&nbsp;&nbsp; 2 展开“组件服务/计算机，右键单击我的电脑，选择属性
+</p>
+<p>
+	&nbsp;&nbsp;&nbsp; 3 切换到COM安全选项卡和点击访问权限组编辑默认按钮
+</p>
+&nbsp;&nbsp;&nbsp; 4 添加用户下运行IIS（通常iusr_xxx）的访问列表和允许本地访问它的权利</body></html>

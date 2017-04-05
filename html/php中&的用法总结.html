@@ -1,0 +1,235 @@
+<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><title>php中&的用法总结</title>
+<style>
+body{
+	width:960px;
+	margin:0 auto;
+}
+#title{
+	text-align:center;
+}
+</style>
+</head><body><div id='title'><h2>php中&的用法总结</h2></div><p>
+	<strong>1.变量的引用</strong><br />
+<br />
+PHP 的引用允许你用两个变量来指向同一个内容
+</p>
+<p>
+	<span style="color:#000000;">&lt;?</span><span style="color:#000000;"><br />
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#800080;">$a</span><span style="color:#000000;">=</span><span style="color:#000000;">"</span><span style="color:#000000;">ABC</span><span style="color:#000000;">"</span><span style="color:#000000;">;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#800080;">$b</span><span style="color:#000000;">&nbsp;</span><span style="color:#000000;">=&amp;</span><span style="color:#800080;">$a</span><span style="color:#000000;">;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">echo</span><span style="color:#000000;">&nbsp;</span><span style="color:#800080;">$a</span><span style="color:#000000;">;</span><span style="color:#008000;">//</span><span style="color:#008000;">这里输出:ABC</span><span style="color:#008000;"><br />
+</span><span style="color:#000000;">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">echo</span><span style="color:#000000;">&nbsp;</span><span style="color:#800080;">$b</span><span style="color:#000000;">;</span><span style="color:#008000;">//</span><span style="color:#008000;">这里输出:ABC</span><span style="color:#008000;"><br />
+</span><span style="color:#000000;">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#800080;">$b</span><span style="color:#000000;">=</span><span style="color:#000000;">"</span><span style="color:#000000;">EFG</span><span style="color:#000000;">"</span><span style="color:#000000;">;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">echo</span><span style="color:#000000;">&nbsp;</span><span style="color:#800080;">$a</span><span style="color:#000000;">;</span><span style="color:#008000;">//</span><span style="color:#008000;">这里$a的值变为EFG&nbsp;所以输出EFG</span><span style="color:#008000;"><br />
+</span><span style="color:#000000;">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">echo</span><span style="color:#000000;">&nbsp;</span><span style="color:#800080;">$b</span><span style="color:#000000;">;</span><span style="color:#008000;">//</span><span style="color:#008000;">这里输出EFG</span><span style="color:#008000;"><br />
+</span><span style="color:#000000;">?&gt;</span>
+</p>
+<p>
+	<strong>2.函数的引用传递（传址调用</strong>）
+</p>
+<p>
+	&nbsp;
+</p>
+<p>
+	传址调用我就不多说了 下面直接给出代码
+</p>
+<p>
+	<span style="color:#000000;">&lt;?</span><span style="color:#000000;">php<br />
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">function</span><span style="color:#000000;">&nbsp;test(</span><span style="color:#000000;">&amp;</span><span style="color:#800080;">$a</span><span style="color:#000000;">)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#800080;">$a</span><span style="color:#000000;">=</span><span style="color:#800080;">$a</span><span style="color:#000000;">+</span><span style="color:#000000;">100</span><span style="color:#000000;">;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#800080;">$b</span><span style="color:#000000;">=</span><span style="color:#000000;">1</span><span style="color:#000000;">;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">echo</span><span style="color:#000000;">&nbsp;</span><span style="color:#800080;">$b</span><span style="color:#000000;">;</span><span style="color:#008000;">//</span><span style="color:#008000;">输出１</span><span style="color:#008000;"><br />
+</span><span style="color:#000000;">&nbsp;&nbsp;&nbsp;&nbsp;test(</span><span style="color:#800080;">$b</span><span style="color:#000000;">);&nbsp;&nbsp;&nbsp;</span><span style="color:#008000;">//</span><span style="color:#008000;">这里$b传递给函数的其实是$b的变量内容所处的内存地址，通过在函数里改变$a的值　就可以改变$b的值了</span><span style="color:#008000;"><br />
+</span><span style="color:#000000;">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">echo</span><span style="color:#000000;">&nbsp;</span><span style="color:#000000;">"</span><span style="color:#000000;">&lt;br&gt;</span><span style="color:#000000;">"</span><span style="color:#000000;">;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">echo</span><span style="color:#000000;">&nbsp;</span><span style="color:#800080;">$b</span><span style="color:#000000;">;</span><span style="color:#008000;">//</span><span style="color:#008000;">输出101</span><span style="color:#008000;"><br />
+</span><span style="color:#000000;">?&gt;</span>
+</p>
+<p>
+	要注意的是，在这里test(１);的话就会出错，原因自己去想。
+</p>
+<p>
+	&nbsp;
+</p>
+<p>
+	<strong>注意：</strong>
+</p>
+<p>
+	&nbsp;&nbsp;&nbsp; 上面的“&nbsp;test(<span style="color:#800080;">$b</span><span style="color:#000000;">);&nbsp;”&nbsp;中的<span style="color:#800080;">$b</span>前面不要加</span> <span style="color:red;">&amp;</span> 符号，但是在函数“<span style="color:#0000ff;"><strong>call_user_func_array</strong></span>”中，若要引用传参，就得需要&nbsp;<span style="color:red;">&amp;</span> 符号，如下代码所示：
+</p>
+<p>
+	<span style="color:#000000;">&lt;?</span><span style="color:#000000;">php<br />
+<br />
+</span><span style="color:#0000ff;">function</span><span style="color:#000000;">&nbsp;a(</span><span style="color:#000000;">&amp;</span><span style="color:#800080;">$b</span><span style="color:#000000;">){<br />
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#800080;">$b</span><span style="color:#000000;">++</span><span style="color:#000000;">;<br />
+}<br />
+</span><span style="color:#800080;">$c</span><span style="color:#000000;">=</span><span style="color:#000000;">0</span><span style="color:#000000;">;<br />
+<br />
+</span><span style="color:#008080;">call_user_func_array</span><span style="color:#000000;">(</span><span style="color:#000000;">'</span><span style="color:#000000;">a</span><span style="color:#000000;">'</span><span style="color:#000000;">,</span><span style="color:#0000ff;">array</span><span style="color:#000000;">(</span><span style="color:#000000;">&amp;</span><span style="color:#800080;">$c</span><span style="color:#000000;">));<br />
+<br />
+</span><span style="color:#0000ff;">echo</span><span style="color:#000000;">&nbsp;</span><span style="color:#800080;">$c</span><span style="color:#000000;">;<br />
+<br />
+</span><span style="color:#008000;">//</span><span style="color:#008000;">输出&nbsp;1</span><span style="color:#008000;"><br />
+</span><span style="color:#000000;"><br />
+</span><span style="color:#000000;">?&gt;</span>
+</p>
+<p>
+	<span style="color:#000000;"><strong>3.函数的引用返回</strong><br />
+</span>
+</p>
+<p>
+	&nbsp;
+</p>
+<p>
+	先看代码
+</p>
+<p>
+	<span style="color:#000000;">&lt;?</span><span style="color:#000000;">php<br />
+</span><span style="color:#0000ff;">function</span><span style="color:#000000;">&nbsp;</span><span style="color:#000000;">&amp;</span><span style="color:#000000;">test()<br />
+{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">static</span><span style="color:#000000;">&nbsp;</span><span style="color:#800080;">$b</span><span style="color:#000000;">=</span><span style="color:#000000;">0</span><span style="color:#000000;">;</span><span style="color:#008000;">//</span><span style="color:#008000;">申明一个静态变量</span><span style="color:#008000;"><br />
+</span><span style="color:#000000;">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#800080;">$b</span><span style="color:#000000;">=</span><span style="color:#800080;">$b</span><span style="color:#000000;">+</span><span style="color:#000000;">1</span><span style="color:#000000;">;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">echo</span><span style="color:#000000;">&nbsp;</span><span style="color:#800080;">$b</span><span style="color:#000000;">;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">return</span><span style="color:#000000;">&nbsp;</span><span style="color:#800080;">$b</span><span style="color:#000000;">;<br />
+}<br />
+<br />
+</span><span style="color:#800080;">$a</span><span style="color:#000000;">=</span><span style="color:#000000;">test();</span><span style="color:#008000;">//</span><span style="color:#008000;">这条语句会输出　$b的值　为１</span><span style="color:#008000;"><br />
+</span><span style="color:#800080;">$a</span><span style="color:#000000;">=</span><span style="color:#000000;">5</span><span style="color:#000000;">;<br />
+</span><span style="color:#800080;">$a</span><span style="color:#000000;">=</span><span style="color:#000000;">test();</span><span style="color:#008000;">//</span><span style="color:#008000;">这条语句会输出　$b的值　为2</span><span style="color:#008000;"><br />
+</span><span style="color:#000000;"><br />
+</span><span style="color:#800080;">$a</span><span style="color:#000000;">=&amp;</span><span style="color:#000000;">test();</span><span style="color:#008000;">//</span><span style="color:#008000;">这条语句会输出　$b的值　为3</span><span style="color:#008000;"><br />
+</span><span style="color:#800080;">$a</span><span style="color:#000000;">=</span><span style="color:#000000;">5</span><span style="color:#000000;">;<br />
+</span><span style="color:#800080;">$a</span><span style="color:#000000;">=</span><span style="color:#000000;">test();</span><span style="color:#008000;">//</span><span style="color:#008000;">这条语句会输出　$b的值　为6</span><span style="color:#008000;"><br />
+</span><span style="color:#000000;">?&gt;</span>
+</p>
+<p>
+	<span style="color:#000000;">下面解释下： <br />
+通过这种方式$a=test();得到的其实不是函数的引用返回，这跟普通的函数调用没有区别　至于原因：　这是ＰＨＰ的规定<br />
+ＰＨＰ规定通过$a=&amp;test(); 方式得到的才是函数的引用返回<br />
+至于什么是引用返回呢（ＰＨＰ手册上说：引用返回用在当想用函数找到引用应该被绑定在哪一个变量上面时。) 这句狗屁话　害我半天没看懂<br />
+<br />
+用上面的例子来解释就是<br />
+$a=test()方式调用函数，只是将函数的值赋给$a而已，　而$a做任何改变　都不会影响到函数中的$b<br />
+而通过$a=&amp;test()方式调用函数呢, 他的作用是　将return $b中的　$b变量的内存地址与$a变量的内存地址　指向了同一个地方<br />
+即产生了相当于这样的效果($a=&amp;$b;) 所以改变$a的值　也同时改变了$b的值　所以在执行了<br />
+$a=&amp;test();<br />
+$a=5;<br />
+以后，$b的值变为了5<br />
+<br />
+这里是为了让大家理解函数的引用返回才使用静态变量的，其实函数的引用返回多用在对象中</span>
+</p>
+<p>
+	<strong>4.对象的引用</strong>
+</p>
+<p>
+	&nbsp;
+</p>
+<p>
+	<br />
+</p>
+<p>
+	<span style="color:#000000;">&lt;?</span><span style="color:#000000;">php<br />
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">class</span><span style="color:#000000;">&nbsp;a{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">var</span><span style="color:#000000;">&nbsp;</span><span style="color:#800080;">$abc</span><span style="color:#000000;">=</span><span style="color:#000000;">"</span><span style="color:#000000;">ABC</span><span style="color:#000000;">"</span><span style="color:#000000;">;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#800080;">$b</span><span style="color:#000000;">=</span><span style="color:#0000ff;">new</span><span style="color:#000000;">&nbsp;a;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#800080;">$c</span><span style="color:#000000;">=</span><span style="color:#800080;">$b</span><span style="color:#000000;">;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">echo</span><span style="color:#000000;">&nbsp;</span><span style="color:#800080;">$b</span><span style="color:#000000;">-&gt;</span><span style="color:#000000;">abc;</span><span style="color:#008000;">//</span><span style="color:#008000;">这里输出ABC</span><span style="color:#008000;"><br />
+</span><span style="color:#000000;">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">echo</span><span style="color:#000000;">&nbsp;</span><span style="color:#800080;">$c</span><span style="color:#000000;">-&gt;</span><span style="color:#000000;">abc;</span><span style="color:#008000;">//</span><span style="color:#008000;">这里输出ABC</span><span style="color:#008000;"><br />
+</span><span style="color:#000000;">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#800080;">$b</span><span style="color:#000000;">-&gt;</span><span style="color:#000000;">abc</span><span style="color:#000000;">=</span><span style="color:#000000;">"</span><span style="color:#000000;">DEF</span><span style="color:#000000;">"</span><span style="color:#000000;">;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">echo</span><span style="color:#000000;">&nbsp;</span><span style="color:#800080;">$c</span><span style="color:#000000;">-&gt;</span><span style="color:#000000;">abc;</span><span style="color:#008000;">//</span><span style="color:#008000;">这里输出DEF</span><span style="color:#008000;"><br />
+</span><span style="color:#000000;">?&gt;</span>
+</p>
+<p>
+	<br />
+</p>
+<p>
+	以上代码是在PHP5中的运行效果
+</p>
+<p>
+	<span style="font-size:14pt;background-color:#c0c0c0;">在PHP5中 </span><span style="font-size:14pt;background-color:#c0c0c0;">对象的</span><span style="font-size:14pt;background-color:#c0c0c0;">赋值</span><span style="font-size:14pt;background-color:#c0c0c0;">是个</span><span style="font-size:14pt;background-color:#c0c0c0;">引用</span><span style="font-size:14pt;background-color:#c0c0c0;">的过程。上列中$b=new a; $c=$b; 其实等效于$b=new a; $c=&amp;$b;</span><br />
+<span style="font-size:14pt;background-color:#c0c0c0;">PHP5中默认就是通过引用来调用对象， 但有时你可能想建立一个对象的副本，并希望原来的对象的改变不影响到副本 . 为了这样的目的，PHP5定义了一个特殊的方法，称为</span><span style="font-size:14pt;background-color:#c0c0c0;">__clone</span><span style="font-size:14pt;background-color:#c0c0c0;">。</span>
+</p>
+<p>
+	<span style="font-size:14pt;background-color:#c0c0c0;">自 PHP 5 起，new 自动返回引用，因此在此使用 =&amp; 已经过时了并且会产生 E_STRICT 级别的消息。</span>
+</p>
+<p>
+	&nbsp;
+</p>
+<p>
+	&nbsp;
+</p>
+<p>
+	<span style="font-size:14pt;background-color:#c0c0c0;">在php4中，对象的赋值是个拷贝过程，</span>
+</p>
+<p>
+	<span style="font-size:14pt;background-color:#c0c0c0;">如：$b=new a，其中new a产生的是一个匿名的a对象实例，而此时的$b是对这个匿名对象的拷贝。同理$c=$b，也是对$b内容的一个拷贝。所以在php4中，为了节省内存空间，$b=new a 一般会改成引用的模式，即 $b=&amp; new a。</span>
+</p>
+<p>
+	<strong>5.引用的作用</strong><br />
+&nbsp;&nbsp;&nbsp;&nbsp; 如果程序比较大,引用同一个对象的变量比较多,并且希望用完该对象后手工清除它,个人建议用 "&amp;" 
+方式,然后用$var=null的方式清除. 其它时候还是用php5的默认方式吧. 另外, php5中对于大数组的传递,建议用 "&amp;" 
+方式, 毕竟节省内存空间使用。<br />
+<br />
+<br />
+<strong>6.取消引用</strong><br />
+<span style="color:#0000ff;">当你 unset 一个引用，只是断开了变量名和变量内容之间的绑定。这并不意味着变量内容被销毁了</span>。例如：
+</p>
+<p>
+	<span style="color:#000000;">&lt;?</span><span style="color:#000000;">php<br />
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#800080;">$a</span><span style="color:#000000;">&nbsp;</span><span style="color:#000000;">=</span><span style="color:#000000;">&nbsp;</span><span style="color:#000000;">1</span><span style="color:#000000;">;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#800080;">$b</span><span style="color:#000000;">&nbsp;</span><span style="color:#000000;">=&amp;</span><span style="color:#000000;">&nbsp;</span><span style="color:#800080;">$a</span><span style="color:#000000;">;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">unset</span><span style="color:#000000;">&nbsp;(</span><span style="color:#800080;">$a</span><span style="color:#000000;">);<br />
+</span><span style="color:#000000;">?&gt;</span><span style="color:#000000;">&nbsp; <br />
+</span>
+</p>
+<p>
+	<br />
+<br />
+不会 unset $b，只是 $a。 <br />
+<br />
+<br />
+<strong>7.global 引用</strong><br />
+当用 global $var 声明一个变量时实际上建立了一个到全局变量的引用。也就是说和这样做是相同的：
+</p>
+<p>
+	<span style="color:#000000;">&lt;?</span><span style="color:#000000;">php<br />
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#800080;">$var</span><span style="color:#000000;">&nbsp;</span><span style="color:#000000;">=&amp;</span><span style="color:#000000;">&nbsp;</span><span style="color:#800080;">$GLOBALS</span><span style="color:#000000;">[</span><span style="color:#000000;">"</span><span style="color:#000000;">var</span><span style="color:#000000;">"</span><span style="color:#000000;">];<br />
+</span><span style="color:#000000;">?&gt;</span><span style="color:#000000;">&nbsp; <br />
+</span>
+</p>
+<p>
+	<br />
+这意味着，例如，unset $var 不会 unset 全局变量。
+</p>
+<p>
+	如果在一个函数内部给一个声明为 <em>global</em> 的变量赋于一个引用，该引用只在函数内部可见。可以通过使用 <a href="http://www.php.net/manual/zh/reserved.variables.globals.php" target="_blank">$GLOBALS</a> 数组避免这一点。
+</p>
+<p>
+	<strong>Example&nbsp; 在函数内引用全局变量</strong>
+</p>
+<p>
+	<span style="color:#000000;">&lt;?</span><span style="color:#000000;">php<br />
+</span><span style="color:#800080;">$var1</span><span style="color:#000000;">&nbsp;</span><span style="color:#000000;">=</span><span style="color:#000000;">&nbsp;</span><span style="color:#000000;">"</span><span style="color:#000000;">Example&nbsp;variable</span><span style="color:#000000;">"</span><span style="color:#000000;">;<br />
+</span><span style="color:#800080;">$var2</span><span style="color:#000000;">&nbsp;</span><span style="color:#000000;">=</span><span style="color:#000000;">&nbsp;</span><span style="color:#000000;">""</span><span style="color:#000000;">;<br />
+<br />
+</span><span style="color:#0000ff;">function</span><span style="color:#000000;">&nbsp;global_references(</span><span style="color:#800080;">$use_globals</span><span style="color:#000000;">)<br />
+{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">global</span><span style="color:#000000;">&nbsp;</span><span style="color:#800080;">$var1</span><span style="color:#000000;">,</span><span style="color:#000000;">&nbsp;</span><span style="color:#800080;">$var2</span><span style="color:#000000;">;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">if</span><span style="color:#000000;">&nbsp;(</span><span style="color:#000000;">!</span><span style="color:#800080;">$use_globals</span><span style="color:#000000;">)&nbsp;{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#800080;">$var2</span><span style="color:#000000;">&nbsp;</span><span style="color:#000000;">=&amp;</span><span style="color:#000000;">&nbsp;</span><span style="color:#800080;">$var1</span><span style="color:#000000;">;&nbsp;</span><span style="color:#008000;">//</span><span style="color:#008000;">&nbsp;visible&nbsp;only&nbsp;inside&nbsp;the&nbsp;function</span><span style="color:#008000;"><br />
+</span><span style="color:#000000;">&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;</span><span style="color:#0000ff;">else</span><span style="color:#000000;">&nbsp;{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#800080;">$GLOBALS</span><span style="color:#000000;">[</span><span style="color:#000000;">"</span><span style="color:#000000;">var2</span><span style="color:#000000;">"</span><span style="color:#000000;">]&nbsp;</span><span style="color:#000000;">=&amp;</span><span style="color:#000000;">&nbsp;</span><span style="color:#800080;">$var1</span><span style="color:#000000;">;&nbsp;</span><span style="color:#008000;">//</span><span style="color:#008000;">&nbsp;visible&nbsp;also&nbsp;in&nbsp;global&nbsp;context</span><span style="color:#008000;"><br />
+</span><span style="color:#000000;">&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+}<br />
+<br />
+global_references(</span><span style="color:#0000ff;">false</span><span style="color:#000000;">);<br />
+</span><span style="color:#0000ff;">echo</span><span style="color:#000000;">&nbsp;</span><span style="color:#000000;">"</span><span style="color:#000000;">var2&nbsp;is&nbsp;set&nbsp;to&nbsp;'</span><span style="color:#800080;">$var2</span><span style="color:#000000;">'\n</span><span style="color:#000000;">"</span><span style="color:#000000;">;&nbsp;</span><span style="color:#008000;">//</span><span style="color:#008000;">&nbsp;var2&nbsp;is&nbsp;set&nbsp;to&nbsp;''</span><span style="color:#008000;"><br />
+</span><span style="color:#000000;">global_references(</span><span style="color:#0000ff;">true</span><span style="color:#000000;">);<br />
+</span><span style="color:#0000ff;">echo</span><span style="color:#000000;">&nbsp;</span><span style="color:#000000;">"</span><span style="color:#000000;">var2&nbsp;is&nbsp;set&nbsp;to&nbsp;'</span><span style="color:#800080;">$var2</span><span style="color:#000000;">'\n</span><span style="color:#000000;">"</span><span style="color:#000000;">;&nbsp;</span><span style="color:#008000;">//</span><span style="color:#008000;">&nbsp;var2&nbsp;is&nbsp;set&nbsp;to&nbsp;'Example&nbsp;variable'</span><span style="color:#008000;"><br />
+</span><span style="color:#000000;">?&gt;</span>
+</p>
+<p>
+	把 <em>global $var;</em> 当成是 <em>$var =&amp; $GLOBALS['var'];</em> 的简写。从而将其它引用赋给 <em>$var</em> 只改变了本地变量的引用。
+</p></body></html>

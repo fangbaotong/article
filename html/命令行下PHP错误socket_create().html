@@ -1,0 +1,57 @@
+<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><title>命令行下PHP错误socket_create()</title>
+		<style>
+			body{
+				width:960px;
+				margin:0 auto;
+			}
+			#title{
+				text-align:center;
+			}
+		</style>
+	</head><body><div id="title">
+	<h2>
+		命令行下PHP错误 Call to undefined function socket_create()
+	</h2>
+</div>
+<p>
+	<br />
+</p>
+<p>
+	<br />
+</p>
+<p>
+	今天再本地环境(wampserver)中测试html5+websocket+php的demo,刚一开始就给我报出了如下错误:
+</p>
+<p>
+	Fatal error: Call to undefined function socket_create()
+</p>
+<p>
+	真
+的是让人伤感啊–!!,这样的错误一般都是extension没有开启,但我从wamp中已开启了php_sockets.dll和
+php_gd2.dll模块啊,用phpinfo去看也确实是开启了模块,怎么一用命令行就不行呢?折腾了好久,看到网上一哥们说wamp环境中命令行和
+web不是用的同一个php.ini文件,这下如梦初醒,看<a target="_blank" href="http://www.yaocheap.com">耀骑网络</a>的解决方法:
+</p>
+<p>
+	<span style="color:#ff6600;">第一步:修改D:\wamp\bin\php\php5.3.13\php.ini中的php_sockets.dll和php_gd2.dll为开启</span> 
+</p>
+<p>
+	<span style="color:#ff6600;">第二步:修改D:\wamp\bin\apache\apache2.2.22\bin\php.ini中的php_sockets.dll和php_gd2.dll为开启</span> 
+</p>
+<p>
+	<span style="color:#ff6600;">第三步:重启所有服务</span> 
+</p>
+<p>
+	<span style="color:#ff6600;">第四步:没有了,就此搞定</span> 
+</p>
+<p>
+	这就是集成环境带来的负面作用,当然也是自己对这个环境没有吃透.
+</p>
+<p>
+	<br />
+</p>
+<p>
+	<br />
+</p>
+<p>
+	<br />
+</p></body></html>

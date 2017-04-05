@@ -1,0 +1,2597 @@
+<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><title>nodejs推送push mysql数据更新到前端显示</title>
+<style>
+body{
+	width:960px;
+	margin:0 auto;
+}
+#title{
+	text-align:center;
+}
+</style>
+</head><body><div id='title'><h2>nodejs推送push mysql数据更新到前端显示</h2></div><div id="highlighter_818214" class="syntaxhighlighter " style="color:#777777;margin:1em 0px !important;padding:1px !important;border:0px !important;vertical-align:baseline !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none #FFFFFF !important;">
+	<div class="lines" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none !important;">
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							server.js
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							002
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							//建立MySQL连接, 根据自己环境修改相应的数据库信息
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							003
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							var&nbsp;app = require('http').createServer(handler),
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							004
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;io = require('socket.io').listen(app),
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							005
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;fs = require('fs'),
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							006
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;mysql = require('mysql'),
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							007
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;connectionsArray = [],
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							008
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;connection = mysql.createConnection({
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							009
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;host:&nbsp;'localhost',
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							010
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;user:&nbsp;'root',
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							011
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;password:&nbsp;'root',
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							012
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;database:&nbsp;'nodejs',
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							013
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;port: 3306
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							014
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;}),
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							015
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;POLLING_INTERVAL = 1000,
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							016
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;pollingTimer;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							017
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							018
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							// 检查数据库连接是否正常
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							019
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							connection.connect(function(err) {
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							020
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;// 不出现错误信息，那表示数据库连接成功
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							021
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;console.log(err);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							022
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							});
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							023
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							024
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							//启动HTTP服务，绑定端口8080
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							025
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							app.listen(3000);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							026
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							027
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							// 加载客户端首页
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							028
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							function&nbsp;handler(req, res) {
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							029
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;fs.readFile(__dirname +&nbsp;'/client.html',&nbsp;function(err, data) {
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							030
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(err) {
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							031
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console.log(err);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							032
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;res.writeHead(500);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							033
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;res.end('加载客户端首页发生错误...');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							034
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							035
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;res.writeHead(200);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							036
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;res.end(data);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							037
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;});
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							038
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							039
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							040
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							/*
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							041
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;* 这个就是实现主要功能的方法，间隔3秒去查询数据库表，有更新就推送给客户端
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							042
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;*/
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							043
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							var&nbsp;pollingLoop =&nbsp;function() {
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							044
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							045
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;// 查询数据库
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							046
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;var&nbsp;query = connection.query('SELECT * FROM prices'),
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							047
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;articles = [];&nbsp;// 用于保存查询结果
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							048
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							049
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;// 查询结果监听
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							050
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;query
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							051
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;.on('error',&nbsp;function(err) {
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							052
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 查询出错处理
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							053
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console.log(err);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							054
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;updateSockets(err);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							055
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;})
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							056
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;.on('result',&nbsp;function(user) {
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							057
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 加入查询到的结果到articles数组
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							058
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;articles.push(user);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							059
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;})
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							060
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;.on('end',&nbsp;function() {
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							061
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 检查是否有客户端连接，有连接就继续查询数据库
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							062
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(connectionsArray.length) {
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							063
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pollingTimer = setTimeout(pollingLoop, POLLING_INTERVAL);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							064
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							065
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;updateSockets({
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							066
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;articles: articles
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							067
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							068
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							069
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;});
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							070
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							071
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							};
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							072
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							073
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							074
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							// 创建一个websocket连接，实时更新数据
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							075
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							io.sockets.on('connection',&nbsp;function(socket) {
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							076
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							077
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;console.log('当前连接客户端数量:'&nbsp;+ connectionsArray.length);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							078
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;// 有客户端连接的时候才去查询，不然都是浪费资源
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							079
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;if&nbsp;(!connectionsArray.length) {
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							080
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;pollingLoop();
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							081
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							082
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							083
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;socket.on('disconnect',&nbsp;function() {
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							084
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;socketIndex = connectionsArray.indexOf(socket);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							085
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;console.log('socket = '&nbsp;+ socketIndex +&nbsp;' disconnected');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							086
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(socketIndex &gt;= 0) {
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							087
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connectionsArray.splice(socketIndex, 1);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							088
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							089
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;});
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							090
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							091
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;console.log('有新的客户端连接!');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							092
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;connectionsArray.push(socket);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							093
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							094
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							});
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							095
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							096
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							var&nbsp;updateSockets =&nbsp;function(data) {
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							097
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;// 加上最新的更新时间
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							098
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;data.time =&nbsp;new&nbsp;Date();
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							099
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;// 推送最新的更新信息到所以连接到服务器的客户端
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							100
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;connectionsArray.forEach(function(tmpSocket) {
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							101
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;tmpSocket.volatile.emit('notification', data);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							102
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;});
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							103
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							};
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<div id="highlighter_79697" class="syntaxhighlighter " style="color:#777777;margin:1em 0px !important;padding:1px !important;border:0px !important;vertical-align:baseline !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none #FFFFFF !important;">
+	<div class="lines" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none !important;">
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							01
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							client.html
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							02
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							03
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&lt;html&gt;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							04
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&lt;head&gt;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							05
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;The use of Nodejs to achieve real-time push MySQL database up-to-date information to the client&lt;/title&gt;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							06
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;style&gt;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							07
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;td {
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							08
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background:#ddd;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							09
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							10
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time {
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							11
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;color:gray;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							12
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							13
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;table {
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							14
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BORDER-LEFT: black 1px solid;/*左边框*/
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							15
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BORDER-RIGHT: black 1px solid;/*右边框*/
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							16
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BORDER-TOP: black 1px solid;/*上边框*/
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							17
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BORDER-BOTTOM: black 1px solid;/*下边框*/
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							18
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PADDING-LEFT: 2px;/*左间隙*/
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							19
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PADDING-RIGHT: 2px;&nbsp;/*右间隙*/
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							20
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PADDING-TOP: 2px;/*上间隙*/
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							21
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PADDING-BOTTOM: 2px;/*下间隙*/
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							22
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FONT-SIZE: 12px;/*字号*/
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							23
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CURSOR: hand;/*光标类型*/
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							24
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;COLOR:&nbsp;#000000;/*字色*/
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							25
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FILTER: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr=#ffffff, EndColorStr=#d4d0c8);/*滤镜*/
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							26
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							27
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;th{text-align=center;background-color:#006699;font-size:14px;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							28
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;font-family:&nbsp;"隶书";color:#F2F3F7;padding:2px;line-height:22px;}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							29
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.row_add{text-align:center;background-color:#ccd2de;height:4px;font-size:12px;line-height:15px;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							30
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;padding:2px;}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							31
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/style&gt;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							32
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&lt;/head&gt;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							33
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&lt;body&gt;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							34
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;time&gt;&lt;/time&gt;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							35
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div id="container"&gt;Loading ...&lt;/div&gt;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							36
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&lt;script src="socket.io/socket.io.js"&gt;&lt;/script&gt;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							37
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&lt;script src="<a href="http://code.jquery.com/jquery-latest.min.js">http://code.jquery.com/jquery-latest.min.js</a>"&gt;&lt;/script&gt;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							38
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&lt;script&gt;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							39
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 创建websocket连接
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							40
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;socket = io.connect('<a href="http://localhost:3000/">http://localhost:3000</a>');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							41
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 把信息显示到div上
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							42
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;socket.on('notification',&nbsp;function&nbsp;(data) {
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							43
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;articlesList =&nbsp;"&lt;table align='center'&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;stockid&lt;/th&gt;&lt;th&gt;typeabbrev&lt;/th&gt;&lt;th&gt;currabrev&lt;/th&gt;"+
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							44
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"&lt;th&gt;debtorno&lt;/th&gt;&lt;th&gt;price&lt;/th&gt;&lt;th&gt;branchcode&lt;/th&gt;"+
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							45
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"&lt;th&gt;startdate&lt;/th&gt;&lt;th&gt;enddate&lt;/th&gt;&lt;/tr&gt;";
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							46
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$.each(data.articles,function(index,article){
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							47
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;articlesList +="&lt;tr&gt;&lt;td&gt;"&nbsp;+ article.stockid +&nbsp;"&lt;/td&gt;"&nbsp;+
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							48
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"&lt;td&gt;"&nbsp;+ article.typeabbrev +&nbsp;"&lt;/td&gt;"&nbsp;+
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							49
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"&lt;td&gt;"&nbsp;+ article.currabrev +&nbsp;"&lt;/td&gt;"+
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							50
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"&lt;td&gt;"&nbsp;+ article.debtorno +&nbsp;"&lt;/td&gt;"+
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							51
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"&lt;td&gt;"&nbsp;+ article.price +&nbsp;"&lt;/td&gt;"+
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							52
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"&lt;td&gt;"&nbsp;+ article.branchcode +&nbsp;"&lt;/td&gt;"+
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							53
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"&lt;td&gt;"&nbsp;+ article.startdate +&nbsp;"&lt;/td&gt;"+
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							54
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"&lt;td&gt;"&nbsp;+ article.enddate +&nbsp;"&lt;/td&gt;"+
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							55
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"&lt;/tr&gt;";
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							56
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							57
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;articlesList +=&nbsp;"&lt;/thead&gt;&lt;/table&gt;";
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							58
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$('#container').html(articlesList);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							59
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							60
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$('time').html('Last Time:'&nbsp;+ data.time);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							61
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							62
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&lt;/script&gt;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							63
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;&lt;/body&gt;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							64
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&lt;/html&gt;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<p style="font-size:13px;color:#777777;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;background-color:#FFFFFF;">
+	需要组件
+</p>
+<div id="highlighter_333388" class="syntaxhighlighter " style="color:#777777;margin:1em 0px !important;padding:1px !important;border:0px !important;vertical-align:baseline !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none #FFFFFF !important;">
+	<div class="lines" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none !important;">
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							1
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							socket.io&nbsp; mysql
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<div id="highlighter_808624" class="syntaxhighlighter " style="color:#777777;margin:1em 0px !important;padding:1px !important;border:0px !important;vertical-align:baseline !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none #FFFFFF !important;">
+	<div class="lines" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none !important;">
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							01
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							npm install mysql -g 最新版本
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							02
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							npm install mysql@2.1&nbsp; 指定版本
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							03
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							04
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							npm install socket.io -g 最新版本
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							05
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							npm install socket.io@1.0.3&nbsp; 指定版本
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							06
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							07
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							socket.io-client
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							08
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							09
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							connect
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							10
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							11
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+							如果要做nodejs 实时聊天的还需要session 组件
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<p style="font-size:13px;color:#777777;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;background-color:#FFFFFF;">
+	运行结果：
+</p>
+<p style="font-size:13px;color:#777777;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;background-color:#FFFFFF;">
+	在nodejs 目录下 node server.js 启动服务 我监听的端口为3000
+</p>
+<p style="font-size:13px;color:#777777;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;background-color:#FFFFFF;">
+	<img src="/article/bianjiqi/php/attached/image/20160415/20160415020126_90392.jpg" alt="" />
+</p>
+<p style="font-size:13px;color:#777777;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;background-color:#FFFFFF;">
+	<p style="font-size:13px;color:#777777;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;background-color:#FFFFFF;">
+		mysql数据库prices表有异动 nodejs&nbsp;
+	</p>
+	<div id="highlighter_770422" class="syntaxhighlighter " style="color:#777777;margin:1em 0px !important;padding:1px !important;border:0px !important;vertical-align:baseline !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none #FFFFFF !important;">
+		<div class="lines" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none !important;">
+			<div class="line alt1" style="font-size:1em !important;margin:0px !important;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+				<table style="font-size:1em !important;width:auto !important;margin:0px !important;padding:0px !important;border:0px !important;height:auto !important;background:none !important;">
+					<tbody>
+						<tr>
+							<td class="number" style="font-size:1em !important;border:0px !important;vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+								1
+							</td>
+							<td class="content" style="vertical-align:top !important;font-family:Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;background:none !important;">
+								socket.io 开始每3秒轮询 把数据传递到client
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+<img src="/article/bianjiqi/php/attached/image/20160415/20160415020210_23246.jpg" alt="" />
+</p>
+<p style="font-size:13px;color:#777777;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;background-color:#FFFFFF;">
+	<span style="color:#777777;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:13px;line-height:20px;background-color:#FFFFFF;">c推送到client的数据</span>
+</p>
+<p style="font-size:13px;color:#777777;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;background-color:#FFFFFF;">
+	<img src="/article/bianjiqi/php/attached/image/20160415/20160415020252_49210.jpg" alt="" />
+</p>
+<p style="font-size:13px;color:#777777;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;background-color:#FFFFFF;">
+	<p style="font-size:13px;color:#777777;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;background-color:#FFFFFF;">
+		前端服务器websocket还是有缺点的，在中国这个ie6,7,8横行的国度里是没有效果的，我是用谷歌浏览器才测试的,火狐也可以。
+	</p>
+	<p style="font-size:13px;color:#777777;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;background-color:#FFFFFF;">
+		当然可以多开几个窗口，在prices表中有crud的操作，都会把mysql的数据推送到前端客户端...
+	</p>
+<img src="/article/bianjiqi/php/attached/image/20160415/20160415020340_37193.jpg" alt="" />
+</p>
+<p style="font-size:13px;color:#777777;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;background-color:#FFFFFF;">
+	<p style="font-size:13px;color:#777777;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;background-color:#FFFFFF;">
+		有很多人对nodejs不是太了解，我把我写的js和主键放在一起了，点击bat文件即可，你唯一要修改的地方是修改mysql数据库连接和表名以及字段名称
+	</p>
+	<p style="font-size:13px;color:#777777;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;background-color:#FFFFFF;">
+		版本是nodejs0.83 不是最新版本的，最新版本的socket.io 写法不一样.组件发生了变化，如果对nodejs很了解不需要下载我的源码，如果不熟悉那么你不下载就运行不了，也学不会nodejs.
+	</p>
+	<p style="font-size:13px;color:#777777;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;background-color:#FFFFFF;">
+		解压<strong>nodejs-push-MySQL.rar不要把</strong>node_modules中的组件给删除了.
+	</p>
+	<p style="font-size:13px;color:#777777;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;background-color:#FFFFFF;">
+		点击nodejs-push-MySQL文件夹修改server.js或者client.html即可.
+	</p>
+	<p style="font-size:13px;color:#777777;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;background-color:#FFFFFF;">
+		要连接oracle请自己下组件,其他数据库也一样.
+	</p>
+</p></body></html>

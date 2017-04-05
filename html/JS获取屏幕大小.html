@@ -1,0 +1,55 @@
+<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><title>JS获取屏幕大小</title>
+<style>
+body{
+	width:960px;
+	margin:0 auto;
+}
+#title{
+	text-align:center;
+}
+</style>
+</head><body><div id='title'><h2>JS获取屏幕大小</h2></div><div class="pcs-article-content_ptkaiapt4bxy_baiduscarticle" id="detailArticleContent_ptkaiapt4bxy_baiduscarticle">
+	<p>
+		<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">&lt;html&gt;</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">&lt;script&gt;</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">function a(){</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">document.write(</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">"屏幕分辨率为："+screen.width+"*"+screen.height</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">+"&lt;br /&gt;"+</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">"屏幕可用大小："+screen.availWidth+"*"+screen.availHeight</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">+"&lt;br /&gt;"+</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">"网页可见区域宽："+document.body.clientWidth</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">+"&lt;br /&gt;"+</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">"网页可见区域高："+document.body.clientHeight</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">+"&lt;br /&gt;"+</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">"网页可见区域宽(包括边线的宽)："+document.body.offsetWidth&nbsp;</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">+"&lt;br /&gt;"+</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">"网页可见区域高(包括边线的宽)："+document.body.offsetHeight&nbsp;</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">+"&lt;br /&gt;"+</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">"网页正文全文宽："+document.body.scrollWidth</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">+"&lt;br /&gt;"+</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">"网页正文全文高："+document.body.scrollHeight</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">+"&lt;br /&gt;"+</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">"网页被卷去的高："+document.body.scrollTop</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">+"&lt;br /&gt;"+</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">"网页被卷去的左："+document.body.scrollLeft</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">+"&lt;br /&gt;"+</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">"网页正文部分上："+window.screenTop</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">+"&lt;br /&gt;"+</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">"网页正文部分左："+window.screenLeft</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">+"&lt;br /&gt;"+</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">"屏幕分辨率的高："+window.screen.height</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">+"&lt;br /&gt;"+</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">"屏幕分辨率的宽："+window.screen.width</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">+"&lt;br /&gt;"+</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">"屏幕可用工作区高度："+window.screen.availHeight</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">+"&lt;br /&gt;"+</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">"屏幕可用工作区宽度："+window.screen.availWidth</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">);</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">}</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">&lt;/script&gt;</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">&lt;body on</span><span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">load="a()" &gt;</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">&lt;/body&gt;</span><br />
+<span style="font-size:13px;font-family:Verdana,Arial,Helvetica,sans-serif;color:#000000;background-color:#fefef2;line-height:19px;">&lt;/html&gt;</span>
+	</p>
+</div></body></html>

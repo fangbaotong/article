@@ -1,0 +1,46 @@
+<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><title>apache配置httpd.conf</title>
+		<style>
+			body{
+				width:960px;
+				margin:0 auto;
+			}
+			#title{
+				text-align:center;
+			}
+		</style>
+	</head><body><div id="title">
+	<h2>
+		apache配置httpd.conf
+	</h2>
+</div>
+<p>
+	<span style="background-color:;">1. </span><span style="color:#323E32;font-family:simsun;font-size:14px;">LimitRequestBody</span><span style="color:#323E32;font-family:simsun;font-size:14px;"> 10485760 </span><span style="color:#323E32;font-family:simsun;font-size:14px;">即10M=10*1024*1024，有的文章中提到应改为 600000000</span>
+</p>
+<p>
+	<span style="color:#323E32;font-family:simsun;font-size:14px;">2.配置虚拟主机&nbsp;</span>
+</p>
+<p>
+	<span style="color:#323E32;font-family:simsun;font-size:14px;"><span style="font-family:&quot;font-size:16px;background-color:#FFFFFF;">&nbsp;&nbsp;&nbsp;&nbsp;#Include conf/extra/httpd-vhosts.conf去除#</span></span>
+</p>
+<p>
+	<span style="color:#323E32;font-family:simsun;font-size:14px;">&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family:&quot;font-size:16px;background-color:#FFFFFF;">编辑conf目录下extra文件夹下的httpd-vhosts.conf</span></span>
+</p>
+<p>
+	<span style="color:#323E32;font-family:simsun;font-size:14px;">&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family:&quot;font-size:16px;background-color:#FFFFFF;">&lt;VirtualHost *:80&gt;<br />
+&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;#管理员邮箱<br />
+&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;ServerAdmin jiangfeng3@staff.sina.com.cn&nbsp;<br />
+&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;#项目根目录 &nbsp;&nbsp;<br />
+&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;DocumentRoot "D:/wamp/www/article" &nbsp; &nbsp; &nbsp;&nbsp;<br />
+&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;#域名 &nbsp;<br />
+&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;ServerName www.art.com &nbsp;&nbsp;<br />
+&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;#别名 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
+&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;ServerAlias www.art.com<br />
+&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;#错误日志路径<br />
+&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;ErrorLog "logs/www.art.com-error.log"<br />
+&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;CustomLog "logs/www.art.com-access.log" common<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/VirtualHost&gt;</span></span>
+</p>
+<p>
+	<span style="color:#323E32;font-family:simsun;font-size:14px;"><span style="font-family:&quot;font-size:16px;background-color:#FFFFFF;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family:&quot;font-size:16px;background-color:#FFFFFF;">编辑本地host文件&nbsp;</span>127.0.0.1 www.art.com<br />
+</span><span style="font-family:&quot;font-size:16px;background-color:#FFFFFF;"></span>&nbsp;&nbsp;&nbsp;</span>
+</p></body></html>

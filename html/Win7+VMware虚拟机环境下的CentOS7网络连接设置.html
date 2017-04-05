@@ -1,0 +1,136 @@
+<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><title>Win7+VMware虚拟机环境下的CentOS7网络连接设置</title>
+<style>
+body{
+	width:960px;
+	margin:0 auto;
+}
+#title{
+	text-align:center;
+}
+</style>
+</head><body><div id='title'><h2>Win7+VMware虚拟机环境下的CentOS7网络连接设置</h2></div><p style="vertical-align:baseline;font-family:'Microsoft YaHei', 微软雅黑, Arial, 'Open Sans', SimSun, sans-serif;text-indent:2em;color:#333333;font-size:16px;background:#FFFFFF;">
+	12月18日阿里云活动，购买了一台服务器(1H 512MB 1Mbps&nbsp;<a href="http://www.yxxme.com/tag/centos" class="tooltip-trigger tin" target="_blank">CentOS</a>&nbsp;6.5 64位)，打算用来部署网站环境，把包括本博客在内的几个网站迁移到阿里云上。通过各种百度发现大家一致认为<a href="http://www.yxxme.com/tag/centos" class="tooltip-trigger tin" target="_blank">CentOS</a>比较适合部署服务器并且国内服务器<a href="http://www.yxxme.com/tag/centos" class="tooltip-trigger tin" target="_blank">CentOS</a>占了很大比重，所以我也选择了CentOS6.564位版本。在部署WEB服务器之前我打算在本地虚拟一台服务器练练手，本机Win7下使用<a href="http://www.yxxme.com/tag/vmware" class="tooltip-trigger tin" target="_blank">VMware</a>安装CentOS7（7是最新版本）。安装好以后发现上不了网，这怎么可以，以前都是通过桥接连接网络，通过各种搜索终于找到了解决办法，现记录如下：
+</p>
+<p style="vertical-align:baseline;font-family:'Microsoft YaHei', 微软雅黑, Arial, 'Open Sans', SimSun, sans-serif;text-indent:2em;color:#333333;font-size:16px;background:#FFFFFF;">
+	首先介绍一下<a href="http://www.yxxme.com/tag/vmware" class="tooltip-trigger tin" target="_blank">VMware</a>的网络连接方式。我们的主机通常经过物理网卡与局域网和Internet相连接，而虚拟机既已被称之为虚拟计算机，那虚拟网卡也必然存在，而如果我们想让虚拟计算机能连接到局域网或者Internet，那就必须让虚拟网卡和主机的真实物理网卡协同起来。<a href="http://www.yxxme.com/tag/vmware" class="tooltip-trigger tin" target="_blank">VMware</a>提供了三种将虚拟网卡和物理网卡捆绑起来的方式，即桥接(Bridge）模式，网络地址转换(Network Address Transformation, NAT)模式和主机(Host Only)模式。
+</p>
+<p>
+	<img src="/article/bianjiqi/php/attached/image/20160318/20160318142807_50163.jpeg" alt="" />
+</p>
+<p>
+	<br />
+</p>
+<div id="attachment_454" class="wp-caption aligncenter" style="margin:0px auto;padding:4px;border:none;vertical-align:baseline;font-family:'Microsoft YaHei', 微软雅黑, Arial, 'Open Sans', SimSun, sans-serif;color:#333333;font-size:16px;background:#FFFFFF;">
+	<p class="wp-caption-text" style="font-weight:inherit;font-style:inherit;vertical-align:baseline;text-align:center;text-indent:2em;background:transparent;">
+		图1&nbsp;<a href="http://www.yxxme.com/tag/vmware" class="tooltip-trigger tin" target="_blank">VMware</a>网络适配器的三种连接方式
+	</p>
+</div>
+<p style="vertical-align:baseline;font-family:'Microsoft YaHei', 微软雅黑, Arial, 'Open Sans', SimSun, sans-serif;text-indent:2em;color:#333333;font-size:16px;background:#FFFFFF;">
+	关于三种模式的区别，可以参考SophiaWang的这篇博文(<a href="http://www.yxxme.com/redirect/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc29waGlhd2FuZy9hcnRpY2xlL2RldGFpbHMvMzk2MzYxMw==" target="_blank">http://blog.csdn.net/sophiawang/article/details/3963613</a>)，本文也引用此文中的几张示意图(图2-图4)。简单而言，Bridge模式直接将虚拟机添加到局域网中，使虚拟机看起来像网内的一台真实计算机，虚拟网卡和宿主物理网卡之间不存在名义上的从属关系，因而需要局域网内具有多余的IP地址能够提供给虚拟机网卡，如果局域网内严格给每台计算机分配固定的IP，那这种Bridge模式就基本失效。在Bridge模式下虚拟机既可以访问到Internet也可以同局域网内的其他真实计算机通信；NAT模式下宿主的物理网卡就充当了路由器或交换机的角色，这时VMware会根据宿主的真实IP提供很多Subset IP供虚拟机使用，这样所有的虚拟机都是通过宿主的网络端口进行对Internet的访问，但看起来这些虚拟计算机都合法地访问到了局域网或者Internet，因为他们的IP地址通过NAT技术之后看起来是合法的。Host Only模式下虚拟机之间可以相互通信，但虚拟机并不能同局域网内的其他真实计算机直接通信，但该模式下通过宿主访问Internet还是可以的。
+</p>
+<img src="/article/bianjiqi/php/attached/image/20160318/20160318142847_91859.gif" alt="" />
+<p>
+	<br />
+</p>
+<p>
+	<img src="/article/bianjiqi/php/attached/image/20160318/20160318142913_39676.gif" alt="" />
+</p>
+<p>
+	<img src="/article/bianjiqi/php/attached/image/20160318/20160318142939_65398.gif" alt="" />
+</p>
+<p>
+	<div id="attachment_458" class="wp-caption aligncenter" style="margin:0px auto;padding:4px;border:none;vertical-align:baseline;font-family:'Microsoft YaHei', 微软雅黑, Arial, 'Open Sans', SimSun, sans-serif;color:#333333;font-size:16px;background:#FFFFFF;">
+		<p class="wp-caption-text" style="font-weight:inherit;font-style:inherit;vertical-align:baseline;text-align:center;text-indent:2em;background:transparent;">
+			图4 主机(Host Only)模式(引自SophiaWang)
+		</p>
+	</div>
+	<p style="vertical-align:baseline;font-family:'Microsoft YaHei', 微软雅黑, Arial, 'Open Sans', SimSun, sans-serif;text-indent:2em;color:#333333;font-size:16px;background:#FFFFFF;">
+		VM的虚拟网卡可以被设置成上述的三种网络连接模式，默认情况下，VMnet0被设置成为Bridge模式，VMnet1被设置为Host Only模式，而VMnet8的默认连接方式为NAT模式。VMnet2-VMnet7和VMnet9这七块虚拟网卡用户可以自定义，但是在所有的虚拟网卡中仅有一块能被设置为NAT模式，默认情况就是VMnet8。用户可以在VMware workstation-&lt;Edit-&lt;Virtual Network Editor中查看这些信息。
+	</p>
+<img src="/article/bianjiqi/php/attached/image/20160318/20160318143017_60787.jpeg" alt="" />
+</p>
+<p>
+	<div id="attachment_459" class="wp-caption aligncenter" style="margin:0px auto;padding:4px;border:none;vertical-align:baseline;font-family:'Microsoft YaHei', 微软雅黑, Arial, 'Open Sans', SimSun, sans-serif;color:#333333;font-size:16px;background:#FFFFFF;">
+		<p class="wp-caption-text" style="font-weight:inherit;font-style:inherit;vertical-align:baseline;text-align:center;text-indent:2em;background:transparent;">
+			图5 VMware中虚拟网卡和对应的连接模式
+		</p>
+	</div>
+	<p style="vertical-align:baseline;font-family:'Microsoft YaHei', 微软雅黑, Arial, 'Open Sans', SimSun, sans-serif;text-indent:2em;color:#333333;font-size:16px;background:#FFFFFF;">
+		了解了虚拟网卡连接网络的方式之后，需要实际地来连接网络了。选择较为简单的Internet连接方式，即NAT模式，首先在“Virtual Machine Settings”中设置“Network Connection”方式为NAT模式(见图1)。打开Win7的“网络和共享中心”，选择“更改适配器设置”，如果VMware workstation安装正确的话，这里应该可以看到VMnet1和VMnet8这两块虚拟网卡。查看连接有宽带的“本地连接”的属性，顺便在“网络”选项卡下面的“此连接使用下列项目”中将VMware Bridge Protocol勾选上，以便以后选用Bridge模式的时候使用此协议。在“共享”选项卡下面“Internet连接共享”中勾选“允许其他网络用户通过此计算机的Internet连接来连接(N)”，并同时在“家庭网络连接(H)”中选择VMnet8。这样设置之后就已经将宿主计算机的网络访问权限与VMnet8共享。
+	</p>
+<img src="/article/bianjiqi/php/attached/image/20160318/20160318143049_85476.jpeg" alt="" />
+</p>
+<p>
+	<span style="color:#333333;font-family:'Microsoft YaHei', 微软雅黑, Arial, 'Open Sans', SimSun, sans-serif;font-size:16px;line-height:28.7999992370605px;background-color:#FFFFFF;">图6 网络连接中可见VMnet1和VMnet8</span>
+</p>
+<p>
+	<span style="color:#333333;font-family:'Microsoft YaHei', 微软雅黑, Arial, 'Open Sans', SimSun, sans-serif;font-size:16px;line-height:28.7999992370605px;background-color:#FFFFFF;">（<span style="color:#E53333;">可用网络，无线网络连接</span>）</span>
+</p>
+<p>
+	<img src="/article/bianjiqi/php/attached/image/20160318/20160318143129_47048.jpeg" alt="" />
+	<div id="attachment_461" class="wp-caption aligncenter" style="margin:0px auto;padding:4px;border:none;vertical-align:baseline;font-family:'Microsoft YaHei', 微软雅黑, Arial, 'Open Sans', SimSun, sans-serif;color:#333333;font-size:16px;background:#FFFFFF;">
+		<p class="wp-caption-text" style="font-weight:inherit;font-style:inherit;vertical-align:baseline;text-align:center;text-indent:2em;background:transparent;">
+			图7 设置网络共享
+		</p>
+	</div>
+	<p style="vertical-align:baseline;font-family:'Microsoft YaHei', 微软雅黑, Arial, 'Open Sans', SimSun, sans-serif;text-indent:2em;color:#333333;font-size:16px;background:#FFFFFF;">
+		下面需要配置VMnet8的IP地址和掩码等。首先查看一下VMnet8的网络属性，同样顺便在“网络”选项卡下面将“此连接使用下列项目”中将VMware Bridge Protocol勾选，以便日后Bridge模式使用。查看TCP/IPv4的属性，可以看到IP地址已经自动变为固定的192.168.137.1，子网掩码已经是255.255.255.0，这些就让其这样设置，暂且不管。
+	</p>
+&nbsp;&nbsp;&nbsp;&nbsp;<img src="/article/bianjiqi/php/attached/image/20160318/20160318143158_19552.jpeg" alt="" />
+</p>
+<p>
+	<div id="attachment_462" class="wp-caption aligncenter" style="margin:0px auto;padding:4px;border:none;vertical-align:baseline;font-family:'Microsoft YaHei', 微软雅黑, Arial, 'Open Sans', SimSun, sans-serif;color:#333333;font-size:16px;background:#FFFFFF;">
+		<p class="wp-caption-text" style="font-weight:inherit;font-style:inherit;vertical-align:baseline;text-align:center;text-indent:2em;background:transparent;">
+			图8 VMnet8中TCP/IPv4属性
+		</p>
+	</div>
+	<p align="left" style="vertical-align:baseline;font-family:'Microsoft YaHei', 微软雅黑, Arial, 'Open Sans', SimSun, sans-serif;text-indent:2em;color:#333333;font-size:16px;background:#FFFFFF;">
+		接下来需要在VM中配置VMnet8的IP属性了。如图5，打开VMware workstation-&lt;Edit-&lt;VMware Network Editor，选择VMnet8，勾选Connect a host virtual network adapter to this network和Use local DHCP service to distribute IP address to VMs。Subset IP需要与宿主VMnet8的IP在同一地址段，可填写192.168.137.0，Subset Mask应与VMnet8的子网掩码相同，即填写255.255.255.0。打开DHCP Settings，里面的Start IP address填写192.168.137.0，End IP address填写192.168.137.255，即可在这一IP段内自动分配给虚拟计算机IP地址。在NAT Settings里面将Getway IP设置为宿主计算机中VMnet8的IP，即192.168.137.1。
+	</p>
+	<p align="left" style="vertical-align:baseline;font-family:'Microsoft YaHei', 微软雅黑, Arial, 'Open Sans', SimSun, sans-serif;text-indent:2em;color:#333333;font-size:16px;background:#FFFFFF;">
+		上述设置总结起来，就是将宿主计算机的物理网卡与VMnet8共享，VMnet8充当路由器，而VM中的虚拟计算机通过DHCP自动获得在某一个IP段内的IP地址，这些虚拟机都通过路由器(VMnet8)连接的IP与物理网卡上的Internet连接。
+	</p>
+	<p align="left" style="vertical-align:baseline;font-family:'Microsoft YaHei', 微软雅黑, Arial, 'Open Sans', SimSun, sans-serif;text-indent:2em;color:#333333;font-size:16px;background:#FFFFFF;">
+		设置好这些之后，在VMware中启动CentOS，如果正常的话应该可以ping通网络了，打开Xwindow里面的浏览器也应该可以开始冲浪了。如果还连接不上Internet，那可以用root用户(其他用户没有权限修改配置文件)登录CentOS，检查一下文件系统-&lt;etc-&lt;sysconfig-&lt;network-scripts-&lt;ifcfg-eth0中的bootproto是不是dhcp，如果不是则修改为dhcp，此外还需要设置onboot = true; 然后用命令service network restart重启网络连接，就可以连上网络了。
+	</p>
+	<p align="left" style="vertical-align:baseline;font-family:'Microsoft YaHei', 微软雅黑, Arial, 'Open Sans', SimSun, sans-serif;text-indent:2em;color:#333333;font-size:16px;background:#FFFFFF;">
+		设置方法来自：http://blog.csdn.net/pang040328/article/details/12427359 感谢作者分享！
+	</p>
+	<p align="left" style="vertical-align:baseline;font-family:'Microsoft YaHei', 微软雅黑, Arial, 'Open Sans', SimSun, sans-serif;text-indent:2em;color:#333333;font-size:16px;background:#FFFFFF;">
+		<br />
+	</p>
+	<p align="left" style="vertical-align:baseline;font-family:'Microsoft YaHei', 微软雅黑, Arial, 'Open Sans', SimSun, sans-serif;text-indent:2em;color:#333333;font-size:16px;background:#FFFFFF;">
+		<h1 class="article-title" style="font-family:'Microsoft Yahei', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-weight:normal;color:#555555;font-size:20px;">
+			internet连接共享访问被启用时 出现了一个错误 ,（null）
+		</h1>
+		<p>
+			<p style="color:#555555;font-family:'Microsoft Yahei', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;">
+				这个问题怎么办？不要急，下面来告诉你怎么解决这个问题：
+			</p>
+			<p style="color:#555555;font-family:'Microsoft Yahei', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;">
+				这个大多数都是没有启用 windows firewall 导致的 ，因为很多卫士什么的，都会禁用掉，只要启用就行了。启用的方法很简单：
+			</p>
+			<p style="color:#555555;font-family:'Microsoft Yahei', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;">
+				一、点击开始按钮——搜索框中输入：服务，回车打开服务管理界面
+			</p>
+			<p style="color:#555555;font-family:'Microsoft Yahei', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;">
+				二、找到windows firewall ，点击右边的启动即可。
+			</p>
+			<p style="color:#555555;font-family:'Microsoft Yahei', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;">
+				<img src="/article/bianjiqi/php/attached/image/20160318/20160318143335_41703.jpg" alt="" />
+			</p>
+			<p style="color:#555555;font-family:'Microsoft Yahei', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;">
+				如图：如果你当前没启用的话，左边显示的会是<span>启用</span>此服务，点击<span>启用</span>即可，可能需要重启方可生效。
+			</p>
+		</p>
+	</p>
+</p>
+<p>
+	<br />
+</p>
+<p>
+	<br />
+</p>
+<p>
+	<br />
+</p></body></html>

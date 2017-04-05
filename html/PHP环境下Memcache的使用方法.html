@@ -1,0 +1,1908 @@
+<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><title>PHP环境下Memcache的使用方法</title>
+<style>
+body{
+	width:960px;
+	margin:0 auto;
+}
+#title{
+	text-align:center;
+}
+</style>
+</head><body><div id='title'><h2>PHP环境下Memcache的使用方法</h2></div><p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	Memcache是danga.com的一个项目，最早是为 LiveJournal 服务的，目前全世界不少人使用这个缓存项目来构建自己大负载的网站，来分担数据库的压力。它可以应对任意多个连接，使用非阻塞的网络IO。由于它的工作机制是在内存中开辟一块空间，然后建立一个HashTable，Memcached自管理这些HashTable。Memcache官方网站：http://www.danga.com/memcached，更多详细的信息可以来这里了解。
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	为什么会有Memcache和memcached两种名称？其实Memcache是这个项目的名称，而memcached是它服务器端的主程序文件名，知道我的意思了把~~~~。一个是项目名称，一个是主程序文件名，在网上看到了很多人不明白，于是混用了。
+</p>
+<h4 style="text-indent:24px;font-size:14px;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	Memcache的安装
+</h4>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	分为两个过程：memcache服务器端的安装和memcached客户端的安装。
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	所谓服务器端的安装就是在服务器（一般都是linux系统）上安装Memcache实现数据的存储。
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	所谓客户端的安装就是指php（或者其他程序，Memcache还有其他不错的api接口提供）去使用服务器端的Memcache提供的函数，需要php添加扩展。
+</p>
+<h4 style="text-indent:24px;font-size:14px;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	PHP的Memcache
+</h4>
+<div id="highlighter_482732" class="syntaxhighlighter " style="margin:12px 0px 15px;font-family:Arial, Helvetica, sans-serif;color:#333333;padding:1px !important;border:0px !important;vertical-align:baseline !important;background:none #FFFFFF !important;">
+	<div class="lines" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none !important;">
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:80px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							01
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&lt;?php
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:111px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							02
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;//连接
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:213px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							03
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;$mem&nbsp;=&nbsp;new&nbsp;Memcache;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:360px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							04
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;$mem-&gt;connect("db.nowamagic.net", 12000);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:135px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							05
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;//保存数据
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:409px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							06
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;$mem-&gt;set('key1',&nbsp;'This is first value', 0, 60);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:248px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							07
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;$val&nbsp;=&nbsp;$mem-&gt;get('key1');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:360px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							08
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;"Get key1 value: "&nbsp;.&nbsp;$val&nbsp;."&lt;br /&gt;";
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:135px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							09
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;//替换数据
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:451px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							10
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;$mem-&gt;replace('key1',&nbsp;'This is replace value', 0, 60);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:248px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							11
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;$val&nbsp;=&nbsp;$mem-&gt;get('key1');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:367px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							12
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;"Get key1 value: "&nbsp;.&nbsp;$val&nbsp;.&nbsp;"&lt;br /&gt;";
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:135px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							13
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;//保存数组
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:360px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							14
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;$arr&nbsp;=&nbsp;array('aaa',&nbsp;'bbb',&nbsp;'ccc',&nbsp;'ddd');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:290px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							15
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;$mem-&gt;set('key2',&nbsp;$arr, 0, 60);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:255px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							16
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;$val2&nbsp;=&nbsp;$mem-&gt;get('key2');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:241px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							17
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;"Get key2 value: ";
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:178px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							18
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;print_r($val2);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:171px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							19
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;"&lt;br /&gt;";
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:135px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							20
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;//删除数据
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:220px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							21
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;$mem-&gt;delete('key1');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:248px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							22
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;$val&nbsp;=&nbsp;$mem-&gt;get('key1');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:367px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							23
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;"Get key1 value: "&nbsp;.&nbsp;$val&nbsp;.&nbsp;"&lt;br /&gt;";
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:159px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							24
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;//清除所有数据
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:171px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							25
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;$mem-&gt;flush();
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:255px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							26
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;$val2&nbsp;=&nbsp;$mem-&gt;get('key2');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:241px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							27
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;"Get key2 value: ";
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:178px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							28
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;print_r($val2);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:171px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							29
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;"&lt;br /&gt;";
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:135px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							30
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;//关闭连接
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:171px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							31
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;$mem-&gt;close();
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:59px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							32
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							?&gt;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	如果正常的话，浏览器将输出：
+</p>
+<div id="highlighter_754946" class="syntaxhighlighter " style="margin:12px 0px 15px;font-family:Arial, Helvetica, sans-serif;color:#333333;padding:1px !important;border:0px !important;vertical-align:baseline !important;background:none #FFFFFF !important;">
+	<div class="lines" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none !important;">
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:290px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							1
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							Get key1 value: This is first value
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:304px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							2
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							Get key1 value: This is replace value
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:528px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							3
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							Get key2 value: Array ( [0] =&gt; aaa [1] =&gt; bbb [2] =&gt; ccc [3] =&gt; ddd )
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:150px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							4
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							Get key1 value:
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:150px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							5
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							Get key2 value:
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<h4 style="text-indent:24px;font-size:14px;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	程序代码分析
+</h4>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	初始化一个Memcache的对象：$mem = new Memcache;
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	连接到我们的Memcache服务器端，第一个参数是服务器的IP地址，也可以是主机名，第二个参数是Memcache的开放的端口：$mem-&gt;connect("192.168.0.200", 12000);
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	保存一个数据到Memcache服务器上，第一个参数是数据的key，用来定位一个数据，第二个参数是需要保存的数据内容，这里是一个字符串，第三个参数是一个标记，一般设置为0或者MEMCACHE_COMPRESSED就行了，第四个参数是数据的有效期，就是说数据在这个时间内是有效的，如果过去这个时间，那么会被Memcache服务器端清除掉这个数据，单位是秒，如果设置为0，则是永远有效，我们这里设置了60，就是一分钟有效时间：$mem-&gt;set(‘key1‘, ‘This is first value’, 0, 60);
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	从Memcache服务器端获取一条数据，它只有一个参数，就是需要获取数据的key，我们这里是上一步设置的key1，现在获取这个数据后输出输出：
+</p>
+<div id="highlighter_770376" class="syntaxhighlighter " style="margin:12px 0px 15px;font-family:Arial, Helvetica, sans-serif;color:#333333;padding:1px !important;border:0px !important;vertical-align:baseline !important;background:none #FFFFFF !important;">
+	<div class="lines" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none !important;">
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:220px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							1
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							$val&nbsp;=&nbsp;$mem-&gt;get(’key1′);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:262px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							2
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							echo&nbsp;"Get key1 value: "&nbsp;.&nbsp;$val;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	现在是使用replace方法来替换掉上面key1的值，replace方法的参数跟set是一样的，不过第一个参数key1是必须是要替换数据内容的key，最后输出了：
+</p>
+<div id="highlighter_987515" class="syntaxhighlighter " style="margin:12px 0px 15px;font-family:Arial, Helvetica, sans-serif;color:#333333;padding:1px !important;border:0px !important;vertical-align:baseline !important;background:none #FFFFFF !important;">
+	<div class="lines" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none !important;">
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:423px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							1
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							$mem-&gt;replace('key1',&nbsp;'This is replace value', 0, 60);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:220px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							2
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							$val&nbsp;=&nbsp;$mem-&gt;get('key1');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:262px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							3
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							echo&nbsp;"Get key1 value: "&nbsp;.&nbsp;$val;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	同样的，Memcache也是可以保存数组的，下面是在Memcache上面保存了一个数组，然后获取回来并输出：
+</p>
+<div id="highlighter_891961" class="syntaxhighlighter " style="margin:12px 0px 15px;font-family:Arial, Helvetica, sans-serif;color:#333333;padding:1px !important;border:0px !important;vertical-align:baseline !important;background:none #FFFFFF !important;">
+	<div class="lines" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none !important;">
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:332px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							1
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							$arr&nbsp;=&nbsp;array('aaa',&nbsp;'bbb',&nbsp;'ccc',&nbsp;'ddd');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:262px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							2
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							$mem-&gt;set('key2',&nbsp;$arr, 0, 60);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:227px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							3
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							$val2&nbsp;=&nbsp;$mem-&gt;get('key2');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:150px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							4
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							print_r($val2);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	现在删除一个数据，使用delte接口，参数就是一个key，然后就能够把Memcache服务器这个key的数据删除，最后输出的时候没有结果：
+</p>
+<div id="highlighter_175512" class="syntaxhighlighter " style="margin:12px 0px 15px;font-family:Arial, Helvetica, sans-serif;color:#333333;padding:1px !important;border:0px !important;vertical-align:baseline !important;background:none #FFFFFF !important;">
+	<div class="lines" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none !important;">
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:192px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							1
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							$mem-&gt;delete('key1');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:220px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							2
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							$val&nbsp;=&nbsp;$mem-&gt;get('key1');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:339px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							3
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							echo&nbsp;"Get key1 value: "&nbsp;.&nbsp;$val&nbsp;.&nbsp;"&lt;br /&gt;";
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	最后我们把所有的保存在Memcache服务器上的数据都清除，会发现数据都没有了，最后输出key2的数据为空，最后关闭连接：
+</p>
+<div id="highlighter_629246" class="syntaxhighlighter " style="margin:12px 0px 15px;font-family:Arial, Helvetica, sans-serif;color:#333333;padding:1px !important;border:0px !important;vertical-align:baseline !important;background:none #FFFFFF !important;">
+	<div class="lines" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none !important;">
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:143px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							1
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							$mem-&gt;flush();
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:227px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							2
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							$val2&nbsp;=&nbsp;$mem-&gt;get('key2');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:213px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							3
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							echo&nbsp;"Get key2 value: ";
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:150px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							4
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							print_r($val2);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:143px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							5
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							echo&nbsp;"&lt;br /&gt;";
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<h4 style="text-indent:24px;font-size:14px;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	Memcache的使用
+</h4>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	使用Memcache的网站一般流量都是比较大的，为了缓解数据库的压力，让Memcache作为一个缓存区域，把部分信息保存在内存中，在前端能够迅速的进行存取。那么一般的焦点就是集中在如何分担数据库压力和进行分布式，毕竟单台Memcache的内存容量的有限的。我这里简单提出我的个人看法，未经实践，权当参考。
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	<strong>分布式应用</strong>
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	Memcache本来支持分布式，我们客户端稍加改造，更好的支持。我们的key可以适当进行有规律的封装，比如以user为主的网站来说，每个用户都有User ID，那么可以按照固定的ID来进行提取和存取，比如1开头的用户保存在第一台Memcache服务器上，以2开头的用户的数据保存在第二胎Mecache服务器上，存取数据都先按照User ID来进行相应的转换和存取。
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	但是这个有缺点，就是需要对User ID进行判断，如果业务不一致，或者其他类型的应用，可能不是那么合适，那么可以根据自己的实际业务来进行考虑，或者去想更合适的方法。
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	<strong>减少数据库压力</strong>
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	这个算是比较重要的，所有的数据基本上都是保存在数据库当中的，每次频繁的存取数据库，导致数据库性能极具下降，无法同时服务更多的用户，比如MySQL，特别频繁的锁表，那么让Memcache来分担数据库的压力吧。我们需要一种改动比较小，并且能够不会大规模改变前端的方式来进行改变目前的架构。
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	我考虑的一种简单方法：
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	后端的数据库操作模块，把所有的Select操作提取出来（update/delete/insert不管），然后把对应的SQL进行相应的hash算法计算得出一个hash数据key（比如MD5或者SHA），然后把这个key去Memcache中查找数据，如果这个数据不存在，说明还没写入到缓存中，那么从数据库把数据提取出来，一个是数组类格式，然后把数据在set到Memcache中，key就是这个SQL的hash值，然后相应的设置一个失效时间，比如一个小时，那么一个小时中的数据都是从缓存中提取的，有效减少数据库的压力。缺点是数据不实时，当数据做了修改以后，无法实时到前端显示，并且还有可能对内存占用比较大，毕竟每次select出来的数据数量可能比较巨大，这个是需要考虑的因素。
+</p>
+<h4 style="text-indent:24px;font-size:14px;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	Memcache的安全
+</h4>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	我们上面的Memcache服务器端都是直接通过客户端连接后直接操作，没有任何的验证过程，这样如果服务器是直接暴露在互联网上的话是比较危险，轻则数据泄露被其他无关人员查看，重则服务器被入侵，因为Mecache是以root权限运行的，况且里面可能存在一些我们未知的bug或者是缓冲区溢出的情况，这些都是我们未知的，所以危险性是可以预见的。为了安全起见，我做两点建议，能够稍微的防止黑客的入侵或者数据的泄露。
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	<strong>内网访问</strong>
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	最好把两台服务器之间的访问是内网形态的，一般是Web服务器跟Memcache服务器之间。普遍的服务器都是有两块网卡，一块指向互联网，一块指向内网，那么就让Web服务器通过内网的网卡来访问Memcache服务器，我们Memcache的服务器上启动的时候就监听内网的IP地址和端口，内网间的访问能够有效阻止其他非法的访问。
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	# memcached -d -m 1024 -u root -l 192.168.0.200 -p 11211 -c 1024 -P /tmp/memcached.pid
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	Memcache服务器端设置监听通过内网的192.168.0.200的ip的11211端口，占用1024MB内存，并且允许最大1024个并发连接。
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	<strong>设置防火墙</strong>
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	防火墙是简单有效的方式，如果却是两台服务器都是挂在网的，并且需要通过外网IP来访问Memcache的话，那么可以考虑使用防火墙或者代理程序来过滤非法访问。一般我们在Linux下可以使用iptables或者FreeBSD下的ipfw来指定一些规则防止一些非法的访问，比如我们可以设置只允许我们的Web服务器来访问我们Memcache服务器，同时阻止其他的访问。
+</p>
+<div id="highlighter_280524" class="syntaxhighlighter " style="margin:12px 0px 15px;font-family:Arial, Helvetica, sans-serif;color:#333333;padding:1px !important;border:0px !important;vertical-align:baseline !important;background:none #FFFFFF !important;">
+	<div class="lines" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none !important;">
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:136px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							1
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							# iptables -F
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:213px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							2
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							# iptables -P INPUT DROP
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:493px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							3
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							# iptables -A INPUT -p tcp -s 192.168.0.2 –dport 11211 -j ACCEPT
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:493px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							4
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							# iptables -A INPUT -p udp -s 192.168.0.2 –dport 11211 -j ACCEPT
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	上面的iptables规则就是只允许192.168.0.2这台Web服务器对Memcache服务器的访问，能够有效的阻止一些非法访问，相应的也可以增加一些其他的规则来加强安全性，这个可以根据自己的需要来做。
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	Memcache是danga.com的一个项目，最早是为 LiveJournal 服务的，目前全世界不少人使用这个缓存项目来构建自己大负载的网站，来分担数据库的压力。它可以应对任意多个连接，使用非阻塞的网络IO。由于它的工作机制是在内存中开辟一块空间，然后建立一个HashTable，Memcached自管理这些HashTable。Memcache官方网站：http://www.danga.com/memcached，更多详细的信息可以来这里了解。
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	为什么会有Memcache和memcached两种名称？其实Memcache是这个项目的名称，而memcached是它服务器端的主程序文件名，知道我的意思了把~~~~。一个是项目名称，一个是主程序文件名，在网上看到了很多人不明白，于是混用了。
+</p>
+<h4 style="text-indent:24px;font-size:14px;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	Memcache的安装
+</h4>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	分为两个过程：memcache服务器端的安装和memcached客户端的安装。
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	所谓服务器端的安装就是在服务器（一般都是linux系统）上安装Memcache实现数据的存储。
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	所谓客户端的安装就是指php（或者其他程序，Memcache还有其他不错的api接口提供）去使用服务器端的Memcache提供的函数，需要php添加扩展。
+</p>
+<h4 style="text-indent:24px;font-size:14px;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	PHP的Memcache
+</h4>
+<div id="highlighter_482732" class="syntaxhighlighter " style="margin:12px 0px 15px;font-family:Arial, Helvetica, sans-serif;color:#333333;padding:1px !important;border:0px !important;vertical-align:baseline !important;background:none #FFFFFF !important;">
+	<div class="lines" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none !important;">
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:80px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							01
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&lt;?php
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:111px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							02
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;//连接
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:213px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							03
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;$mem&nbsp;=&nbsp;new&nbsp;Memcache;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:360px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							04
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;$mem-&gt;connect("db.nowamagic.net", 12000);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:135px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							05
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;//保存数据
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:409px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							06
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;$mem-&gt;set('key1',&nbsp;'This is first value', 0, 60);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:248px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							07
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;$val&nbsp;=&nbsp;$mem-&gt;get('key1');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:360px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							08
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;"Get key1 value: "&nbsp;.&nbsp;$val&nbsp;."&lt;br /&gt;";
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:135px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							09
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;//替换数据
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:451px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							10
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;$mem-&gt;replace('key1',&nbsp;'This is replace value', 0, 60);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:248px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							11
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;$val&nbsp;=&nbsp;$mem-&gt;get('key1');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:367px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							12
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;"Get key1 value: "&nbsp;.&nbsp;$val&nbsp;.&nbsp;"&lt;br /&gt;";
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:135px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							13
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;//保存数组
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:360px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							14
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;$arr&nbsp;=&nbsp;array('aaa',&nbsp;'bbb',&nbsp;'ccc',&nbsp;'ddd');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:290px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							15
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;$mem-&gt;set('key2',&nbsp;$arr, 0, 60);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:255px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							16
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;$val2&nbsp;=&nbsp;$mem-&gt;get('key2');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:241px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							17
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;"Get key2 value: ";
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:178px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							18
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;print_r($val2);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:171px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							19
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;"&lt;br /&gt;";
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:135px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							20
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;//删除数据
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:220px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							21
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;$mem-&gt;delete('key1');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:248px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							22
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;$val&nbsp;=&nbsp;$mem-&gt;get('key1');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:367px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							23
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;"Get key1 value: "&nbsp;.&nbsp;$val&nbsp;.&nbsp;"&lt;br /&gt;";
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:159px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							24
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;//清除所有数据
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:171px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							25
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;$mem-&gt;flush();
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:255px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							26
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;$val2&nbsp;=&nbsp;$mem-&gt;get('key2');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:241px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							27
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;"Get key2 value: ";
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:178px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							28
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;print_r($val2);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:171px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							29
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;"&lt;br /&gt;";
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:135px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							30
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;//关闭连接
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:171px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							31
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							&nbsp;&nbsp;&nbsp;&nbsp;$mem-&gt;close();
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:59px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							32
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							?&gt;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	如果正常的话，浏览器将输出：
+</p>
+<div id="highlighter_754946" class="syntaxhighlighter " style="margin:12px 0px 15px;font-family:Arial, Helvetica, sans-serif;color:#333333;padding:1px !important;border:0px !important;vertical-align:baseline !important;background:none #FFFFFF !important;">
+	<div class="lines" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none !important;">
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:290px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							1
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							Get key1 value: This is first value
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:304px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							2
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							Get key1 value: This is replace value
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:528px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							3
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							Get key2 value: Array ( [0] =&gt; aaa [1] =&gt; bbb [2] =&gt; ccc [3] =&gt; ddd )
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:150px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							4
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							Get key1 value:
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:150px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							5
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							Get key2 value:
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<h4 style="text-indent:24px;font-size:14px;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	程序代码分析
+</h4>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	初始化一个Memcache的对象：$mem = new Memcache;
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	连接到我们的Memcache服务器端，第一个参数是服务器的IP地址，也可以是主机名，第二个参数是Memcache的开放的端口：$mem-&gt;connect("192.168.0.200", 12000);
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	保存一个数据到Memcache服务器上，第一个参数是数据的key，用来定位一个数据，第二个参数是需要保存的数据内容，这里是一个字符串，第三个参数是一个标记，一般设置为0或者MEMCACHE_COMPRESSED就行了，第四个参数是数据的有效期，就是说数据在这个时间内是有效的，如果过去这个时间，那么会被Memcache服务器端清除掉这个数据，单位是秒，如果设置为0，则是永远有效，我们这里设置了60，就是一分钟有效时间：$mem-&gt;set(‘key1‘, ‘This is first value’, 0, 60);
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	从Memcache服务器端获取一条数据，它只有一个参数，就是需要获取数据的key，我们这里是上一步设置的key1，现在获取这个数据后输出输出：
+</p>
+<div id="highlighter_770376" class="syntaxhighlighter " style="margin:12px 0px 15px;font-family:Arial, Helvetica, sans-serif;color:#333333;padding:1px !important;border:0px !important;vertical-align:baseline !important;background:none #FFFFFF !important;">
+	<div class="lines" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none !important;">
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:220px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							1
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							$val&nbsp;=&nbsp;$mem-&gt;get(’key1′);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:262px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							2
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							echo&nbsp;"Get key1 value: "&nbsp;.&nbsp;$val;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	现在是使用replace方法来替换掉上面key1的值，replace方法的参数跟set是一样的，不过第一个参数key1是必须是要替换数据内容的key，最后输出了：
+</p>
+<div id="highlighter_987515" class="syntaxhighlighter " style="margin:12px 0px 15px;font-family:Arial, Helvetica, sans-serif;color:#333333;padding:1px !important;border:0px !important;vertical-align:baseline !important;background:none #FFFFFF !important;">
+	<div class="lines" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none !important;">
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:423px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							1
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							$mem-&gt;replace('key1',&nbsp;'This is replace value', 0, 60);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:220px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							2
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							$val&nbsp;=&nbsp;$mem-&gt;get('key1');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:262px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							3
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							echo&nbsp;"Get key1 value: "&nbsp;.&nbsp;$val;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	同样的，Memcache也是可以保存数组的，下面是在Memcache上面保存了一个数组，然后获取回来并输出：
+</p>
+<div id="highlighter_891961" class="syntaxhighlighter " style="margin:12px 0px 15px;font-family:Arial, Helvetica, sans-serif;color:#333333;padding:1px !important;border:0px !important;vertical-align:baseline !important;background:none #FFFFFF !important;">
+	<div class="lines" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none !important;">
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:332px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							1
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							$arr&nbsp;=&nbsp;array('aaa',&nbsp;'bbb',&nbsp;'ccc',&nbsp;'ddd');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:262px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							2
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							$mem-&gt;set('key2',&nbsp;$arr, 0, 60);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:227px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							3
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							$val2&nbsp;=&nbsp;$mem-&gt;get('key2');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:150px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							4
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							print_r($val2);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	现在删除一个数据，使用delte接口，参数就是一个key，然后就能够把Memcache服务器这个key的数据删除，最后输出的时候没有结果：
+</p>
+<div id="highlighter_175512" class="syntaxhighlighter " style="margin:12px 0px 15px;font-family:Arial, Helvetica, sans-serif;color:#333333;padding:1px !important;border:0px !important;vertical-align:baseline !important;background:none #FFFFFF !important;">
+	<div class="lines" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none !important;">
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:192px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							1
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							$mem-&gt;delete('key1');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:220px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							2
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							$val&nbsp;=&nbsp;$mem-&gt;get('key1');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:339px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							3
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							echo&nbsp;"Get key1 value: "&nbsp;.&nbsp;$val&nbsp;.&nbsp;"&lt;br /&gt;";
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	最后我们把所有的保存在Memcache服务器上的数据都清除，会发现数据都没有了，最后输出key2的数据为空，最后关闭连接：
+</p>
+<div id="highlighter_629246" class="syntaxhighlighter " style="margin:12px 0px 15px;font-family:Arial, Helvetica, sans-serif;color:#333333;padding:1px !important;border:0px !important;vertical-align:baseline !important;background:none #FFFFFF !important;">
+	<div class="lines" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none !important;">
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:143px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							1
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							$mem-&gt;flush();
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:227px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							2
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							$val2&nbsp;=&nbsp;$mem-&gt;get('key2');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:213px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							3
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							echo&nbsp;"Get key2 value: ";
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:150px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							4
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							print_r($val2);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:143px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							5
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							echo&nbsp;"&lt;br /&gt;";
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<h4 style="text-indent:24px;font-size:14px;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	Memcache的使用
+</h4>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	使用Memcache的网站一般流量都是比较大的，为了缓解数据库的压力，让Memcache作为一个缓存区域，把部分信息保存在内存中，在前端能够迅速的进行存取。那么一般的焦点就是集中在如何分担数据库压力和进行分布式，毕竟单台Memcache的内存容量的有限的。我这里简单提出我的个人看法，未经实践，权当参考。
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	<strong>分布式应用</strong>
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	Memcache本来支持分布式，我们客户端稍加改造，更好的支持。我们的key可以适当进行有规律的封装，比如以user为主的网站来说，每个用户都有User ID，那么可以按照固定的ID来进行提取和存取，比如1开头的用户保存在第一台Memcache服务器上，以2开头的用户的数据保存在第二胎Mecache服务器上，存取数据都先按照User ID来进行相应的转换和存取。
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	但是这个有缺点，就是需要对User ID进行判断，如果业务不一致，或者其他类型的应用，可能不是那么合适，那么可以根据自己的实际业务来进行考虑，或者去想更合适的方法。
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	<strong>减少数据库压力</strong>
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	这个算是比较重要的，所有的数据基本上都是保存在数据库当中的，每次频繁的存取数据库，导致数据库性能极具下降，无法同时服务更多的用户，比如MySQL，特别频繁的锁表，那么让Memcache来分担数据库的压力吧。我们需要一种改动比较小，并且能够不会大规模改变前端的方式来进行改变目前的架构。
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	我考虑的一种简单方法：
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	后端的数据库操作模块，把所有的Select操作提取出来（update/delete/insert不管），然后把对应的SQL进行相应的hash算法计算得出一个hash数据key（比如MD5或者SHA），然后把这个key去Memcache中查找数据，如果这个数据不存在，说明还没写入到缓存中，那么从数据库把数据提取出来，一个是数组类格式，然后把数据在set到Memcache中，key就是这个SQL的hash值，然后相应的设置一个失效时间，比如一个小时，那么一个小时中的数据都是从缓存中提取的，有效减少数据库的压力。缺点是数据不实时，当数据做了修改以后，无法实时到前端显示，并且还有可能对内存占用比较大，毕竟每次select出来的数据数量可能比较巨大，这个是需要考虑的因素。
+</p>
+<h4 style="text-indent:24px;font-size:14px;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	Memcache的安全
+</h4>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	我们上面的Memcache服务器端都是直接通过客户端连接后直接操作，没有任何的验证过程，这样如果服务器是直接暴露在互联网上的话是比较危险，轻则数据泄露被其他无关人员查看，重则服务器被入侵，因为Mecache是以root权限运行的，况且里面可能存在一些我们未知的bug或者是缓冲区溢出的情况，这些都是我们未知的，所以危险性是可以预见的。为了安全起见，我做两点建议，能够稍微的防止黑客的入侵或者数据的泄露。
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	<strong>内网访问</strong>
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	最好把两台服务器之间的访问是内网形态的，一般是Web服务器跟Memcache服务器之间。普遍的服务器都是有两块网卡，一块指向互联网，一块指向内网，那么就让Web服务器通过内网的网卡来访问Memcache服务器，我们Memcache的服务器上启动的时候就监听内网的IP地址和端口，内网间的访问能够有效阻止其他非法的访问。
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	# memcached -d -m 1024 -u root -l 192.168.0.200 -p 11211 -c 1024 -P /tmp/memcached.pid
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	Memcache服务器端设置监听通过内网的192.168.0.200的ip的11211端口，占用1024MB内存，并且允许最大1024个并发连接。
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	<strong>设置防火墙</strong>
+</p>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	防火墙是简单有效的方式，如果却是两台服务器都是挂在网的，并且需要通过外网IP来访问Memcache的话，那么可以考虑使用防火墙或者代理程序来过滤非法访问。一般我们在Linux下可以使用iptables或者FreeBSD下的ipfw来指定一些规则防止一些非法的访问，比如我们可以设置只允许我们的Web服务器来访问我们Memcache服务器，同时阻止其他的访问。
+</p>
+<div id="highlighter_280524" class="syntaxhighlighter " style="margin:12px 0px 15px;font-family:Arial, Helvetica, sans-serif;color:#333333;padding:1px !important;border:0px !important;vertical-align:baseline !important;background:none #FFFFFF !important;">
+	<div class="lines" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none !important;">
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:136px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							1
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							# iptables -F
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:213px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							2
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							# iptables -P INPUT DROP
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt1" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;">
+			<table style="border:1px solid #888888;width:493px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							3
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							# iptables -A INPUT -p tcp -s 192.168.0.2 –dport 11211 -j ACCEPT
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="line alt2" style="margin:12px 0px 15px;padding:0px !important;border:0px !important;vertical-align:baseline !important;background:none #F8F8F8 !important;">
+			<table style="border:1px solid #888888;width:493px;padding:0px !important;height:auto !important;font-family:'Courier New', Courier, monospace !important;font-size:12px !important;background:none !important;">
+				<tbody>
+					<tr>
+						<td class="number" style="border:1px solid #AAAAAA;vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;color:#AFAFAF !important;background:none !important;">
+							4
+						</td>
+						<td class="content" style="vertical-align:top !important;font-family:'Courier New', Courier, monospace !important;background:none !important;">
+							# iptables -A INPUT -p udp -s 192.168.0.2 –dport 11211 -j ACCEPT
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<p style="text-indent:2em;color:#333333;font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;background-color:#FFFFFF;">
+	上面的iptables规则就是只允许192.168.0.2这台Web服务器对Memcache服务器的访问，能够有效的阻止一些非法访问，相应的也可以增加一些其他的规则来加强安全性，这个可以根据自己的需要来做。
+</p></body></html>

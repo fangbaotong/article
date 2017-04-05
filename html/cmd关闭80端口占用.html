@@ -1,0 +1,20 @@
+<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><title>cmd关闭80端口占用</title>
+<style>
+body{
+	width:960px;
+	margin:0 auto;
+}
+#title{
+	text-align:center;
+}
+</style>
+</head><body><div id='title'><h2>cmd关闭80端口占用</h2></div>&nbsp; 1.查看占用80端口号的应用程序&nbsp;&nbsp; &nbsp;netstat -aon|findstr
+ &nbsp;"80"
+<p>
+	&nbsp; 2.查看 PID 对应的进程&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;tasklist|findstr
+ &nbsp;"<span style="color:#ff0000;">PIC</span>"&nbsp; （这里的PIC如：tor.exe）
+ &nbsp;&nbsp;
+</p>
+<p>
+	&nbsp; 3.结束该进程&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; taskkill /f /t /im <span style="color:#ff0000;">HTTPD.EXE</span>
+</p></body></html>

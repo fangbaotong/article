@@ -1,0 +1,111 @@
+<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><title>让ffmpeg支持输出h264格式</title>
+<style>
+body{
+	width:960px;
+	margin:0 auto;
+}
+#title{
+	text-align:center;
+}
+</style>
+</head><body><div id='title'><h2>让ffmpeg支持输出h264格式</h2></div>默认输出视频会报错：<br />
+me@framework:/var/www/wavtest$ ffmpeg -i test.wav -ab 128k test.mp3<br />
+FFmpeg version 0.5-svn17737+3:0.svn20090303-1ubuntu6.2, Copyright (c) 2000-2009 Fabrice Bellard, et al.<br />
+configuration: --enable-gpl --enable-postproc --enable-swscale 
+--enable-x11grab --extra-version=svn17737+3:0.svn20090303-1ubuntu6.2 
+--prefix=/usr --enable-avfilter --enable-avfilter-lavf --enable-libgsm 
+--enable-libschroedinger --enable-libspeex --enable-libtheora 
+--enable-libvorbis --enable-pthreads --disable-stripping --disable-vhook
+ --enable-libdc1394 --disable-armv5te --disable-armv6 --disable-armv6t2 
+--disable-armvfp --disable-neon --disable-altivec --disable-vis 
+--enable-shared --disable-static<br />
+libavutil     49.15. 0 / 49.15. 0<br />
+libavcodec    52.20. 0 / 52.20. 0<br />
+libavformat   52.31. 0 / 52.31. 0<br />
+libavdevice   52. 1. 0 / 52. 1. 0<br />
+libavfilter    0. 4. 0 /  0. 4. 0<br />
+libswscale     0. 7. 1 /  0. 7. 1<br />
+libpostproc   51. 2. 0 / 51. 2. 0<br />
+built on Apr 23 2010 15:08:34, gcc: 4.3.3<br />
+Input #0, wav, from 'test.wav':<br />
+Duration: 00:00:07.55, bitrate: 88 kb/s<br />
+Stream #0.0: Audio: pcm_u8, 11025 Hz, mono, s16, 88 kb/s<br />
+Output #0, mp3, to 'test.mp3':<br />
+Stream #0.0: Audio: 0x0000, 11025 Hz, mono, s16, 128 kb/s<br />
+Stream mapping:<br />
+Stream #0.0 -&gt; #0.0<br />
+Unsupported codec for output stream #0.0<br />
+<br />
+转载内容：<br />
+ffmpeg安装第三方编码器（encoder）库<br />
+关键词：ffmpeg、编码h264、第三方encoder<br />
+安装好了ffmpeg后，如果你使用ffmpeg工具去把某个视频文件转成h264视频编码、mp3音频编码or其他ffmpeg自身不带的xxx编码类
+型，就会看到报错信息，unknown encoder 
+'xxx'。此刻你需要的只要去安装其他的编码器就行了，本质上其实是把其他的编码器以库的形式安装好，例如，把正确的libx264.so or 
+libx264.a存放在/usr/lib下 or /usr/local/lib下。<br />
+举两个例子吧，视频方面的编码器就拿h264来说，音频方面的例子就拿mp3（mp3lame）来说。<br />
+扫盲，Linux下安装一个正规的软件，一般都是三部曲，①、【./configure】（加一些可能的参数，比如enable一些功能，disable
+一些功能，究竟有哪些功能可以开启和关闭呢？一般通过./configure --help命令来查询），②、【make】（编译），③、【sudo 
+make install】（把生成的二进制应用程序文件和.so和.a复制到/usr/local/下）<br />
+一、h264<br />
+动手搜一下ffmpeg的工程代码库，会发现每个codec都有一下几个成员变量，但是有好几个codec缺少encoder，h264就是其中一个了。
+先不管什么原因，ffmpeg没有原生的支持h264，但是你可以查看一下avcodec_register_all这个API，会发现一大片的
+REGISTER_ENCODER(XXX, xxx)<br />
+REGISTER_DECODER(XXX, xxx)<br />
+这里分很多块，例如/* video codecs */，/* audio codecs */，/* external libraries */<br />
+但是你在/* video codecs */这一块却看不到h264的REGISTER_ENDECODER (H264, 
+h264);这句话，如果你坚持往下翻，你会在/* external libraries */这块里面发现REGISTER_ENCODER 
+(LIBX264, libx264);所以ffmpeg是有给h264准备好了接口的，但是需要第三方库来支持。<br />
+回到重点，怎么装呢？<br />
+1.先下载x264的工程代码，【git clone git://git.videolan.org/x264.git】。<br />
+2.进入x264目录，然后./configure --help看看它的帮助信息，我们这里需要的是x264以.so or 
+.a的形式来支援ffmpeg，所以一般就关注shared和static关键词就可以了。执行./configure --enable-shared
+ --enable-static就行了。<br />
+3.完了make &amp;&amp; sudo make install就可以了。<br />
+你会发现我们在./configure的时候没有指定前缀--prefix=/usr，很明显，libx264.so和libx264.a就会复制到/usr/local/lib下去，记住这里，等下会因为这里要做一些修改。<br />
+二、mp3lame<br />
+上面说了h264，相信mp3lame理解起来就简单多了。<br />
+1.先下载mp3lame的工程代码，http://sourceforge.net/projects/lame/files/lame/，为什么这里
+要显得多余的讲一下mp3lame呢，是这样的。大家可以看到x264用的是git，mp3lame是用的sourceforge，不妨再多说一个
+faac（也是一种原生ffmpeg不支持的音频codec），faac用的是http://sourceforge.net/projects
+/faac/files/faac-src/，所以每一种codec或者很重要的软件都有一个团队或者社区在维护，所以需要什么东西，尽量去
+sourceforge或者git上找，其他地方找的可能不够新，可能不完整不正确。<br />
+2.然后也是./configure --help先，看看哪些功能是我们需要打开关闭的<br />
+3.完了make &amp;&amp; sudo make install就可以了。<br />
+很明显，我们又没有指定--prefix-/usr，所以mp3lame的libmp3lame.so和libmp3lame.a就被赋值到了/usr/local/lib下了。<br />
+<br />
+三、重新编译ffmpeg<br />
+1.进入ffmpeg目录，./configure --enable-gpl --enable-libx264 --enable-libmp3lame，然后就生成了新的makefile了。<br />
+2.执行sudo make clean &amp;&amp; make sudo make install。<br />
+3.这样ffmpeg就被重新编译了，完了就可以验证一下，使用ffmpeg工具，把某个视频文件中的视频流转码成h264格式，音频流转码成mp3lame格式，不妨试试。<br />
+4.如果你真的尝试了，你应该会看到类似于“libxxx.so找不到”的错误提示，解决办法如下：<br />
+（1）.表象：ffmpeg运行的时候试图去链接libxxx.so，但是却找不到相应的libxxx.so。<br />
+（2）.疑惑：我之前明明安装了libxxx.so的。<br />
+（3）.原因：程序运行的时候默认是去/usr/lib下找libxxx.so，但是我们之前安装的确实在/usr/local/lib下，所以造成这个报错。<br />
+（4）.解决办法：有很多，我说一种我亲测过的。<br />
+在/etc/ld.so.conf文件中添加一行/etc/ld.so.conf，当然是用root用户啦。然后执行ldconfig命令使得刚才的修改生效，完了再运行ffmpeg的转码命令试试，可以了吧。<br />
+<br />
+之前我尝试过用ffplay来播放一个h264编码的视频，结果当然是可以播放，我就天真的以为ffmpeg支持h264了，其实不然，ffmpeg主要
+还是用来解码，所以部分格式的encoder却没有，所以才会有第三方库支援，为什么原生ffmpeg不支持某些格式呢？原因我暂时不知道。为了解决
+ffmpeg可以编码h264这个问题，我在网上搜索一些资料，然后总结成上文，在此过程中我还收获了一些Linux的知识，也已经写出。<br />
+<br />
+参考资料：<br />
+http://hi.baidu.com/y11022053/item/6d4c34ba87c7b5f362388e9a<br />
+http://www.cnblogs.com/MikeZhang/archive/2012/07/21/installFFmpegFromSourceCode.html<br />
+<br />
+LINUX下ffmpeg安装：<br />
+http://wenku.baidu.com/view/59aa8dafdd3383c4bb4cd2cf<br />
+<br />
+X264编码下载地址：<br />
+http://www.videolan.org/developers/x264.html<br />
+<br />
+ffmpeg 参数说明<br />
+http://deleak.com/blog/wp-content/uploads/2010/09/ffmpeg-options.html<br />
+<br />
+ffmpeg使用x264的使用配置：<br />
+http://www.php-oa.com/2009/03/09/ffmpeg_x264.html<br />
+<br />
+mencoder的使用<br />
+http://ivarptr.blogspot.hk/2010/11/ubuntuh264mp4.html<br />
+http://www.360doc.com/content/10/0513/15/551936_27394082.shtml<br />
+http://www.mplayerhq.hu/DOCS/HTML/zh_CN/mencoder.html</body></html>

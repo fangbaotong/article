@@ -1,0 +1,457 @@
+<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><title>win7php7 apache mysql安装</title>
+		<style>
+			body{
+				width:960px;
+				margin:0 auto;
+			}
+			#title{
+				text-align:center;
+			}
+		</style>
+	</head><body><div id="title">
+	<h2>
+		win7 php7+apache+mysql安装
+	</h2>
+</div>
+<div id="title" style="text-align:center;font-family:Simsun;font-size:medium;">
+	<h2>
+		<br />
+	</h2>
+</div>
+<h2 class="exp-content-head" style="font-family:Simsun;">
+	工具/原料
+</h2>
+<p style="font-family:Simsun;font-size:medium;">
+	<br />
+</p>
+<ul class="exp-content-unorderlist " style="font-family:Simsun;font-size:medium;">
+	<li class="exp-content-list list-item-1">
+		<div class="content-list-text">
+			32位官方安装包 http://pan.baidu.com/s/1i3PnDWD (363.7MB)
+		</div>
+	</li>
+	<li class="exp-content-list list-item-2">
+		<p>
+			64位官方安装包http://pan.baidu.com/s/1sknZOHB (381.3MB,必须是64位windows系统)
+		</p>
+	</li>
+</ul>
+<p style="font-family:Simsun;font-size:medium;">
+	<br />
+</p>
+<h2 class="exp-content-head" style="font-family:Simsun;">
+	准备工作
+</h2>
+<ol class="exp-conent-orderlist" style="font-family:Simsun;font-size:medium;">
+	<li class="exp-content-list list-item-1">
+		<div class="list-icon">
+		</div>
+		<div class="content-list-text">
+			<p>
+				下载以下文件。这里提供最新32位和64位安装包，安装过程并无区别。
+			</p>
+			<p>
+				32位官方安装包 http://pan.baidu.com/s/1i3PnDWD (363.7MB)
+			</p>
+			<p>
+				64位官方安装包http://pan.baidu.com/s/1sknZOHB (381.3MB,必须是64位windows系统)
+			</p>
+		</div>
+		<div class="content-list-media">
+			<div class="content-list-image clearfix">
+				<img src="http://localhost/article/bianjiqi/php/attached/image/20160204/20160204023723_19198.png" alt="" /><br />
+			</div>
+		</div>
+	</li>
+	<li class="exp-content-list list-item-2">
+		<div class="list-icon">
+		</div>
+		<div class="content-list-text">
+			<p>
+				&nbsp; &nbsp; &nbsp; 在你喜欢的位置新建一个文件夹，用来存放接下来的安装软件。
+			</p>
+			<p>
+				我这里在G盘下建新建文件夹myServer ，请根据你的实际情况选择。
+			</p>
+			<p>
+				记住文件夹路径G:\myServer\。注：需要安装一个VC支持包，很小的文件，不是整个visual studio!!!
+			</p>
+		</div>
+		<div class="content-list-media">
+			<p>
+				<img src="http://localhost/article/bianjiqi/php/attached/image/20160204/20160204024001_25542.png" alt="" /> 
+			</p>
+		</div>
+	</li>
+</ol>
+<div class="exp-content-block" style="font-family:Simsun;font-size:medium;">
+	<h2 class="exp-content-head">
+		第一部分。安装Apache2.4.9 服务器
+	</h2>
+	<div class="exp-content-body">
+		<ol class="exp-conent-orderlist">
+			<li class="exp-content-list list-item-1">
+				<div class="list-icon">
+				</div>
+				<div class="content-list-text">
+					<p>
+						下载回来的是解压文件，解压获得程序文件夹Apache24和说明文件readme_first.html。
+					</p>
+				</div>
+				<div class="content-list-media">
+					<div class="content-list-image clearfix">
+						<img src="http://localhost/article/bianjiqi/php/attached/image/20160204/20160204024235_66153.png" alt="" /><br />
+					</div>
+				</div>
+			</li>
+			<li class="exp-content-list list-item-2">
+				<div class="list-icon">
+					2
+				</div>
+				<div class="content-list-text">
+					<p>
+						配置apache服务器。
+					</p>
+				</div>
+				<div class="content-list-media">
+					<div class="content-list-image clearfix">
+						<img src="http://localhost/article/bianjiqi/php/attached/image/20160204/20160204024324_15147.png" alt="" /><br />
+					</div>
+				</div>
+			</li>
+			<li class="exp-content-list list-item-3">
+				<div class="list-icon">
+					3
+				</div>
+				<div class="content-list-text">
+					<p>
+						启动Apache服务器。
+					</p>
+				</div>
+				<div class="content-list-media">
+					<div class="content-list-image clearfix">
+						<img src="http://localhost/article/bianjiqi/php/attached/image/20160204/20160204024442_62127.png" alt="" /><br />
+					</div>
+				</div>
+			</li>
+			<li class="exp-content-list list-item-4">
+				<div class="list-icon">
+					4
+				</div>
+				<div class="content-list-text">
+					<p>
+						测 
+试。你可以把Apache24\htdocs目录下的index.html放到\www目录下，用浏览器127.0.0.1访问会出现“It 
+works”那么就说明apache已经正确安装了。如果在命令行出现问题提示，可能是80端口被其他程序占用。如果是访问403,请参考上面第2步“配
+ 置apache服务器”逐个核对。
+					</p>
+				</div>
+				<div class="content-list-media">
+					<div class="content-list-image clearfix">
+						<img src="http://localhost/article/bianjiqi/php/attached/image/20160204/20160204024621_85322.png" alt="" /><br />
+					</div>
+				</div>
+			</li>
+			<li class="exp-content-list list-item-5">
+				<div class="list-icon">
+					5
+				</div>
+				<div class="content-list-text">
+					<p>
+						加入为windows的系统服务，让Apache自启动。
+					</p>
+					<p>
+						(1) 关闭3的那个httpd命令窗口，不然会报错的。
+					</p>
+					<p>
+						(2) 开始菜单→运行输入cmd打开命令提示符。输入G:回车 cd &nbsp;myServer/Apache24/bin回车
+					</p>
+				</div>
+				<div class="content-list-media">
+					<div class="content-list-image clearfix">
+						<img src="http://localhost/article/bianjiqi/php/attached/image/20160204/20160204024846_19033.png" alt="" /><br />
+					</div>
+				</div>
+				<div class="last-item">
+					<span class="last-item-end">END</span> 
+				</div>
+			</li>
+		</ol>
+	</div>
+</div>
+<div class="exp-content-block" style="font-family:Simsun;font-size:medium;">
+	<h2 class="exp-content-head">
+		第二部分 安装php7.0.0
+	</h2>
+	<div class="exp-content-body">
+		<ol class="exp-conent-orderlist">
+			<li class="exp-content-list list-item-1">
+				<div class="list-icon">
+					1
+				</div>
+				<div class="content-list-text">
+					<p>
+						下面是php的安装。
+					</p>
+				</div>
+				<div class="content-list-media">
+					<div class="content-list-image clearfix">
+						<img src="http://localhost/article/bianjiqi/php/attached/image/20160204/20160204024952_59652.png" alt="" /><br />
+					</div>
+				</div>
+			</li>
+			<li class="exp-content-list list-item-2">
+				<div class="list-icon">
+					2
+				</div>
+				<div class="content-list-text">
+					<p>
+						&nbsp;重启&nbsp;Apache&nbsp;服务器！！！
+					</p>
+				</div>
+				<div class="content-list-media">
+					<div class="content-list-image clearfix">
+						<img src="http://localhost/article/bianjiqi/php/attached/image/20160204/20160204025049_81364.png" alt="" /><br />
+					</div>
+				</div>
+				<div class="last-item">
+					<span class="last-item-end">END</span> 
+				</div>
+			</li>
+		</ol>
+	</div>
+</div>
+<div class="exp-content-block" style="font-family:Simsun;font-size:medium;">
+	<h2 class="exp-content-head">
+		第三部分。MySQL的安装
+	</h2>
+	<div class="exp-content-body">
+		<ol class="exp-conent-orderlist">
+			<li class="exp-content-list list-item-1">
+				<div class="list-icon">
+					1
+				</div>
+				<div class="content-list-text">
+					<p>
+						下面是mysql的安装。
+					</p>
+				</div>
+				<div class="content-list-media">
+					<div class="content-list-image clearfix">
+						<p>
+							<img src="http://localhost/article/bianjiqi/php/attached/image/20160204/20160204025144_27786.png" alt="" /> 
+						</p>
+					</div>
+				</div>
+			</li>
+			<li class="exp-content-list list-item-1">
+				配置默认文件&nbsp;&nbsp; ; 设置mysql客户端默认字符集&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; default-character-set=utf8
+				<p>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [mysqld]
+				</p>
+				<p>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;设置3306端口
+				</p>
+				<p>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port = 3306&nbsp;
+				</p>
+				<p>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;; 设置mysql的安装目录
+				</p>
+				<p>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;basedir=D:\web\mysql
+				</p>
+				<p>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;; 设置mysql数据库的数据的存放目录
+				</p>
+				<p>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;datadir = D:\web\mysql\data
+				</p>
+				<p>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;; 允许最大连接数
+				</p>
+				<p>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_connections=200
+				</p>
+				<p>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;; 服务端使用的字符集默认为8比特编码的latin1字符集
+				</p>
+				<p>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;character-set-server=utf8
+				</p>
+				<p>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;; 创建新表时将使用的默认存储引擎
+				</p>
+				<p>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default-storage-engine=INNODB
+				</p>
+			</li>
+			<li class="exp-content-list list-item-1">
+				<ol class="exp-conent-orderlist">
+					<li class="exp-content-list list-item-1">
+						<div class="content-list-text">
+							安装mysql服务
+							<p>
+								a.右击开始按键选择搜索输入cmd，会出现一个命令提示符右键选择以管理员身份运行这个选项，不然就会出现一个身份不够的错误码，这是windows系统的一个特点知道就行了。若是my.ini写错的话，错误码是1067.
+							</p>
+						</div>
+						<div class="content-list-media">
+							<div class="content-list-image clearfix">
+								<a class="exp-image-wraper" href="http://jingyan.baidu.com/album/e3c78d64b44ef53c4c85f51a.html?picindex=8" target="_self"><img src="http://a.hiphotos.baidu.com/exp/w=500/sign=5ac8ffa2d33f8794d3ff482ee21a0ead/024f78f0f736afc3b1bc237fb419ebc4b7451273.jpg" class="exp-image-default" alt="mysql5.7.10下载安装、配置与使用" /><span class="exp-album-enter-mask"></span></a>
+							</div>
+						</div>
+					</li>
+					<li class="exp-content-list list-item-2">
+						<div class="list-icon">
+							2
+						</div>
+						<div class="content-list-text">
+							<p>
+								以管理员身份打开cmd窗口后，将目录切换到你的解压文件bin目录下。再输入mysqld install回车运行就可以了，注意是mysqld不是mysql。出现安装成功就可以了。由于我已经安装过了所以就出现这个了。
+							</p>
+							<p>
+								接着就是在输入net start mysql启动服务。或者不嫌麻烦的话，就手动启动。打开服务，启动mysql服务。
+							</p>
+						</div>
+						<div class="content-list-media">
+							<div class="content-list-image clearfix">
+								<a class="exp-image-wraper" href="http://jingyan.baidu.com/album/e3c78d64b44ef53c4c85f51a.html?picindex=9" target="_self"><img src="http://g.hiphotos.baidu.com/exp/w=500/sign=75d99ba58b5494ee87220f191df5e0e1/d0c8a786c9177f3ee10ee61777cf3bc79f3d56f5.jpg" class="exp-image-default" alt="mysql5.7.10下载安装、配置与使用" /><span class="exp-album-enter-mask"></span></a>
+							</div>
+						</div>
+					</li>
+					<li class="exp-content-list list-item-3">
+						<div class="list-icon">
+							3
+						</div>
+						<div class="content-list-text">
+							<p>
+								告诉大家一个打开win8 服务界面的方法。打开任务管理器（右键选择任务管理器也好，ctrl+alt+delete也罢，随你喜好）。点下面的服务就可以了，是不是很简单。
+							</p>
+						</div>
+						<div class="content-list-media">
+							<div class="content-list-image clearfix">
+								<a class="exp-image-wraper" href="http://jingyan.baidu.com/album/e3c78d64b44ef53c4c85f51a.html?picindex=10" target="_self"><img src="http://d.hiphotos.baidu.com/exp/w=500/sign=952f37222f381f309e198da999014c67/730e0cf3d7ca7bcb0146c235b9096b63f624a8ee.jpg" class="exp-image-default" alt="mysql5.7.10下载安装、配置与使用" /><span class="exp-album-enter-mask"></span></a>
+							</div>
+						</div>
+						<div class="last-item">
+							<span class="last-item-end">END</span>
+						</div>
+					</li>
+				</ol>
+				<div class="exp-content-block">
+					<h2 class="exp-content-head">
+						<a name="undefined"></a>方法/步骤4
+					</h2>
+					<div class="exp-content-body">
+						<ol class="exp-conent-orderlist">
+							<li class="exp-content-list list-item-1">
+								<div class="list-icon">
+									1
+								</div>
+								<div class="content-list-text">
+									<p>
+										可是接下来就会出现服务无法启动的问题，这也是我重点要讲的地方。我在比较5.7与5.6版本差异的时候总算发现了一个区别。估计是因为MySQL被oracle收购的原因。为了使MySQL难用一些，他把里面的data文件夹中的部分文件给删了。
+									</p>
+								</div>
+								<div class="content-list-media">
+									<div class="content-list-image clearfix">
+										<a class="exp-image-wraper" href="http://jingyan.baidu.com/album/e3c78d64b44ef53c4c85f51a.html?picindex=11" target="_self"><img src="http://g.hiphotos.baidu.com/exp/w=500/sign=0e5e76090ef79052ef1f473e3cf2d738/5243fbf2b21193139e84faaa62380cd790238de0.jpg" class="exp-image-default" alt="mysql5.7.10下载安装、配置与使用" /><span class="exp-album-enter-mask"></span></a>
+									</div>
+									<div class="content-list-image clearfix">
+										<a class="exp-image-wraper" href="http://jingyan.baidu.com/album/e3c78d64b44ef53c4c85f51a.html?picindex=12" target="_self"><img src="http://g.hiphotos.baidu.com/exp/w=500/sign=f72786d75566d0167e199e28a72ad498/8b82b9014a90f603bd71995d3e12b31bb151ede3.jpg" class="exp-image-default" alt="mysql5.7.10下载安装、配置与使用" /><span class="exp-album-enter-mask"></span></a>
+									</div>
+								</div>
+							</li>
+							<li class="exp-content-list list-item-2">
+								<div class="list-icon">
+									2
+								</div>
+								<div class="content-list-text">
+									<p>
+										所以这时我们可以先用mysqld&nbsp;&nbsp;--initialize&nbsp;先初始化data目录。在重新启动，这下问题就解决了。
+									</p>
+								</div>
+								<div class="content-list-media">
+									<div class="content-list-image clearfix">
+										<a class="exp-image-wraper" href="http://jingyan.baidu.com/album/e3c78d64b44ef53c4c85f51a.html?picindex=13" target="_self"><img src="http://f.hiphotos.baidu.com/exp/w=500/sign=ccb5a97a48c2d562f208d0edd71090f3/810a19d8bc3eb1354677b0a1a11ea8d3fd1f4473.jpg" class="exp-image-default" alt="mysql5.7.10下载安装、配置与使用" /><span class="exp-album-enter-mask"></span></a>
+									</div>
+								</div>
+								<div class="last-item">
+									<span class="last-item-end">END</span>
+								</div>
+							</li>
+						</ol>
+					</div>
+				</div>
+				<h2 class="exp-content-head">
+					<a name="undefined"></a>方法/步骤5
+				</h2>
+				<div class="content-list-text">
+					<p>
+						第五大步：修改密码
+					</p>
+					<p>
+						打
+开MySQL/bin目录下输入mysql -uroot -p ,默认是没有密码的，一般是直接按回车进入，但是会出现ERROR 1045 
+(28000): Access denied for user'root'@'localhost'(using password: 
+YES)的错误 
+。网上一搜很多人都有出现这个错误一般解决的方法都是在在配置文件[mysqld]条目下加一条命令skip-grant-tables然后重启就可以略
+过密码进入了。
+					</p>
+					<p>
+						在cmd里面输入mysql -u root-p就可以不用密码登录了，出现password：的时候直接回车可以进入，不会出现ERROR 1045(28000)，但很多操作都会受限制，因为没有不能grant（没有权限）的密码
+					</p>
+					<p>
+						1.进入mysql数据库：
+					</p>
+					<p>
+						mysql&gt; use mysql;Database changed
+					</p>
+					<p>
+						2.
+给root用户设置新密码mysql&gt; update user set 
+authentication_string=password("新密码") whereuser="root";Query OK,1 rows 
+affected(0.01 sec)Rows matched:1 Changed:1Warnings: 0
+					</p>
+					<p>
+						3.刷新数据库&nbsp;（一定要记得刷新）mysql&gt;flush privileges;&nbsp;QueryOK, 0 rows affected (0.00 sec)
+					</p>
+					<p>
+						4.退出mysql：mysql&gt; quit
+					</p>
+					<p>
+						最后把配置文件中的skip-grant-tables 注释掉。下次输入mysql&nbsp;-uroot -p 就可以用新密码登录了
+					</p>
+				</div>
+				<div class="content-list-media">
+					<div class="content-list-image clearfix">
+						<a class="exp-image-wraper" href="http://jingyan.baidu.com/album/e3c78d64b44ef53c4c85f51a.html?picindex=14" target="_self"><img src="http://a.hiphotos.baidu.com/exp/w=500/sign=797a0a4752fbb2fb342b58127f4b2043/b7003af33a87e95015bef17617385343fbf2b47a.jpg" class="exp-image-default" alt="mysql5.7.10下载安装、配置与使用" /></a><a class="exp-image-wraper" href="http://jingyan.baidu.com/album/e3c78d64b44ef53c4c85f51a.html?picindex=14" target="_self"><span class="exp-album-enter-mask"></span></a>
+					</div>
+				</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br />
+			</li>
+		</ol>
+		<p>
+			6. ERROR 1820 (HY000): You must reset your password using ALTER USER statement before executing this statement.
+		</p>
+		<p>
+			问题解决
+		</p>
+		<p>
+			<span class="s1 cye-lm-tag" style="font-family:'Microsoft YaHei';color:#3F3F3F;font-size:14px;line-height:30px;">&nbsp;</span><span style="color:#3F3F3F;font-family:'Microsoft YaHei';font-size:14px;line-height:30px;">update mysql.user
+ set authentication_string=password('FBTsh2013') where user='root' and Host = 'localhost';</span>
+		</p>
+		<p>
+			<span style="color:#3F3F3F;font-family:'Microsoft YaHei';font-size:14px;line-height:30px;"><span style="font-family:Arial;color:#333333;"><span style="line-height:26px;">alter user 'root'@'localhost' identified by '<span style="color:#3F3F3F;font-family:'Microsoft YaHei';font-size:14px;line-height:30px;">FBTsh2013</span>';</span></span></span>
+		</p>
+		<p>
+			<br />
+		</p>
+		<p>
+			&nbsp;&nbsp;&nbsp;&nbsp;
+		</p>
+		<p>
+			<br />
+		</p>
+	</div>
+</div></body></html>

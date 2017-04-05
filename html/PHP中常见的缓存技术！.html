@@ -1,0 +1,150 @@
+<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><title>PHP中常见的缓存技术！</title>
+<style>
+body{
+	width:960px;
+	margin:0 auto;
+}
+#title{
+	text-align:center;
+}
+</style>
+</head><body><div id='title'><h2>PHP中常见的缓存技术！</h2></div><div class="articalTitle" style="color:#494949;font-family:Verdana, 宋体, sans-serif;background-color:#F3E8C4;">
+	<h2 id="t_4696b3760100nox8" class="titName SG_txta" style="color:#CE3535;font-size:18px;font-family:微软雅黑, 黑体;font-weight:300;">
+		PHP中常见的缓存技术！
+	</h2>
+&nbsp;(2011-01-10 12:44:03)
+	<div class="turnBoxzz">
+		<a class="SG_aBtn SG_aBtn_ico SG_turn"><img class="SG_icon SG_icon111" src="http://simg.sinajs.cn/blog7style/images/common/sg_trans.gif" width="15" height="15" align="absmiddle" />转载▼</a>
+	</div>
+</div>
+<div class="articalTag" id="sina_keyword_ad_area" style="color:#494949;font-family:Verdana, 宋体, sans-serif;background-color:#F3E8C4;">
+	<table style="margin:0px;padding:0px;">
+		<tbody>
+			<tr>
+				<td class="blog_tag" style="font-family:宋体;vertical-align:top;">
+					<span class="SG_txtb" style="color:#85837E;">标签：</span>&nbsp;
+					<h3 style="font-size:12px;font-weight:normal;">
+						<a href="http://search.sina.com.cn/?c=blog&amp;q=php%BB%BA%B4%E6&amp;by=tag" target="_blank">php缓存</a>
+					</h3>
+				</td>
+				<td class="blog_class" style="font-family:宋体;vertical-align:top;">
+					分类：&nbsp;<a target="_blank" href="http://blog.sina.com.cn/s/articlelist_1184281462_9_1.html">php</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div id="sina_keyword_ad_area2" class="articalContent " style="font-size:14px;font-family:simsun;color:#494949;background-color:#F3E8C4;">
+	<div>
+		<table cellspacing="0" cellpadding="0" style="margin:0px 0px 0px 1px;padding:0px;width:1473px;">
+			<tbody>
+				<tr>
+					<td style="font-family:Verdana, Helvetica, Arial, sans-serif;">
+						<span><span style="line-height:19px;color:#000000;font-size:12px;"><strong>原文地址：<a href="http://blog.sina.com.cn/s/blog_4696b3760100nox8.html" target="_blank"><span><span style="line-height:normal;font-family:宋体, Verdana, Arial, Helvetica, sans-serif;">http://www.lisijie.com.cn/post/200804/144.</span></span>html</a></strong></span><br />
+JBLOG</span><span><span style="line-height:1.6em;font-size:14px;">在</span></span>开发<span><span style="line-height:1.6em;font-size:14px;">的过程中，对性能的优化做了不少工作。为了尽量减少不必要的</span></span>数据库查询<span><span style="line-height:1.6em;font-size:14px;">，我对一些</span></span>数据<span><span style="line-height:1.6em;font-size:14px;">进行了缓存和</span></span>静态<span><span style="line-height:1.6em;font-size:14px;">化处理。</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">缓存的原理：把一些经常要用到但又很少改动的数据以数组或其它形式存储到一个独立的</span></span>PHP文件<span><span style="line-height:1.6em;font-size:14px;">中，然后在需要用到的时候包含进来。</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">缓存的优点：能够大大减少数据库的查询次数，减轻数据库的压力，提高</span></span>程序<span><span style="line-height:1.6em;font-size:14px;">的执行效率。</span></span><br />
+JBLOG<span><span style="line-height:1.6em;font-size:14px;">缓存的数据有：</span></span>系统设置<span><span style="line-height:1.6em;font-size:14px;">、博客分类、侧栏最新日志、最新评论、博客统计、日志归档、友情链接、标签等。通过缓存这些数据，执行一次</span></span>页面<span><span style="line-height:1.6em;font-size:14px;">数据库的查询次数从十几次减少到3次。</span></span><br />
+JBLOG<span><span style="line-height:1.6em;font-size:14px;">中与缓存相关的</span></span>函数<span><span style="line-height:1.6em;font-size:14px;">保存在include</span></span>目录<span><span style="line-height:1.6em;font-size:14px;">下的cache.func.php里，主要函数：</span></span><br />
+<br />
+<br />
+<span><span style="line-height:1.6em;font-size:14px;">//刷新缓存</span></span><br />
+function<span><span style="line-height:1.6em;font-size:14px;">&nbsp;recache($cachestr = '') {</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">if (!$cachestr) {</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">&nbsp;&nbsp;$cachelist = array('config','class','archive','newcomment','newpost','link','tag','statistic','topblog');</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">} else {</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">&nbsp;&nbsp;$cachelist = explode(',',$cachestr);</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">&nbsp;&nbsp;foreach ($cachelist as $cache) {</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">&nbsp;&nbsp;&nbsp;$cachename = $cache.'_recache';</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">&nbsp;&nbsp;&nbsp;if (function_exists($cachename)) {</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">&nbsp;&nbsp;&nbsp;&nbsp;$cachename();</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">&nbsp;&nbsp;&nbsp;}</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">&nbsp;&nbsp;}</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">}</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">}</span></span><br />
+<br />
+<br />
+<span><span style="line-height:1.6em;font-size:14px;">recache()函数用来刷新缓存，每一个缓存以独立的函数存在，刷新缓存时仅需执行一次相应的函数即可。</span></span><br />
+<br />
+<br />
+<span><span style="line-height:1.6em;font-size:14px;">//将</span></span>字符<span><span style="line-height:1.6em;font-size:14px;">串写进文件</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">function writeToFile($cachename,$content = '') {</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">$allowcache = $cachelist = array('config','class','archive','newcomment','newpost','link','tag','statistic','topblog');</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">if (in_array($cachename,$allowcache)) {</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">&nbsp;&nbsp;$cache_dir = JBLOG_ROOT.'cache_data/';</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">&nbsp;&nbsp;$cache_file_name = $cache_dir.'cache_'.$cachename.'.php';</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">&nbsp;&nbsp;if (!is_dir($cache_dir)) {</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">&nbsp;&nbsp;&nbsp;@mkdir($cache_dir,0777);</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">&nbsp;&nbsp;}</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">&nbsp;&nbsp;if ($fp = @fopen($cache_file_name,'wb')) {</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">&nbsp;&nbsp;&nbsp;$content = "&lt;?php\r\n//该文件是系统</span></span>自动<span><span style="line-height:1.6em;font-size:14px;">生成的缓存文件，请勿修改\r\n//创建</span></span>时间<span><span style="line-height:1.6em;font-size:14px;">：".date('Y-m-d H:i:s',time())."\r\n\r\nif (!defined('IN_JBLOG')) {exit('Access Denied!');}\r\n\r\n".$content."\r\n\r\n?&gt;";</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">&nbsp;&nbsp;&nbsp;@fwrite($fp,$content);</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">&nbsp;&nbsp;&nbsp;@fclose();</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">&nbsp;&nbsp;&nbsp;@chmod($cache_file_name,0777);</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">&nbsp;&nbsp;} else {</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">&nbsp;&nbsp;&nbsp;echo '缓存文件&lt;b&gt;'.$cache_dir.$cache_file_name.'&lt;/b&gt;创建失败！&lt;br /&gt;';</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">&nbsp;&nbsp;}</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">} else {</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">&nbsp;&nbsp;die('缓存名称&lt;b&gt;'.$cachename.'&lt;/b&gt;不在系统允许的范围内！');</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">}</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">}</span></span><br />
+<br />
+<br />
+<span><span style="line-height:1.6em;font-size:14px;">writeToFile() 函数用于将数据写入到缓存目录下以cache_缓存名称.php命名的文件中。</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">再看具体的缓存函数</span></span>实例<span><span style="line-height:1.6em;font-size:14px;">：</span></span><br />
+<br />
+<span><span style="line-height:1.6em;font-size:14px;">[php]&nbsp;</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">//缓存博客分类</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">function class_recache() {</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">global $db,$tablepre;</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">$content = '';</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">$sql = "SELECT id,classname,description,orderid,arcnum FROM `{$tablepre}class` ORDER BY orderid";</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">$result = $db-&gt;query($sql);</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">while ($row = $db-&gt;fetch_array($result)) {</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">&nbsp;&nbsp;$content .= "\tarray(\r\n";</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">&nbsp;&nbsp;$content .= "\t'id'=&gt;'".addslashes($row['id'])."',\r\n";</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">&nbsp;&nbsp;$content .= "\t'classname'=&gt;'".addslashes($row['classname'])."',\r\n";</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">&nbsp;&nbsp;$content .= "\t'description'=&gt;'".addslashes($row['description'])."',\r\n";</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">&nbsp;&nbsp;$content .= "\t'orderid'=&gt;'".addslashes($row['orderid'])."',\r\n";</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">&nbsp;&nbsp;$content .= "\t'arcnum'=&gt;'".addslashes($row['arcnum'])."',\r\n";</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">&nbsp;&nbsp;$content .= "\t),\r\n";</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">}</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">$content = substr($content,0,strrpos($content,','));</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">$content = "\$class_cache = array(\r\n{$content}\r\n);";</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">writeToFile('class',$content);</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">}</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">[/php]</span></span><br />
+<br />
+<span><span style="line-height:1.6em;font-size:14px;">class_recache()函数从数据库取出数据，然后构造一个数组，以分类ID作为数组的索引，类别的信息作为对应的值，方便数据的访问。</span></span><br />
+<strong>缓存的引入：</strong><br />
+<span><span style="line-height:1.6em;font-size:14px;">所有缓存数据统一在include目录下的common.inc.php引入，</span></span>代码<span><span style="line-height:1.6em;font-size:14px;">如下：</span></span><br />
+<br />
+<span><span style="line-height:1.6em;font-size:14px;">[php]&nbsp;</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">//加载系统设置信息，文件不存在则重建缓存</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">if ([email=!@include(JBLOG_ROOT.]!@include(JBLOG_ROOT.'cache_data/cache_config.php'[/email])) {</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">require_once(JBLOG_ROOT.'include/cache.func.php');</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">recache('config');</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">exit('成功创建系统配置信息缓存，请刷新页面！');</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">}</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">//加载缓存，缓存文件不存在则重建缓存</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">$cachestr = '';</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">$cachelist = array('class','archive','newcomment','newpost','link','tag','statistic','topblog');</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">foreach ($cachelist as $cachename) {</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">$cachestr .= (@include(JBLOG_ROOT.'cache_data/cache_'.$cachename.'.php')) ? '' : $cachename.',';</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">}</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">$cachestr = substr($cachestr,0,strrpos($cachestr,','));</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">if ($cachestr) {</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">require_once(JBLOG_ROOT.'include/cache.func.php');</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">recache($cachestr);</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">exit('所有缓存重建完成，请刷新页面！');</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">}</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">unset($cachelist,$cachename,$cachestr);</span></span><br />
+<span><span style="line-height:1.6em;font-size:14px;">[/php]</span></span><br />
+<br />
+<span><span style="line-height:1.6em;font-size:14px;">先加载配置信息是因为，在创建其它缓存文件的时候，经常要用到系统的设置信息，如系统设置中有一个选项可以让</span></span>用户<span><span style="line-height:1.6em;font-size:14px;">自定义最新日志的数量，在缓存最新日志的时候就会用到该</span></span>变量<span><span style="line-height:1.6em;font-size:14px;">，所以必须先确保配置信息成功缓存后，再缓存其它</span></span>项目<span><span style="line-height:1.6em;font-size:14px;">。</span></span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div></body></html>

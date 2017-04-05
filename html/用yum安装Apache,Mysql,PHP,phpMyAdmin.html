@@ -1,0 +1,459 @@
+<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><title>用yum安装Apache,Mysql,PHP,phpMyAdmin</title>
+		<style>
+			body{
+				width:960px;
+				margin:0 auto;
+			}
+			#title{
+				text-align:center;
+			}
+		</style>
+	</head><body><div>
+	<h2>
+		用yum 安装Apache,Mysql,PHP,phpMyAdmin
+	</h2>
+</div>
+<p>
+	用yum安装Apache,Mysql,PHP.<br />
+<br />
+用yum安装Apache,Mysql,PHP. <br />
+2.1安装Apache <br />
+yum install httpd httpd-devel <br />
+安装完成后，用/etc/init.d/httpd start 启动apache <br />
+设为开机启动:chkconfig httpd on <br />
+2.2 安装mysql <br />
+2.2.1 yum install mysql mysql-server mysql-devel <br />
+同样，完成后，用/etc/init.d/mysqld start 启动mysql <br />
+2.2.2 设置mysql密码 <br />
+<br />
+启动mysql控制台：  mysql<br />
+<br />
+mysql&gt;; USE mysql; <br />
+mysql&gt;; UPDATE user SET Password=PASSWORD('newpassword') WHERE user='root'; <br />
+mysql&gt;; FLUSH PRIVILEGES; <br />
+2.2.3 允许远程登录 <br />
+mysql -u root -p <br />
+Enter Password:<br />
+mysql&gt;GRANT ALL PRIVILEGES ON *.* TO '用户名'@'%' IDENTIFIED BY '密码' WITH GRANT OPTION; <br />
+完成后就能用mysql-front远程管理mysql了。 <br />
+2.2.4 设为开机启动 <br />
+chkconfig mysqld on <br />
+3. 安装php <br />
+yum install php php-mysql php-common php-gd php-mbstring php-mcrypt php-devel php-xml <br />
+/etc/init.d/httpd start
+</p>
+<p>
+	安装phpmyadmin<br />
+yum -y install phpmyadmin //执行yum在线安装程序<br />
+安装完成后，可在/usr/share目录下找到phpMyAdmin，将其拷贝至你的web目录下，例如我的web目录是：/var/www/html
+</p>
+<p>
+	cp -r /usr/share/phpMyAdmin /var/www/html
+</p>
+<p>
+	<br />
+</p>
+<p>
+	1、安装vsftp，本文采用yum安装：
+</p>
+<p>
+	#yum install vsftpd
+</p>
+<p>
+	2、安装后运行：
+</p>
+<p>
+	#service vsftpd start
+</p>
+<p>
+	Shutting downvsftpd:                                     [  OK  ]
+</p>
+<p>
+	Starting vsftpd forvsftpd:                               [  OK  ]
+</p>
+<p>
+	3、新增加系统用户ftptest：
+</p>
+<p>
+	#useradd -d /var/www -s /sbin/nologin ftptest//增加新用户ftptest不让在本机登陆
+</p>
+<p>
+	#chown -R ftptest /var/www//更改新增目录的权限,只允许ftptest访问此目录；
+</p>
+<p>
+	#chmod 777 -R /var/www
+</p>
+<p>
+	#passwd ftptest//为用户设置密码；
+</p>
+<p>
+	#service vsftpd start
+</p>
+<p>
+	/bin/systemctl restart &nbsp;vsftpd.service//centos7 更改启动
+</p>
+<p>
+	限制用户行为，只能访问指定的目录，禁止上传下载，将配置文件前的#去除
+</p>
+<p>
+	vi/etc/vs<a href="https://www.baidu.com/s?wd=ftp&tn=44039180_cpr&fenlei=mv6quAkxTZn0IZRqIHckPjm4nH00T1YLmHb1uju9uW63PjK-nyc40AP8IA3qPjfsn1bkrjKxmLKz0ZNzUjdCIZwsrBtEXh9GuA7EQhF9pywdQhPEUiqkIyN1IA-EUBtdn161rHbdrHf" target="_blank">ftp</a>d/vs<a href="https://www.baidu.com/s?wd=ftp&tn=44039180_cpr&fenlei=mv6quAkxTZn0IZRqIHckPjm4nH00T1YLmHb1uju9uW63PjK-nyc40AP8IA3qPjfsn1bkrjKxmLKz0ZNzUjdCIZwsrBtEXh9GuA7EQhF9pywdQhPEUiqkIyN1IA-EUBtdn161rHbdrHf" target="_blank">ftp</a>d.conf
+</p>
+<p>
+	chroot_local_user=YES 限制在家目录
+</p>
+<p>
+	allow_writeable_chroot=YES//修复ftp登不上问题
+</p>
+<p>
+	local_upload_enable=<a href="https://www.baidu.com/s?wd=NO&tn=44039180_cpr&fenlei=mv6quAkxTZn0IZRqIHckPjm4nH00T1YLmHb1uju9uW63PjK-nyc40AP8IA3qPjfsn1bkrjKxmLKz0ZNzUjdCIZwsrBtEXh9GuA7EQhF9pywdQhPEUiqkIyN1IA-EUBtdn161rHbdrHf" target="_blank">NO</a> 
+</p>
+<p>
+	不能上传
+download_enable=<a href="https://www.baidu.com/s?wd=NO&tn=44039180_cpr&fenlei=mv6quAkxTZn0IZRqIHckPjm4nH00T1YLmHb1uju9uW63PjK-nyc40AP8IA3qPjfsn1bkrjKxmLKz0ZNzUjdCIZwsrBtEXh9GuA7EQhF9pywdQhPEUiqkIyN1IA-EUBtdn161rHbdrHf" target="_blank">NO</a> 禁止下载
+</p>
+<p>
+	# service vsftpd restart
+</p>
+<p>
+	chkconfig --level 2345 vsftpd on//开机自启动
+</p>
+<p>
+	550 Create directory operation failed.//无法上传，添加文件
+</p>
+<p>
+	centos7关闭防火墙&nbsp;
+</p>
+<p>
+	<span style="color:#404040;font-family:Tahoma, Helvetica, Arial, 宋体, sans-serif;line-height:21.6000003814697px;background-color:#F7FCFF;">&nbsp;&nbsp;&nbsp;<span style="color:#404040;font-family:Tahoma, Helvetica, Arial, 宋体, sans-serif;line-height:21.6000003814697px;background-color:#F7FCFF;">systemctl stop firewalld.service #停止firewall</span></span>
+</p>
+<p>
+	<span style="color:#404040;font-family:Tahoma, Helvetica, Arial, 宋体, sans-serif;line-height:21.6000003814697px;background-color:#F7FCFF;"><span style="color:#404040;font-family:Tahoma, Helvetica, Arial, 宋体, sans-serif;line-height:21.6000003814697px;background-color:#F7FCFF;">&nbsp; &nbsp;<span style="color:#404040;font-family:Tahoma, Helvetica, Arial, 宋体, sans-serif;line-height:21.6000003814697px;background-color:#F7FCFF;">systemctl disable firewalld.service #禁止firewall开机启动</span></span></span>
+</p>
+<p>
+	<span style="color:#404040;font-family:Tahoma, Helvetica, Arial, 宋体, sans-serif;line-height:21.6000003814697px;background-color:#F7FCFF;"><span style="color:#404040;font-family:Tahoma, Helvetica, Arial, 宋体, sans-serif;line-height:21.6000003814697px;background-color:#F7FCFF;">
+	<p>
+		<span style="color:#404040;font-family:Tahoma, Helvetica, Arial, 宋体, sans-serif;line-height:21.6000003814697px;background-color:#F7FCFF;"><span style="line-height:21.6000003814697px;">&nbsp;&nbsp;&nbsp;systemctl stop <span style="color:#404040;font-family:Tahoma, Helvetica, Arial, 宋体, sans-serif;line-height:21.6000003814697px;background-color:#F7FCFF;">iptables&nbsp;</span>.service #停止<span style="color:#404040;font-family:Tahoma, Helvetica, Arial, 宋体, sans-serif;line-height:21.6000003814697px;background-color:#F7FCFF;">iptables&nbsp;</span></span></span>
+	</p>
+	<p>
+		<span style="color:#404040;font-family:Tahoma, Helvetica, Arial, 宋体, sans-serif;line-height:21.6000003814697px;background-color:#F7FCFF;"><span style="line-height:21.6000003814697px;">&nbsp; &nbsp;<span style="line-height:21.6000003814697px;">systemctl disable <span style="color:#404040;font-family:Tahoma, Helvetica, Arial, 宋体, sans-serif;line-height:21.6000003814697px;background-color:#F7FCFF;">iptables&nbsp;</span>.service #禁止<span style="color:#404040;font-family:Tahoma, Helvetica, Arial, 宋体, sans-serif;line-height:21.6000003814697px;background-color:#F7FCFF;">iptables&nbsp;</span>开机启动（或者添加规则允许ftp(没成功)）</span></span></span>
+	</p>
+	<p>
+		<span style="color:#404040;font-family:Tahoma, Helvetica, Arial, 宋体, sans-serif;line-height:21.6000003814697px;background-color:#F7FCFF;"><span style="line-height:21.6000003814697px;"><span style="line-height:21.6000003814697px;"><span style="color:#333333;font-family:Arial;font-size:14px;line-height:26px;background-color:#FFFFFF;">vi /etc/selinux/config</span><br />
+</span></span></span>
+	</p>
+	<p>
+		<span style="color:#404040;font-family:Tahoma, Helvetica, Arial, 宋体, sans-serif;line-height:21.6000003814697px;background-color:#F7FCFF;"><span style="line-height:21.6000003814697px;"><span style="line-height:21.6000003814697px;"><span class="attribute" style="font-family:Consolas, 'Courier New', Courier, mono, serif;font-size:14px;color:red;">&nbsp; SELINUX</span><span style="font-family:Consolas, 'Courier New', Courier, mono, serif;font-size:14px;">=</span><span class="attribute-value" style="font-family:Consolas, 'Courier New', Courier, mono, serif;font-size:14px;color:blue;">disabled</span><span style="font-family:Consolas, 'Courier New', Courier, mono, serif;font-size:14px;">&nbsp;</span>永久关闭&nbsp;<span style="color:#333333;font-family:Arial;font-size:14px;line-height:26px;background-color:#FFFFFF;">selinux</span><br />
+</span></span></span>
+	</p>
+<br />
+</span></span>
+</p>
+<p>
+	<br />
+</p>
+<p>
+	<br />
+</p>
+<div>
+	# vi /etc/selinux/config
+</div>
+<div>
+	将 SELINUX=XXX --&gt;XXX 代表级别
+</div>
+<div>
+	改为
+</div>
+<div>
+	SELINUX=disabled
+</div>
+<p>
+	<br />
+</p>
+<p>
+	<br />
+</p>
+<p>
+	域名绑定
+</p>
+<p>
+	virtualhost *:80=""
+</p>
+<p>
+	<virtualhost *:80="">
+</p>
+<p>
+	ServerAdmin 976727420@qq.com
+</p>
+<p>
+	DocumentRoot /var/www/html
+</p>
+<p>
+	ServerName yueyuebaby.cn
+</p>
+<p>
+	ServerAlias www.yueyuebaby.cn
+</p>
+<p>
+	DirectoryIndex index.html index.php index.htm
+</p>
+<p>
+	\virtualhost
+</p>
+<p>
+	<br />
+</p>
+<p>
+	<br />
+</p>
+<p>
+	You don't have permission to access /phpmyadmin/ on this server.解决
+</p>
+<p>
+	vi /etc/httpd/conf.d/phpMyAdmin.conf
+</p>
+<p>
+	<br />
+</p>
+<div>
+	<div>
+		Allow from 127.0.0.1
+	</div>
+</div>
+<div>
+	修改为
+</div>
+<div>
+	Allow from all
+</div>
+<br />
+<p>
+	<br />
+</p>
+<p>
+	<br />
+</p>
+<p>
+	<br />
+</p>
+<div>
+	<br />
+</div>
+<p>
+	<br />
+</p>
+<p>
+	<br />
+</p>
+<p>
+	升级php
+</p>
+<br />
+<p>
+	解压php安装包
+</p>
+<p>
+	#./configure \
+</p>
+<p>
+	默认安装的就不需要{--prefix=/usr/local/php \ <br />
+--with-mysql=/usr/local/mysql \ <br />
+--with-apxs=/usr/local/apache2/bin/apxs \<br />
+--with-libxml-dir=/usr/ local/libxml2}
+</p>
+<p>
+	假如 configure error xml2-config not found
+</p>
+<p>
+	安装libxml2
+</p>
+<p>
+	rpm -qa |grep  libxml2
+</p>
+<p>
+	<br />
+</p>
+<p>
+	yum install libxml2
+</p>
+<p>
+	yum install libxml2-devel -y
+</p>
+<p>
+	<br />
+</p>
+<p>
+	#make <br />
+#make install
+</p>
+<p>
+	<br />
+</p>
+<p>
+	<br />
+</p>
+<p>
+	<br />
+</p>
+<p>
+	<br />
+/升级默认的php5.1到5.2<br />
+<br />
+vi gedit /etc/yum.repos.d/utterramblings.repo<br />
+在打开的文件中加入以下内容：<br />
+[utterramblings]<br />
+name=Jason’s Utter Ramblings Repo<br />
+baseurl=http://www.jasonlitka.com/media/EL$releasever/$basearch/<br />
+enabled=1<br />
+gpgcheck=1<br />
+gpgkey=http://www.jasonlitka.com/media/RPM-GPG-KEY-jlitka<br />
+保存<br />
+yum update php<br />
+<br />
+<br />
+<br />
+安装ZendOptimizer<br />
+<br />
+1、下载文件：<br />
+<br />
+http://downloads.zend.com/optimizer/3.3.9/ZendOptimizer-3.3.9-linux-glibc23-i386.tar.gz  （32位）<br />
+<br />
+http://downloads.zend.com/optimizer/3.3.9/ZendOptimizer-3.3.9-linux-glibc23-x86_64.tar.gz  （64位）<br />
+<br />
+2、解压<br />
+<br />
+解压后把ZendOptimizer-3.3.9-linux-glibc23-x86_64/data/5_2_x_comp目录下的ZendOptimizer.so拷贝到某一个目录，比如/usr/local/Zend/lib/<br />
+<br />
+Zend optimizer 3.3.9有一些新的改动，不需要安装了，直接在php.ini文件里面引用.so文件即可：<br />
+<br />
+3、修改/etc/php.ini文件<br />
+<br />
+找到：zend.ze1_compatibility_mode = Off<br />
+<br />
+修改为：zend.ze1_compatibility_mode = On<br />
+<br />
+在末尾加上以下文字：<br />
+<br />
+[Zend Optimizer]<br />
+zend_optimizer.optimization_level=1<br />
+zend_extension="/usr/local/Zend/lib/ZendOptimizer.so"<br />
+<br />
+4、重启httpd服务，通过php -v 可以看效果。<br />
+<br />
+<br />
+<br />
+安装eaccelerator<br />
+<br />
+直接yum install php-eaccelerator<br />
+<br />
+如果找不到，线 yum search eaccelerator<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+虚拟主机安装时注意，如果出现多个域名都指向同一个目录的情况<br />
+<br />
+NameVirtualHost 127.0.0.1:80    #这句一定要和 <virtualhost 127.0.0.1:80="">配合才可以。<br />
+<virtualhost 127.0.0.1:80=""><br />
+DocumentRoot /var/www/html<br />
+ServerName t.dagongz.com<br />
+<directory html?="" www="" var="" ?=""><br />
+allow from all<br />
+Options +Indexes<br />
+<br />
+<br />
+<br />
+<virtualhost 127.0.0.1:80=""><br />
+DocumentRoot /var/www/html/test/<br />
+ServerName test.dagongz.com<br />
+<directory www="" var="" ?="" test="" html=""><br />
+allow from all<br />
+Options +Indexes<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+开启缓存Expires模块要有<br />
+<br />
+ExpiresActive   on<br />
+ExpiresDefault   "access plus 86400 second"<br />
+<br />
+<br />
+<br />
+卸载Mysql<br />
+<br />
+<br />
+<br />
+[root@localhost ~]# rpm -qa|grep mysql<br />
+<br />
+mod_auth_mysql-2.6.1-2.2<br />
+<br />
+php-mysql-4.3.9-3.15<br />
+<br />
+mysql-devel-4.1.20-1.RHEL4.1<br />
+<br />
+mysql-4.1.20-1.RHEL4.1<br />
+<br />
+mysqlclient10-3.23.58-4.RHEL4.1<br />
+<br />
+libdbi-dbd-mysql-0.6.5-10.RHEL4.1<br />
+<br />
+<br />
+说明：rpm –qa | grep mysql 命令是为了把mysql相关的包都列出来，我上面的例子是LinuxAS4默认安装mysql的rpm软件包列表，<br />
+<br />
+如果是别的Linux版本列出来的列表有可能会不一样，不过不用担心，不管是什么，卸载都从最下面的一个包开始，直到卸载掉第一个为止。 <br />
+<br />
+说明：rpm –e是卸载rpm包的命令，后面是包名称，最后的版本号是不用打的，比如我们下一步卸载mysqlclient10-3.23.58-4.RHEL4.1包<br />
+<br />
+方法如下：<br />
+<br />
+rpm –e mysqlclient<br />
+<br />
+<br />
+卸载Apache<br />
+<br />
+[root@localhost ~]# rpm -qa|grep httpd<br />
+<br />
+httpd-manual-2.0.52-25.ent<br />
+<br />
+system-config-httpd-1.3.1-1<br />
+<br />
+httpd-2.0.52-25.ent<br />
+<br />
+httpd-suexec-2.0.52-25.ent<br />
+<br />
+<br />
+说明：方法跟卸载Mysql一样，不用说了吧<br />
+<br />
+<br />
+卸载PHP<br />
+<br />
+[root@localhost ~]# rpm -qa|grep php<br />
+<br />
+php-odbc-4.3.9-3.15<br />
+<br />
+php-4.3.9-3.15<br />
+<br />
+php-mysql-4.3.9-3.15<br />
+<br />
+php-pear-4.3.9-3.15<br />
+<br />
+php-ldap-4.3.9-3.15<br />
+<br />
+php-pgsql-4.3.9-3.15<br />
+<br />
+<br />
+说明：方法跟卸载Mysql一样<br />
+<br />
+<br />
+注意：卸载的时候如果卸载不掉，系统一般会提示包的依赖关系，并且列出依赖的包的名称，先卸载提示依赖的包就可以了。<br />
+<br />
+<br />
+如果实在实在有卸载不掉的包，可以加—nodeps这个参数来卸载，比如我们卸载php-4.3.9-3.15，实在卸不掉了。<br />
+<br />
+<br />
+就用：<br />
+<br />
+[root@localhost ~]# rpm -e php-4.3.9-3.15 --nodeps
+</p></body></html>
